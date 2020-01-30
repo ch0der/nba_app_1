@@ -1,0 +1,14 @@
+{
+  "status":200,
+  "message":"GET players/lastName/Paul",
+  "results":2,
+  "filters":[
+    "playerId",
+    "teamId",
+    "league",
+    "country",
+    "lastName",
+    "firstName"
+  ],
+  "players":"$[]playerPosts"
+}
