@@ -1,6 +1,6 @@
 # nba_app
 
-A new Flutter application.
+Live NBA scores, no bullshit.
 
 ## Getting Started
 
