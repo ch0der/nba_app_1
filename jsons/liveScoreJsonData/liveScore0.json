@@ -1,0 +1,15 @@
+{
+  "seasonYear": "2018",
+  "league": "standard",
+  "gameId": "0011800069",
+  "seasonStageId": "1",
+  "statusNum": "2",
+  "startTimeUTC": "2018-10-12T23:00:00.000Z",
+  "endTimeUTC": "",
+  "arena": "Amway Center",
+  "city": "Orlando",
+  "country": "USA",
+  "infos": "Preseason",
+  "vTeam": "$liveScore01",
+  "hTeam": "$liveScore01"
+}

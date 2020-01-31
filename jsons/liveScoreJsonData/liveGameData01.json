@@ -1,0 +1,14 @@
+{
+  "status":200,
+  "message":"GET games/live",
+  "results":4,
+  "filters":[
+    "seasonYear",
+    "league",
+    "gameId",
+    "teamId",
+    "date",
+    "live"
+  ],
+  "games":"$[]liveScore0"
+}
