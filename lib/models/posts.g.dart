@@ -16,9 +16,9 @@ Posts _$PostsFromJson(Map<String, dynamic> json) {
 }
 
 Map<String, dynamic> _$PostsToJson(Posts instance) => <String, dynamic>{
-      'status': instance.status,
-      'message': instance.message,
-      'results': instance.results,
-      'filters': instance.filters,
-      'players': instance.players
-    };
+  'status': instance.status,
+  'message': instance.message,
+  'results': instance.results,
+  'filters': instance.filters,
+  'players': instance.players
+};

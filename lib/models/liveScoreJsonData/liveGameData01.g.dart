@@ -12,10 +12,7 @@ LiveGameData01 _$LiveGameData01FromJson(Map<String, dynamic> json) {
     ..message = json['message'] as String
     ..results = json['results'] as num
     ..filters = json['filters'] as List
-    ..games = (json['games'] as List)
-        ?.map((e) =>
-            e == null ? null : LiveScore0.fromJson(e as Map<String, dynamic>))
-        ?.toList();
+    ..games = json['games'] as List;
 }
 
 Map<String, dynamic> _$LiveGameData01ToJson(LiveGameData01 instance) =>

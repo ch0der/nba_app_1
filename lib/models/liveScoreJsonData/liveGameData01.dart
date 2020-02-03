@@ -10,7 +10,7 @@ class LiveGameData01 {
     String message;
     num results;
     List filters;
-    List<LiveScore0> games;
+    List games;
     
     factory LiveGameData01.fromJson(Map<String,dynamic> json) => _$LiveGameData01FromJson(json);
     Map<String, dynamic> toJson() => _$LiveGameData01ToJson(this);

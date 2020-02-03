@@ -16,7 +16,14 @@ class LiveScore0 {
     String arena;
     String city;
     String country;
-    String infos;
+    String clock;
+    String gameDuration;
+    String currentPeriod;
+    String halftime;
+    String EndOfPeriod;
+    String seasonStage;
+    String statusShortGame;
+    String statusGame;
     LiveScore01 vTeam;
     LiveScore01 hTeam;
     

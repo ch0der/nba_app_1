@@ -9,7 +9,14 @@
   "arena": "Amway Center",
   "city": "Orlando",
   "country": "USA",
-  "infos": "Preseason",
+  "clock":"0:00",
+  "gameDuration":"0:23",
+  "currentPeriod":"1/4",
+  "halftime":"0",
+  "EndOfPeriod":"1",
+  "seasonStage":"2",
+  "statusShortGame":"2",
+  "statusGame":"In Play",
   "vTeam": "$liveScore01",
   "hTeam": "$liveScore01"
 }
