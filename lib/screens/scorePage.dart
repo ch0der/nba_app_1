@@ -27,18 +27,18 @@ class _ScorePageState extends State<ScorePage> {
     super.initState();
     bloc.fetchPost2();
   }
+ @override
+ void dispose(){
+   super.dispose();
+ }
 
   @override
   Widget build(BuildContext context) {
     double textHeight = 45;
     double scoreSpacing = 15;
+    double iconSize = 60;
 
     return Scaffold(
-      bottomSheet: (Container(
-        width: MediaQuery.of(context).size.width,
-        height: 80,
-        color: Colors.orange.withOpacity(.5),
-      )),
 
       drawer: (Container(
         height: MediaQuery.of(context).size.height,
@@ -91,7 +91,6 @@ class _ScorePageState extends State<ScorePage> {
                     child: Container(
                         width: screenSize(context).width * .9,
                         decoration: BoxDecoration(
-                          color: Colors.grey[300],
                           border: Border(
                             top: BorderSide(width: 1),
                             bottom: BorderSide(width: 1),
@@ -114,12 +113,6 @@ class _ScorePageState extends State<ScorePage> {
                                   Container(
                                     width: 20,
                                   ),
-                                  Text(
-                                    dataList[index]['vTeam']['shortName'],
-                                    style: TextStyle(
-                                        fontFamily: 'Alatsi',
-                                        fontSize: textHeight),
-                                  ),
                                 ],
                               ),
                             ),
@@ -127,15 +120,30 @@ class _ScorePageState extends State<ScorePage> {
                               child: Row(
                                 mainAxisAlignment: MainAxisAlignment.center,
                                 children: <Widget>[
-                                  Container(
-                                    height: 75,
-                                    width: 75,
-                                    decoration: BoxDecoration(
-                                      image: DecorationImage(
-                                          image: AssetImage(awayLogo),
-                                      )
-                                    ),
+                                  Container(width: 15,),
+                                  Column(
+                                    children: <Widget>[
+                                      Text(
+                                        dataList[index]['vTeam']['shortName'],
+                                        style: TextStyle(
+                                            fontFamily: 'Alatsi',
+                                            fontSize: 15),
+                                      ),
+
+                                      Container(
+                                        height: iconSize,
+                                        width: iconSize,
+                                        decoration: BoxDecoration(
+                                          image: DecorationImage(
+                                              image: AssetImage(awayLogo),
+                                          )
+                                        ),
+                                      ),
+                                    ],
                                   ),
+                                  Expanded(
+                                      flex: 1,
+                                      child: Container()),
                                   Text(
                               dataList[index]['vTeam']['score']['points'],
                                     style: TextStyle(
@@ -160,15 +168,30 @@ class _ScorePageState extends State<ScorePage> {
                                         fontFamily: 'Alatsi',
                                         fontSize: textHeight),
                                   ),
-                                  Container(
-                                    height: 75,
-                                    width: 75,
-                                    decoration: BoxDecoration(
-                                        image: DecorationImage(
-                                          image: AssetImage(homeLogo),
+                                  Expanded(
+                                    flex: 1,
+                                      child: Container()),
+                                  Column(
+                                    children: <Widget>[
+                                      Text(
+                                        dataList[index]['hTeam']['shortName'],
+                                        style: TextStyle(
+                                            fontFamily: 'Alatsi',
+                                            fontSize: 15),
+                                      ),
+
+                                      Container(
+                                        height: iconSize,
+                                        width: iconSize,
+                                        decoration: BoxDecoration(
+                                            image: DecorationImage(
+                                              image: AssetImage(homeLogo),
+                                            )
                                         ),
-                                    ),
+                                      ),
+                                    ],
                                   ),
+                                  Container(width: 15,),
                                 ],
                               ),
                             ),
