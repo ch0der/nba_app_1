@@ -10,5 +10,5 @@
     "date",
     "live"
   ],
-  "games":["$liveScore0"]
+  "games":"$[]liveScore0"
 }

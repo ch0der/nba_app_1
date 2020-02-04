@@ -1,0 +1,36 @@
+{
+  "league":"standard",
+  "teamId":"26",
+  "win":"22",
+  "loss":"28",
+  "gamesBehind":"20.5",
+  "lastTenWin":"3",
+  "lastTenLoss":"7",
+  "streak":"1",
+  "seasonYear":"2019",
+  "conference":{
+    "name":"east",
+    "rank":"8",
+    "win":"15",
+    "loss":"14"
+  },
+  "division":{
+    "name":"southeast",
+    "rank":"2",
+    "win":"7",
+    "loss":"4",
+    "GamesBehind":"12.5"
+  },
+  "winPercentage":".440",
+  "lossPercentage":".560",
+  "home":{
+    "win":"13",
+    "loss":"12"
+  },
+  "away":{
+    "win":"9",
+    "loss":"16"
+  },
+  "winStreak":"1",
+  "tieBreakerPoints":""
+}

@@ -1,4 +1,5 @@
 import 'package:json_annotation/json_annotation.dart';
+import "playerPost.dart";
 part 'posts.g.dart';
 
 @JsonSerializable()
@@ -9,7 +10,7 @@ class Posts {
     String message;
     num results;
     List filters;
-    List players;
+    List<PlayerPost> players;
     
     factory Posts.fromJson(Map<String,dynamic> json) => _$PostsFromJson(json);
     Map<String, dynamic> toJson() => _$PostsToJson(this);

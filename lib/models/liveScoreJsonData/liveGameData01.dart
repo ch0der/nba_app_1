@@ -1,5 +1,5 @@
 import 'package:json_annotation/json_annotation.dart';
-import "liveScore0.dart";
+
 part 'liveGameData01.g.dart';
 
 @JsonSerializable()
