@@ -28,7 +28,7 @@ class LiveScoreBloc{
   }
 
   Future<LiveGameData01> fetchPost2() async {
-    String myPath = "/games/date/2020-02-01";
+    String myPath = "/games/live/";
     Map<String, String> parms1 = {"lastname": "Paul"};
 
     final response = await http

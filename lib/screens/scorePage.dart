@@ -37,6 +37,11 @@ class _ScorePageState extends State<ScorePage> {
     double iconSize = 60;
 
     return Scaffold(
+      floatingActionButton: FloatingActionButton(
+        onPressed: (){
+          bloc.fetchPost2();
+        },
+      ),
       drawer: (Container(
         height: MediaQuery.of(context).size.height,
         width: 200,
@@ -78,10 +83,13 @@ class _ScorePageState extends State<ScorePage> {
                             fontFamily: 'Alatsi', fontSize: textHeight),
                       );
                     } else {
-                      return Text(
-                        dataList[index]['clock'],
-                        style: TextStyle(
-                            fontFamily: 'Alatsi', fontSize: textHeight),
+                      return RefreshIndicator(
+                        onRefresh: (){},
+                        child: Text(
+                          dataList[index]['clock'],
+                          style: TextStyle(
+                              fontFamily: 'Alatsi', fontSize: textHeight),
+                        ),
                       );
                     }
                   }
