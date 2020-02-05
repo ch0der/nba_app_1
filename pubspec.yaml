@@ -36,6 +36,7 @@ dev_dependencies:
   build_runner: any
   json_serializable: any
   rxdart: ^0.22.2
+  image_collage_widget: ^1.0.0
 
 
 # For information on the generic Dart part of this file, see the
@@ -81,6 +82,13 @@ flutter:
     - assets/team_logos/Pacers.png
     - assets/team_logos/Rockets.png
     - assets/team_logos/Magic.png
+    - assets/collages/CLE_DET.jpg
+    - assets/collages/DET.png
+    - assets/collages/DET.jpg
+    - assets/collages/CLE.jpg
+    - assets/collages/CLE.png
+    - assets/collages/DET2.png
+    - assets/collages/CLE2.png
 
 
   # An image asset can refer to one or more resolution-specific "variants", see

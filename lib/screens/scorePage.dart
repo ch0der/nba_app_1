@@ -38,7 +38,7 @@ class _ScorePageState extends State<ScorePage> {
 
     return Scaffold(
       floatingActionButton: FloatingActionButton(
-        onPressed: (){
+        onPressed: () {
           bloc.fetchPost2();
         },
       ),
@@ -50,7 +50,7 @@ class _ScorePageState extends State<ScorePage> {
       )),
       appBar: AppBar(
         title: Center(
-          child: Text('SCORES'),
+          child: Text('NBA SCORES'),
         ),
       ),
       body: Center(
@@ -62,6 +62,7 @@ class _ScorePageState extends State<ScorePage> {
               dataList = snapshot.data.games;
 
               return ListView.separated(
+                padding: EdgeInsets.only(bottom: 15),
                 separatorBuilder: (BuildContext context, int index) =>
                     Container(
                   height: 15,
@@ -83,163 +84,221 @@ class _ScorePageState extends State<ScorePage> {
                             fontFamily: 'Alatsi', fontSize: textHeight),
                       );
                     } else {
-                      return RefreshIndicator(
-                        onRefresh: (){},
-                        child: Text(
-                          dataList[index]['clock'],
-                          style: TextStyle(
-                              fontFamily: 'Alatsi', fontSize: textHeight),
-                        ),
+                      return Text(
+                        dataList[index]['clock'],
+                        style: TextStyle(
+                            fontFamily: 'Alatsi', fontSize: textHeight),
                       );
                     }
                   }
 
                   return Center(
-                    child: Container(
-                        width: screenSize(context).width * .9,
-                        decoration: BoxDecoration(
-                          border: Border(
-                            top: BorderSide(width: 1),
-                            bottom: BorderSide(width: 1),
-                            left: BorderSide(width: 1),
-                            right: BorderSide(width: 1),
-                          ),
-                        ),
-                        height: 200,
-                        child: Column(
+                    child: Stack(
+                      alignment: Alignment.center,
+                      children: <Widget>[
+
+                        Container(
+                            width: screenSize(context).width * .9,
+                            decoration: BoxDecoration(
+                              color: Colors.white.withOpacity(.95),
+                              borderRadius: BorderRadius.all(
+                                Radius.circular(8),
+                              ),
+                              boxShadow: [
+                                BoxShadow(
+                                  blurRadius: 20,
+                                  spreadRadius: 2.5,
+                                  offset: Offset(10,10),
+                                ),
+                              ],
+                            ),
+                            height: 200,
+                            child: Container()),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
                           children: <Widget>[
                             Container(
-                              child: Row(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: <Widget>[
-                                  Text(
-                                    "Q ${quarter.replaceAll('/4', '')}",
-                                    style: TextStyle(
-                                        fontFamily: 'Alatsi', fontSize: 15),
+                              width: screenSize(context).width * .45,
+                              height: 200,
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.only(
+                                    bottomLeft: Radius.circular(8),
+                                    topLeft: Radius.circular(8)),
+                                image: DecorationImage(
+                                  fit: BoxFit.cover,
+                                  image: AssetImage('assets/collages/CLE.jpg'),
+                                  colorFilter: ColorFilter.mode(
+                                    Colors.white70.withOpacity(.25),
+                                    BlendMode.modulate,
                                   ),
-                                  Container(
-                                    width: 20,
-                                  ),
-                                ],
+                                ),
                               ),
                             ),
                             Container(
-                              child: Row(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: <Widget>[
-                                  Container(
-                                    width: 15,
+                              width: screenSize(context).width * .45,
+                              height: 200,
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.only(
+                                    bottomRight: Radius.circular(8),
+                                    topRight: Radius.circular(8)),
+                                image: DecorationImage(
+                                  fit: BoxFit.cover,
+                                  image: AssetImage('assets/collages/DET.jpg'),
+                                  colorFilter: ColorFilter.mode(
+                                    Colors.white70.withOpacity(.25),
+                                    BlendMode.modulate,
                                   ),
-                                  Column(
-                                    children: <Widget>[
-                                      Text(
-                                        dataList[index]['vTeam']['shortName'],
-                                        style: TextStyle(
-                                            fontFamily: 'Alatsi', fontSize: 15),
-                                      ),
-                                      Container(
-                                        height: iconSize,
-                                        width: iconSize,
-                                        decoration: BoxDecoration(
-                                          image: DecorationImage(
-                                            image: AssetImage(awayLogo),
-                                          ),
-                                        ),
-                                      ),
-                                      StreamBuilder(
-                                        stream: scoreBloc.dataScores,
-                                        builder: (context, snapshot2) {
-                                          List<dynamic> standingsList;
-                                          String record;
-                                          if (snapshot2.hasData){
-                                            record = snapshot2.data['standings']['${dataList[index]['vTeam']['shortName']}'];
-                                            return(
-                                                Container(
-                                                  child: Text('($record)'),
-
-                                                )
-
-                                            );
-                                          } else{
-                                            return Container();
-                                          }
-                                        },
-                                      ),
-                                    ],
-                                  ),
-                                  Expanded(flex: 1, child: Container()),
-                                  Text(
-                                    dataList[index]['vTeam']['score']['points'],
-                                    style: TextStyle(
-                                        fontFamily: 'Alatsi',
-                                        fontSize: textHeight),
-                                  ),
-                                  Container(
-                                    width: scoreSpacing,
-                                  ),
-                                  Text(
-                                    '-',
-                                    style: TextStyle(
-                                        fontFamily: 'Alatsi',
-                                        fontSize: textHeight),
-                                  ),
-                                  Container(
-                                    width: scoreSpacing,
-                                  ),
-                                  Text(
-                                    dataList[index]['hTeam']['score']['points'],
-                                    style: TextStyle(
-                                        fontFamily: 'Alatsi',
-                                        fontSize: textHeight),
-                                  ),
-                                  Expanded(flex: 1, child: Container()),
-                                  Column(
-                                    children: <Widget>[
-                                      Text(
-                                        dataList[index]['hTeam']['shortName'],
-                                        style: TextStyle(
-                                            fontFamily: 'Alatsi', fontSize: 15),
-                                      ),
-                                      Container(
-                                        height: iconSize,
-                                        width: iconSize,
-                                        decoration: BoxDecoration(
-                                            image: DecorationImage(
-                                          image: AssetImage(homeLogo),
-                                        )),
-                                      ),
-                                      StreamBuilder(
-                                        stream: scoreBloc.dataScores,
-                                        builder: (context, snapshot2) {
-                                          List<dynamic> standingsList;
-                                          String record;
-                                          if (snapshot2.hasData) {
-                                            record = snapshot2.data['standings']
-                                                [
-                                                '${dataList[index]['hTeam']['shortName']}'];
-                                            return (Container(
-                                              child: Text('($record)'),
-                                            ));
-                                          } else {
-                                            return Container();
-                                          }
-                                        },
-                                      ),
-                                    ],
-                                  ),
-                                  Container(
-                                    width: 15,
-                                  ),
-                                ],
-                              ),
-                            ),
-                            Center(
-                              child: Container(
-                                child: _halfTime(dataList[index]['halftime']),
+                                ),
                               ),
                             ),
                           ],
-                        )),
+                        ),
+                        Container(
+                          width: screenSize(context).width * .9,
+                          height: 200,
+                          child: Column(
+                            children: <Widget>[
+                              Container(
+                                child: Row(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: <Widget>[
+                                    Text(
+                                      "Q ${quarter.replaceAll('/4', '')}",
+                                      style: TextStyle(
+                                          fontFamily: 'Alatsi', fontSize: 15),
+                                    ),
+                                    Container(
+                                      width: 20,
+                                    ),
+                                  ],
+                                ),
+                              ),
+                              Container(
+                                child: Row(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: <Widget>[
+                                    Container(
+                                      width: 15,
+                                    ),
+                                    Column(
+                                      children: <Widget>[
+                                        Text(
+                                          dataList[index]['vTeam']
+                                          ['shortName'],
+                                          style: TextStyle(
+                                              fontFamily: 'Alatsi',
+                                              fontSize: 15),
+                                        ),
+                                        Container(
+                                          height: iconSize,
+                                          width: iconSize,
+                                          decoration: BoxDecoration(
+                                            image: DecorationImage(
+                                              image: AssetImage(awayLogo),
+                                            ),
+                                          ),
+                                        ),
+                                        StreamBuilder(
+                                          stream: scoreBloc.dataScores,
+                                          builder: (context, snapshot2) {
+                                            List<dynamic> standingsList;
+                                            String record;
+                                            if (snapshot2.hasData) {
+                                              record = snapshot2
+                                                  .data['standings'][
+                                              '${dataList[index]['vTeam']['shortName']}'];
+                                              return (Container(
+                                                child: Text('($record)'),
+                                              ));
+                                            } else {
+                                              return Container();
+                                            }
+                                          },
+                                        ),
+                                      ],
+                                    ),
+                                    Expanded(flex: 1, child: Container()),
+                                    Text(
+                                      dataList[index]['vTeam']['score']
+                                      ['points'],
+                                      style: TextStyle(
+                                          fontFamily: 'Alatsi',
+                                          fontSize: textHeight),
+                                    ),
+                                    Container(
+                                      width: scoreSpacing,
+                                    ),
+                                    Text(
+                                      '-',
+                                      style: TextStyle(
+                                          fontFamily: 'Alatsi',
+                                          fontSize: textHeight),
+                                    ),
+                                    Container(
+                                      width: scoreSpacing,
+                                    ),
+                                    Text(
+                                      dataList[index]['hTeam']['score']
+                                      ['points'],
+                                      style: TextStyle(
+                                          fontFamily: 'Alatsi',
+                                          fontSize: textHeight),
+                                    ),
+                                    Expanded(flex: 1, child: Container()),
+                                    Column(
+                                      children: <Widget>[
+                                        Text(
+                                          dataList[index]['hTeam']
+                                          ['shortName'],
+                                          style: TextStyle(
+                                              fontFamily: 'Alatsi',
+                                              fontSize: 15),
+                                        ),
+                                        Container(
+                                          height: iconSize,
+                                          width: iconSize,
+                                          decoration: BoxDecoration(
+                                              image: DecorationImage(
+                                                image: AssetImage(homeLogo),
+                                              )),
+                                        ),
+                                        StreamBuilder(
+                                          stream: scoreBloc.dataScores,
+                                          builder: (context, snapshot2) {
+                                            List<dynamic> standingsList;
+                                            String record;
+                                            if (snapshot2.hasData) {
+                                              record = snapshot2
+                                                  .data['standings'][
+                                              '${dataList[index]['hTeam']['shortName']}'];
+                                              return (Container(
+                                                child: Text('($record)'),
+                                              ));
+                                            } else {
+                                              return Container();
+                                            }
+                                          },
+                                        ),
+                                      ],
+                                    ),
+                                    Container(
+                                      width: 15,
+                                    ),
+                                  ],
+                                ),
+                              ),
+                              Center(
+                                child: Container(
+                                  child:
+                                  _halfTime(dataList[index]['halftime']),
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ],
+
+                    ),
                   );
                 },
               );

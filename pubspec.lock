@@ -29,6 +29,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "2.4.0"
+  bloc:
+    dependency: transitive
+    description:
+      name: bloc
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "0.15.0"
   boolean_selector:
     dependency: transitive
     description:
@@ -162,6 +169,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "3.0.8"
+  equatable:
+    dependency: transitive
+    description:
+      name: equatable
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "0.6.1"
   fixnum:
     dependency: transitive
     description:
@@ -174,6 +188,34 @@ packages:
     description: flutter
     source: sdk
     version: "0.0.0"
+  flutter_bloc:
+    dependency: transitive
+    description:
+      name: flutter_bloc
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "0.21.0"
+  flutter_file_manager:
+    dependency: transitive
+    description:
+      name: flutter_file_manager
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "0.2.0"
+  flutter_plugin_android_lifecycle:
+    dependency: transitive
+    description:
+      name: flutter_plugin_android_lifecycle
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "1.0.5"
+  flutter_staggered_grid_view:
+    dependency: transitive
+    description:
+      name: flutter_staggered_grid_view
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "0.3.0"
   flutter_test:
     dependency: "direct dev"
     description: flutter
@@ -235,6 +277,20 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "2.1.4"
+  image_collage_widget:
+    dependency: "direct dev"
+    description:
+      name: image_collage_widget
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "1.0.0"
+  image_picker:
+    dependency: transitive
+    description:
+      name: image_picker
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "0.6.3+1"
   io:
     dependency: transitive
     description:
@@ -340,6 +396,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "1.6.4"
+  path_provider:
+    dependency: transitive
+    description:
+      name: path_provider
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "1.6.0"
   pedantic:
     dependency: transitive
     description:
@@ -347,6 +410,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "1.8.0+1"
+  permission_handler:
+    dependency: transitive
+    description:
+      name: permission_handler
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "3.3.0"
   petitparser:
     dependency: transitive
     description:
@@ -354,6 +424,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "2.4.0"
+  platform:
+    dependency: transitive
+    description:
+      name: platform
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "2.2.1"
   pool:
     dependency: transitive
     description:
@@ -361,6 +438,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "1.4.0"
+  provider:
+    dependency: transitive
+    description:
+      name: provider
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "3.2.0"
   pub_semver:
     dependency: transitive
     description:
@@ -515,3 +599,4 @@ packages:
     version: "2.2.0"
 sdks:
   dart: ">=2.6.0 <3.0.0"
+  flutter: ">=1.12.13 <2.0.0"
