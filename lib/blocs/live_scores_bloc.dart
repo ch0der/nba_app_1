@@ -28,7 +28,7 @@ class LiveScoreBloc{
   }
 
   Future<LiveGameData01> fetchPost2() async {
-    String myPath = "/games/date/2020-01-28";
+    String myPath = "/games/date/2020-02-02";
     Map<String, String> parms1 = {"lastname": "Paul"};
 
     final response = await http
@@ -85,7 +85,6 @@ class LiveStandingsBloc {
       // If the call to the server was successful, parse the JSON.
 
       var info = json.decode(response.body);
-      print(info['api']['standings'][1]['teamId']);
 
       Map<String,dynamic> testList = {
           "standings":{

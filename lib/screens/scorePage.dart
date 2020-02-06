@@ -37,11 +37,6 @@ class _ScorePageState extends State<ScorePage> {
     double iconSize = 60;
 
     return Scaffold(
-      floatingActionButton: FloatingActionButton(
-        onPressed: () {
-          bloc.fetchPost2();
-        },
-      ),
       drawer: (Container(
         height: MediaQuery.of(context).size.height,
         width: 200,
@@ -49,9 +44,8 @@ class _ScorePageState extends State<ScorePage> {
         child: Text('sxfsdfsdfsdfsdfs'),
       )),
       appBar: AppBar(
-        title: Center(
-          child: Text('NBA SCORES'),
-        ),
+        backgroundColor: Colors.orange[400],
+        title: Text('NBA SCORES'),
       ),
       body: Center(
         child: StreamBuilder<LiveGameData01>(
@@ -112,50 +106,78 @@ class _ScorePageState extends State<ScorePage> {
                                 ),
                               ],
                             ),
-                            height: 200,
-                            child: Container()),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: <Widget>[
-                            Container(
-                              width: screenSize(context).width * .45,
-                              height: 200,
-                              decoration: BoxDecoration(
-                                borderRadius: BorderRadius.only(
-                                    bottomLeft: Radius.circular(8),
-                                    topLeft: Radius.circular(8)),
-                                image: DecorationImage(
-                                  fit: BoxFit.cover,
-                                  image: AssetImage('assets/collages/CLE.jpg'),
-                                  colorFilter: ColorFilter.mode(
-                                    Colors.white70.withOpacity(.25),
-                                    BlendMode.modulate,
+                            height: 200,),
+                        Opacity(
+                          opacity: .4,
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: <Widget>[
+                              Container(
+                                decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.only(topLeft: Radius.circular(8),bottomLeft: Radius.circular(8),),
+                                ),
+                                width: screenSize(context).width * .45,
+                                height: 200,
+                                child: ClipRRect(
+                                  borderRadius: BorderRadius.only(topLeft: Radius.circular(8),bottomLeft: Radius.circular(8),),
+                                  child: ShaderMask(
+                                    child: Image(
+                                      image: AssetImage("assets/collages/${dataList[index]['vTeam']['shortName']}away.jpg"),
+                                    ),
+                                    shaderCallback: (Rect bounds) {
+                                      return LinearGradient(
+                                        tileMode: TileMode.mirror,
+                                        colors: [Colors.white.withOpacity(.7),Colors.white],
+                                        stops: [
+                                          0.0,
+                                          .95,
+                                        ],
+                                      ).createShader(bounds);
+                                    },
+                                    blendMode: BlendMode.srcATop,
                                   ),
                                 ),
                               ),
-                            ),
-                            Container(
-                              width: screenSize(context).width * .45,
-                              height: 200,
-                              decoration: BoxDecoration(
-                                borderRadius: BorderRadius.only(
-                                    bottomRight: Radius.circular(8),
-                                    topRight: Radius.circular(8)),
-                                image: DecorationImage(
-                                  fit: BoxFit.cover,
-                                  image: AssetImage('assets/collages/DET.jpg'),
-                                  colorFilter: ColorFilter.mode(
-                                    Colors.white70.withOpacity(.25),
-                                    BlendMode.modulate,
+                              Container(
+                                width: screenSize(context).width * .45,
+                                height: 200,
+                                decoration: BoxDecoration(
+                                  
+                                  borderRadius: BorderRadius.only(topRight: Radius.circular(8),bottomRight: Radius.circular(8),),
+                                ),
+                                child: ClipRRect(
+                                  borderRadius: BorderRadius.only(topRight: Radius.circular(8),bottomRight: Radius.circular(8),),
+
+                                  child: ShaderMask(
+                                    child: Image(
+                                      image: AssetImage("assets/collages/${dataList[index]['hTeam']['shortName']}home.jpg"),
+                                    ),
+                                    shaderCallback: (Rect bounds) {
+                                      return LinearGradient(
+                                        tileMode: TileMode.mirror,
+                                        colors: [Colors.white.withOpacity(.7),Colors.white],
+                                        stops: [
+                                          0.0,
+                                          1,
+                                        ],
+                                      ).createShader(bounds);
+                                    },
+                                    blendMode: BlendMode.srcATop,
                                   ),
                                 ),
                               ),
-                            ),
-                          ],
+                            ],
+                          ),
                         ),
                         Container(
                           width: screenSize(context).width * .9,
                           height: 200,
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.all(
+                              Radius.circular(8),
+                            ),
+
+                          ),
                           child: Column(
                             children: <Widget>[
                               Container(

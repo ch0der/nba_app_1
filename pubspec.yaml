@@ -82,13 +82,67 @@ flutter:
     - assets/team_logos/Pacers.png
     - assets/team_logos/Rockets.png
     - assets/team_logos/Magic.png
-    - assets/collages/CLE_DET.jpg
-    - assets/collages/DET.png
-    - assets/collages/DET.jpg
-    - assets/collages/CLE.jpg
-    - assets/collages/CLE.png
-    - assets/collages/DET2.png
-    - assets/collages/CLE2.png
+
+    - assets/collages/MILaway.jpg
+    - assets/collages/CHAaway.jpg
+    - assets/collages/OKCaway.jpg
+    - assets/collages/LALaway.jpg
+    - assets/collages/LACaway.jpg
+    - assets/collages/MIAaway.jpg
+    - assets/collages/ATLaway.jpg
+    - assets/collages/DENaway.jpg
+    - assets/collages/OKCaway.jpg
+    - assets/collages/WASaway.jpg
+    - assets/collages/TORaway.jpg
+    - assets/collages/PHIaway.jpg
+    - assets/collages/BOSaway.jpg
+    - assets/collages/BKNaway.jpg
+    - assets/collages/NYKaway.jpg
+    - assets/collages/DETaway.jpg
+    - assets/collages/CLEaway.jpg
+    - assets/collages/CHIaway.jpg
+    - assets/collages/HOUaway.jpg
+    - assets/collages/SASaway.jpg
+    - assets/collages/MEMaway.jpg
+    - assets/collages/NOPaway.jpg
+    - assets/collages/DALaway.jpg
+    - assets/collages/GSWaway.jpg
+    - assets/collages/SACaway.jpg
+    - assets/collages/PHXaway.jpg
+    - assets/collages/PORaway.jpg
+    - assets/collages/UTAaway.jpg
+    - assets/collages/MINaway.jpg
+    - assets/collages/INDhome.jpg
+    - assets/collages/LAChome.jpg
+    - assets/collages/DENhome.jpg
+    - assets/collages/CHIhome.jpg
+    - assets/collages/GSWhome.jpg
+    - assets/collages/MEMhome.jpg
+    - assets/collages/SAShome.jpg
+    - assets/collages/LALhome.jpg
+    - assets/collages/UTAhome.jpg
+    - assets/collages/INDhome.jpg
+    - assets/collages/CLEhome.jpg
+    - assets/collages/HOUhome.jpg
+    - assets/collages/NOPhome.jpg
+    - assets/collages/DALhome.jpg
+    - assets/collages/NYKhome.jpg
+    - assets/collages/BKNhome.jpg
+    - assets/collages/BOShome.jpg
+    - assets/collages/WAShome.jpg
+    - assets/collages/CHAhome.jpg
+    - assets/collages/ORLhome.jpg
+    - assets/collages/PHIhome.jpg
+    - assets/collages/TORhome.jpg
+    - assets/collages/DEThome.jpg
+    - assets/collages/OKChome.jpg
+    - assets/collages/MILhome.jpg
+    - assets/collages/PORhome.jpg
+    - assets/collages/MINhome.jpg
+    - assets/collages/PHXhome.jpg
+    - assets/collages/SAChome.jpg
+
+
 
 
   # An image asset can refer to one or more resolution-specific "variants", see
