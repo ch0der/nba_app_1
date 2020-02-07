@@ -63,28 +63,15 @@ class _ScorePageState extends State<ScorePage> {
                 ),
                 itemCount: dataList == null ? 0 : dataList.length,
                 itemBuilder: (BuildContext context, int index) {
+
                   String quarter = dataList[index]['currentPeriod'];
+
                   String awayLogo =
                       'assets/team_logos/${dataList[index]['vTeam']['nickName']}.png';
+
                   String homeLogo =
                       'assets/team_logos/${dataList[index]['hTeam']['nickName']}.png';
-                  String trailBlazers = 'assets/team_logos/Trail Blazers';
 
-                  Widget _halfTime(halftime) {
-                    if (halftime == "1") {
-                      return Text(
-                        "halftime",
-                        style: TextStyle(
-                            fontFamily: 'Alatsi', fontSize: textHeight),
-                      );
-                    } else {
-                      return Text(
-                        dataList[index]['clock'],
-                        style: TextStyle(
-                            fontFamily: 'Alatsi', fontSize: textHeight),
-                      );
-                    }
-                  }
 
                   return Center(
                     child: Stack(
@@ -108,7 +95,7 @@ class _ScorePageState extends State<ScorePage> {
                             ),
                             height: 200,),
                         Opacity(
-                          opacity: .4,
+                          opacity: .5,
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: <Widget>[
@@ -130,7 +117,7 @@ class _ScorePageState extends State<ScorePage> {
                                         colors: [Colors.white.withOpacity(.7),Colors.white],
                                         stops: [
                                           0.0,
-                                          .95,
+                                          .7,
                                         ],
                                       ).createShader(bounds);
                                     },
@@ -158,7 +145,7 @@ class _ScorePageState extends State<ScorePage> {
                                         colors: [Colors.white.withOpacity(.7),Colors.white],
                                         stops: [
                                           0.0,
-                                          1,
+                                          .85,
                                         ],
                                       ).createShader(bounds);
                                     },
@@ -276,14 +263,7 @@ class _ScorePageState extends State<ScorePage> {
                                               fontFamily: 'Alatsi',
                                               fontSize: 15),
                                         ),
-                                        Container(
-                                          height: iconSize,
-                                          width: iconSize,
-                                          decoration: BoxDecoration(
-                                              image: DecorationImage(
-                                                image: AssetImage(homeLogo),
-                                              )),
-                                        ),
+                                       _logoContainer(iconSize, homeLogo),
                                         StreamBuilder(
                                           stream: scoreBloc.dataScores,
                                           builder: (context, snapshot2) {
@@ -312,7 +292,7 @@ class _ScorePageState extends State<ScorePage> {
                               Center(
                                 child: Container(
                                   child:
-                                  _halfTime(dataList[index]['halftime']),
+                                  _halfTime(dataList[index]['halftime'],dataList[index]['clock'],textHeight),
                                 ),
                               ),
                             ],
@@ -335,6 +315,33 @@ class _ScorePageState extends State<ScorePage> {
       ),
     );
   }
+  Container _logoContainer(double size, String logo){
+    return Container(
+      height: size,
+      width: size,
+      decoration: BoxDecoration(
+          image: DecorationImage(
+            image: AssetImage(logo),
+          )),
+
+    );
+  }
+
+  Color _color (String team){
+    String test = team;
+
+    switch(test){
+      case "LAL": {return Color.fromRGBO(255, 249, 82, 1);}
+      break;
+      case "SAS": {return Colors.black;}
+      break;
+      case "HOU": {return Colors.red;}
+      break;
+      case "POR": {return Colors.deepOrange;}
+      break;
+    }
+  }
+
 
   buildBody() {
     return Column(
@@ -345,6 +352,22 @@ class _ScorePageState extends State<ScorePage> {
         listTileContainer(),
       ],
     );
+  }
+  Widget _halfTime(halftime,String index1, double height) {
+
+    if (halftime == "1") {
+      return Text(
+        "halftime",
+        style: TextStyle(
+            fontFamily: 'Alatsi', fontSize: height),
+      );
+    } else {
+      return Text(
+        index1,
+        style: TextStyle(
+            fontFamily: 'Alatsi', fontSize: height),
+      );
+    }
   }
 
   listTileContainer() {
