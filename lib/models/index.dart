@@ -1,8 +1,11 @@
-export 'liveScoreJsonData/liveGameData0.dart';
+export 'liveScoreJsonData/liveGameData0.dart' ;
 export 'liveScoreJsonData/liveGameData01.dart' ;
 export 'liveScoreJsonData/liveScore0.dart' ;
 export 'liveScoreJsonData/liveScore01.dart' ;
 export 'liveScoreJsonData/liveScore02.dart' ;
+export 'live_game_details/liveGame1.dart' ;
+export 'live_game_details/liveGameDetails.dart' ;
+export 'live_game_details/liveGamePost.dart' ;
 export 'playerPost.dart' ; 
 export 'post.dart' ; 
 export 'posts.dart' ; 

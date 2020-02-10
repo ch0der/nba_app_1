@@ -1,12 +1,10 @@
 import 'dart:async';
-import 'package:flutter/material.dart';
 import 'dart:convert';
 
 import 'package:http/http.dart' as http;
 import 'package:nba_app/models/index.dart';
 import 'package:nba_app/models/liveScoreJsonData/liveGameData01.dart';
 import 'package:rxdart/rxdart.dart';
-import 'package:nba_app/models/standingsJson/standings.dart';
 
 class LiveScoreBloc{
 
@@ -28,9 +26,7 @@ class LiveScoreBloc{
   }
 
   Future<LiveGameData01> fetchPost2() async {
-    String myPath = "/games/date/2020-02-02";
-    Map<String, String> parms1 = {"lastname": "Paul"};
-
+    String myPath = "/games/live/";
     final response = await http
         .get(Uri.https("api-nba-v1.p.rapidapi.com", myPath), headers: {
       "x-rapidapi-host": "api-nba-v1.p.rapidapi.com",

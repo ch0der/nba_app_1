@@ -14,6 +14,7 @@ void main() {
         // When we navigate to the "/" route, build the FirstScreen Widget
         '/': (context) => MyApp(),
         '/second': (context) => ScorePage(),
+        '/player': (context) => GameDetailScreen(),
       },
     ),
   );

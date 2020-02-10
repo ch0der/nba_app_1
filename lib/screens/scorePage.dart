@@ -1,12 +1,11 @@
 import 'package:flutter/material.dart';
-import 'dart:async';
-import 'dart:convert';
+import 'package:nba_app/animations/score_animation.dart';
+import 'package:nba_app/blocs/gameDetailsBloc.dart';
 
-import 'package:http/http.dart' as http;
+import 'package:nba_app/library.dart';
 import 'package:nba_app/models/index.dart';
 import 'package:nba_app/models/liveScoreJsonData/liveGameData01.dart';
 import 'package:nba_app/blocs/live_scores_bloc.dart';
-import 'package:nba_app/models/liveScoreJsonData/liveScore0.dart';
 
 class ScorePage extends StatefulWidget {
   @override
@@ -55,254 +54,334 @@ class _ScorePageState extends State<ScorePage> {
             if (snapshot.hasData) {
               dataList = snapshot.data.games;
 
-              return ListView.separated(
-                padding: EdgeInsets.only(bottom: 15),
-                separatorBuilder: (BuildContext context, int index) =>
-                    Container(
-                  height: 15,
-                ),
-                itemCount: dataList == null ? 0 : dataList.length,
-                itemBuilder: (BuildContext context, int index) {
-
-                  String quarter = dataList[index]['currentPeriod'];
-
-                  String awayLogo =
-                      'assets/team_logos/${dataList[index]['vTeam']['nickName']}.png';
-
-                  String homeLogo =
-                      'assets/team_logos/${dataList[index]['hTeam']['nickName']}.png';
-
-
-                  return Center(
-                    child: Stack(
-                      alignment: Alignment.center,
-                      children: <Widget>[
-
-                        Container(
-                            width: screenSize(context).width * .9,
-                            decoration: BoxDecoration(
-                              color: Colors.white.withOpacity(.95),
-                              borderRadius: BorderRadius.all(
-                                Radius.circular(8),
-                              ),
-                              boxShadow: [
-                                BoxShadow(
-                                  blurRadius: 20,
-                                  spreadRadius: 2.5,
-                                  offset: Offset(10,10),
-                                ),
-                              ],
-                            ),
-                            height: 200,),
-                        Opacity(
-                          opacity: .5,
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: <Widget>[
+              return Container(
+                child: (snapshot.data.games.length > 0
+                    ? RefreshIndicator(
+                        onRefresh: () async {
+                          await bloc.fetchPost2();
+                        },
+                        child: ListView.separated(
+                          physics: const AlwaysScrollableScrollPhysics(),
+                          padding: EdgeInsets.only(bottom: 15),
+                          separatorBuilder: (BuildContext context, int index) =>
                               Container(
-                                decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.only(topLeft: Radius.circular(8),bottomLeft: Radius.circular(8),),
-                                ),
-                                width: screenSize(context).width * .45,
-                                height: 200,
-                                child: ClipRRect(
-                                  borderRadius: BorderRadius.only(topLeft: Radius.circular(8),bottomLeft: Radius.circular(8),),
-                                  child: ShaderMask(
-                                    child: Image(
-                                      image: AssetImage("assets/collages/${dataList[index]['vTeam']['shortName']}away.jpg"),
-                                    ),
-                                    shaderCallback: (Rect bounds) {
-                                      return LinearGradient(
-                                        tileMode: TileMode.mirror,
-                                        colors: [Colors.white.withOpacity(.7),Colors.white],
-                                        stops: [
-                                          0.0,
-                                          .7,
-                                        ],
-                                      ).createShader(bounds);
-                                    },
-                                    blendMode: BlendMode.srcATop,
-                                  ),
-                                ),
-                              ),
-                              Container(
-                                width: screenSize(context).width * .45,
-                                height: 200,
-                                decoration: BoxDecoration(
-                                  
-                                  borderRadius: BorderRadius.only(topRight: Radius.circular(8),bottomRight: Radius.circular(8),),
-                                ),
-                                child: ClipRRect(
-                                  borderRadius: BorderRadius.only(topRight: Radius.circular(8),bottomRight: Radius.circular(8),),
-
-                                  child: ShaderMask(
-                                    child: Image(
-                                      image: AssetImage("assets/collages/${dataList[index]['hTeam']['shortName']}home.jpg"),
-                                    ),
-                                    shaderCallback: (Rect bounds) {
-                                      return LinearGradient(
-                                        tileMode: TileMode.mirror,
-                                        colors: [Colors.white.withOpacity(.7),Colors.white],
-                                        stops: [
-                                          0.0,
-                                          .85,
-                                        ],
-                                      ).createShader(bounds);
-                                    },
-                                    blendMode: BlendMode.srcATop,
-                                  ),
-                                ),
-                              ),
-                            ],
+                            height: 15,
                           ),
-                        ),
-                        Container(
-                          width: screenSize(context).width * .9,
-                          height: 200,
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.all(
-                              Radius.circular(8),
-                            ),
+                          itemCount: dataList == null ? 0 : dataList.length,
+                          itemBuilder: (BuildContext context, int index) {
+                            String quarter = dataList[index]['currentPeriod'];
 
-                          ),
-                          child: Column(
-                            children: <Widget>[
-                              Container(
-                                child: Row(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  children: <Widget>[
-                                    Text(
-                                      "Q ${quarter.replaceAll('/4', '')}",
-                                      style: TextStyle(
-                                          fontFamily: 'Alatsi', fontSize: 15),
-                                    ),
-                                    Container(
-                                      width: 20,
-                                    ),
-                                  ],
-                                ),
-                              ),
-                              Container(
-                                child: Row(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  children: <Widget>[
-                                    Container(
-                                      width: 15,
-                                    ),
-                                    Column(
-                                      children: <Widget>[
-                                        Text(
-                                          dataList[index]['vTeam']
-                                          ['shortName'],
-                                          style: TextStyle(
-                                              fontFamily: 'Alatsi',
-                                              fontSize: 15),
+                            String awayLogo =
+                                'assets/team_logos/${dataList[index]['vTeam']['nickName']}.png';
+
+                            String homeLogo =
+                                'assets/team_logos/${dataList[index]['hTeam']['nickName']}.png';
+
+                            return Center(
+                              child: Stack(
+                                alignment: Alignment.center,
+                                children: <Widget>[
+                                  Container(
+                                    width: screenSize(context).width * .9,
+                                    decoration: BoxDecoration(
+                                      color: Colors.white.withOpacity(.95),
+                                      borderRadius: BorderRadius.all(
+                                        Radius.circular(8),
+                                      ),
+                                      boxShadow: [
+                                        BoxShadow(
+                                          blurRadius: 20,
+                                          spreadRadius: 2.5,
+                                          offset: Offset(10, 10),
                                         ),
+                                      ],
+                                    ),
+                                    height: 200,
+                                  ),
+                                  Opacity(
+                                    opacity: .5,
+                                    child: Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.center,
+                                      children: <Widget>[
                                         Container(
-                                          height: iconSize,
-                                          width: iconSize,
                                           decoration: BoxDecoration(
-                                            image: DecorationImage(
-                                              image: AssetImage(awayLogo),
+                                            borderRadius: BorderRadius.only(
+                                              topLeft: Radius.circular(8),
+                                              bottomLeft: Radius.circular(8),
+                                            ),
+                                          ),
+                                          width:
+                                              screenSize(context).width * .45,
+                                          height: 200,
+                                          child: ClipRRect(
+                                            borderRadius: BorderRadius.only(
+                                              topLeft: Radius.circular(8),
+                                              bottomLeft: Radius.circular(8),
+                                            ),
+                                            child: ShaderMask(
+                                              child: Image(
+                                                image: AssetImage(
+                                                    "assets/collages/${dataList[index]['vTeam']['shortName']}away.jpg"),
+                                              ),
+                                              shaderCallback: (Rect bounds) {
+                                                return LinearGradient(
+                                                  tileMode: TileMode.mirror,
+                                                  colors: [
+                                                    Colors.white
+                                                        .withOpacity(.7),
+                                                    Colors.white
+                                                  ],
+                                                  stops: [
+                                                    0.0,
+                                                    .7,
+                                                  ],
+                                                ).createShader(bounds);
+                                              },
+                                              blendMode: BlendMode.srcATop,
                                             ),
                                           ),
                                         ),
-                                        StreamBuilder(
-                                          stream: scoreBloc.dataScores,
-                                          builder: (context, snapshot2) {
-                                            List<dynamic> standingsList;
-                                            String record;
-                                            if (snapshot2.hasData) {
-                                              record = snapshot2
-                                                  .data['standings'][
-                                              '${dataList[index]['vTeam']['shortName']}'];
-                                              return (Container(
-                                                child: Text('($record)'),
-                                              ));
-                                            } else {
-                                              return Container();
-                                            }
-                                          },
+                                        Container(
+                                          width:
+                                              screenSize(context).width * .45,
+                                          height: 200,
+                                          decoration: BoxDecoration(
+                                            borderRadius: BorderRadius.only(
+                                              topRight: Radius.circular(8),
+                                              bottomRight: Radius.circular(8),
+                                            ),
+                                          ),
+                                          child: ClipRRect(
+                                            borderRadius: BorderRadius.only(
+                                              topRight: Radius.circular(8),
+                                              bottomRight: Radius.circular(8),
+                                            ),
+                                            child: ShaderMask(
+                                              child: Image(
+                                                image: AssetImage(
+                                                    "assets/collages/${dataList[index]['hTeam']['shortName']}home.jpg"),
+                                              ),
+                                              shaderCallback: (Rect bounds) {
+                                                return LinearGradient(
+                                                  tileMode: TileMode.mirror,
+                                                  colors: [
+                                                    Colors.white
+                                                        .withOpacity(.7),
+                                                    Colors.white
+                                                  ],
+                                                  stops: [
+                                                    0.0,
+                                                    .85,
+                                                  ],
+                                                ).createShader(bounds);
+                                              },
+                                              blendMode: BlendMode.srcATop,
+                                            ),
+                                          ),
                                         ),
                                       ],
                                     ),
-                                    Expanded(flex: 1, child: Container()),
-                                    Text(
-                                      dataList[index]['vTeam']['score']
-                                      ['points'],
-                                      style: TextStyle(
-                                          fontFamily: 'Alatsi',
-                                          fontSize: textHeight),
-                                    ),
-                                    Container(
-                                      width: scoreSpacing,
-                                    ),
-                                    Text(
-                                      '-',
-                                      style: TextStyle(
-                                          fontFamily: 'Alatsi',
-                                          fontSize: textHeight),
-                                    ),
-                                    Container(
-                                      width: scoreSpacing,
-                                    ),
-                                    Text(
-                                      dataList[index]['hTeam']['score']
-                                      ['points'],
-                                      style: TextStyle(
-                                          fontFamily: 'Alatsi',
-                                          fontSize: textHeight),
-                                    ),
-                                    Expanded(flex: 1, child: Container()),
-                                    Column(
-                                      children: <Widget>[
-                                        Text(
-                                          dataList[index]['hTeam']
-                                          ['shortName'],
-                                          style: TextStyle(
-                                              fontFamily: 'Alatsi',
-                                              fontSize: 15),
+                                  ),
+                                  FlatButton(
+                                    onPressed: null,
+                                    onLongPress: (){
+                                      Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                          builder: (context) => GameDetailScreen(gameId: dataList[index]['gameId'],),
+                                          // Pass the arguments as part of the RouteSettings. The
+                                          // DetailScreen reads the arguments from these settings.
+                                          settings: RouteSettings(
+                                          ),
                                         ),
-                                       _logoContainer(iconSize, homeLogo),
-                                        StreamBuilder(
-                                          stream: scoreBloc.dataScores,
-                                          builder: (context, snapshot2) {
-                                            List<dynamic> standingsList;
-                                            String record;
-                                            if (snapshot2.hasData) {
-                                              record = snapshot2
-                                                  .data['standings'][
-                                              '${dataList[index]['hTeam']['shortName']}'];
-                                              return (Container(
-                                                child: Text('($record)'),
-                                              ));
-                                            } else {
-                                              return Container();
-                                            }
-                                          },
+                                      );
+                                    },
+                                    child: Container(
+                                      width: screenSize(context).width * .9,
+                                      height: 200,
+                                      decoration: BoxDecoration(
+                                        borderRadius: BorderRadius.all(
+                                          Radius.circular(8),
                                         ),
-                                      ],
+                                      ),
+                                      child: Column(
+                                        children: <Widget>[
+                                          Container(
+                                            child: Row(
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment.center,
+                                              children: <Widget>[
+                                                Text(
+                                                  "Q ${quarter.replaceAll('/4', '')}",
+                                                  style: TextStyle(
+                                                      fontFamily: 'Alatsi',
+                                                      fontSize: 15),
+                                                ),
+                                              ],
+                                            ),
+                                          ),
+                                          Container(
+                                            child: Row(
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment.center,
+                                              children: <Widget>[
+                                                Container(
+                                                  width: 15,
+                                                ),
+                                                Column(
+                                                  children: <Widget>[
+                                                    Text(
+                                                      dataList[index]['vTeam']
+                                                          ['shortName'],
+                                                      style: TextStyle(
+                                                          fontFamily: 'Alatsi',
+                                                          fontSize: 15),
+                                                    ),
+                                                    Container(
+                                                      height: iconSize,
+                                                      width: iconSize,
+                                                      decoration: BoxDecoration(
+                                                        image: DecorationImage(
+                                                          image: AssetImage(
+                                                              awayLogo),
+                                                        ),
+                                                      ),
+                                                    ),
+                                                    StreamBuilder(
+                                                      stream:
+                                                          scoreBloc.dataScores,
+                                                      builder:
+                                                          (context, snapshot2) {
+                                                        List<dynamic>
+                                                            standingsList;
+                                                        String record;
+                                                        if (snapshot2.hasData) {
+                                                          record = snapshot2
+                                                                      .data[
+                                                                  'standings'][
+                                                              '${dataList[index]['vTeam']['shortName']}'];
+                                                          return (Container(
+                                                            child: Text(
+                                                              '($record)',
+                                                              style: TextStyle(
+                                                                  fontWeight:
+                                                                      FontWeight
+                                                                          .bold),
+                                                            ),
+                                                          ));
+                                                        } else {
+                                                          return Container();
+                                                        }
+                                                      },
+                                                    ),
+                                                  ],
+                                                ),
+                                                Expanded(
+                                                    flex: 1,
+                                                    child: Container()),
+                                                Text(
+                                                  dataList[index]['vTeam']
+                                                      ['score']['points'],
+                                                  style: TextStyle(
+                                                      fontFamily: 'Alatsi',
+                                                      fontSize: textHeight),
+                                                ),
+                                                Container(
+                                                  width: scoreSpacing,
+                                                ),
+                                                Text(
+                                                  '-',
+                                                  style: TextStyle(
+                                                      fontFamily: 'Alatsi',
+                                                      fontSize: textHeight),
+                                                ),
+                                                Container(
+                                                  width: scoreSpacing,
+                                                ),
+                                                Text(
+                                                  dataList[index]['hTeam']
+                                                      ['score']['points'],
+                                                  style: TextStyle(
+                                                      fontFamily: 'Alatsi',
+                                                      fontSize: textHeight),
+                                                ),
+                                                Expanded(
+                                                    flex: 1,
+                                                    child: Container()),
+                                                Column(
+                                                  children: <Widget>[
+                                                    Text(
+                                                      dataList[index]['hTeam']
+                                                          ['shortName'],
+                                                      style: TextStyle(
+                                                          fontFamily: 'Alatsi',
+                                                          fontSize: 15),
+                                                    ),
+                                                    _logoContainer(
+                                                        iconSize, homeLogo),
+                                                    StreamBuilder(
+                                                      stream:
+                                                          scoreBloc.dataScores,
+                                                      builder:
+                                                          (context, snapshot2) {
+                                                        List<dynamic>
+                                                            standingsList;
+                                                        String record;
+                                                        if (snapshot2.hasData) {
+                                                          record = snapshot2
+                                                                      .data[
+                                                                  'standings'][
+                                                              '${dataList[index]['hTeam']['shortName']}'];
+                                                          return (Container(
+                                                            child: Text(
+                                                              '($record)',
+                                                              style: TextStyle(
+                                                                  fontWeight:
+                                                                      FontWeight
+                                                                          .bold),
+                                                            ),
+                                                          ));
+                                                        } else {
+                                                          return Container();
+                                                        }
+                                                      },
+                                                    ),
+                                                  ],
+                                                ),
+                                                Container(
+                                                  width: 15,
+                                                ),
+                                              ],
+                                            ),
+                                          ),
+                                          Center(
+                                            child: Column(
+                                              children: <Widget>[
+                                                Container(
+                                                  child: _halfTime(
+                                                      dataList[index]
+                                                          ['halftime'],
+                                                      dataList[index]['clock'],
+                                                      33),
+                                                ),
+                                                ScoreAnimation(),
+                                              ],
+                                            ),
+                                          ),
+                                        ],
+                                      ),
                                     ),
-                                    Container(
-                                      width: 15,
-                                    ),
-                                  ],
-                                ),
+                                  ),
+                                ],
                               ),
-                              Center(
-                                child: Container(
-                                  child:
-                                  _halfTime(dataList[index]['halftime'],dataList[index]['clock'],textHeight),
-                                ),
-                              ),
-                            ],
-                          ),
+                            );
+                          },
                         ),
-                      ],
-
-                    ),
-                  );
-                },
+                      )
+                    : Container(
+                        child: Text('API ERROR'),
+                      )),
               );
             } else if (snapshot.hasError) {
               return Text("${snapshot.error}");
@@ -315,33 +394,44 @@ class _ScorePageState extends State<ScorePage> {
       ),
     );
   }
-  Container _logoContainer(double size, String logo){
+
+  Container _logoContainer(double size, String logo) {
     return Container(
       height: size,
       width: size,
       decoration: BoxDecoration(
           image: DecorationImage(
-            image: AssetImage(logo),
-          )),
-
+        image: AssetImage(logo),
+      )),
     );
   }
 
-  Color _color (String team){
+  Color _color(String team) {
     String test = team;
 
-    switch(test){
-      case "LAL": {return Color.fromRGBO(255, 249, 82, 1);}
-      break;
-      case "SAS": {return Colors.black;}
-      break;
-      case "HOU": {return Colors.red;}
-      break;
-      case "POR": {return Colors.deepOrange;}
-      break;
+    switch (test) {
+      case "LAL":
+        {
+          return Color.fromRGBO(255, 249, 82, 1);
+        }
+        break;
+      case "SAS":
+        {
+          return Colors.black;
+        }
+        break;
+      case "HOU":
+        {
+          return Colors.red;
+        }
+        break;
+      case "POR":
+        {
+          return Colors.deepOrange;
+        }
+        break;
     }
   }
-
 
   buildBody() {
     return Column(
@@ -353,19 +443,17 @@ class _ScorePageState extends State<ScorePage> {
       ],
     );
   }
-  Widget _halfTime(halftime,String index1, double height) {
 
+  Widget _halfTime(halftime, String index1, double height) {
     if (halftime == "1") {
       return Text(
         "halftime",
-        style: TextStyle(
-            fontFamily: 'Alatsi', fontSize: height),
+        style: TextStyle(fontFamily: 'Alatsi', fontSize: 20),
       );
     } else {
       return Text(
         index1,
-        style: TextStyle(
-            fontFamily: 'Alatsi', fontSize: height),
+        style: TextStyle(fontFamily: 'Alatsi', fontSize: height),
       );
     }
   }

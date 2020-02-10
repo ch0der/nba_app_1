@@ -1,0 +1,10 @@
+{
+  "status":200,
+  "message":"GET statistics/players/gameId/7166",
+  "results":2,
+  "filters":[
+    "playerId",
+    "gameId"
+  ],
+  "statistics":["$liveGameDetails"]
+}

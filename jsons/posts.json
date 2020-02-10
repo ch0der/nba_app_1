@@ -10,5 +10,5 @@
     "lastName",
     "firstName"
   ],
-  "players":"$[]playerPost"
+  "statistics":["$playerPost"]
 }
