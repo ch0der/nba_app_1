@@ -15,6 +15,7 @@ class ScorePage extends StatefulWidget {
 class _ScorePageState extends State<ScorePage> {
   final bloc = LiveScoreBloc();
   final scoreBloc = LiveStandingsBloc();
+  final quarterBloc = AdditionalGameDetails();
 
   @override
   void initState() {
@@ -76,6 +77,9 @@ class _ScorePageState extends State<ScorePage> {
 
                             String homeLogo =
                                 'assets/team_logos/${dataList[index]['hTeam']['nickName']}.png';
+                            String teamIdHome = dataList[index]['hTeam']['teamId'];
+                            String teamIdAway = dataList[index]['vTeam']['teamId'];
+
 
                             return Center(
                               child: Stack(

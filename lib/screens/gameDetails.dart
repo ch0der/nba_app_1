@@ -19,12 +19,14 @@ class GameDetailScreen extends StatefulWidget {
 
 class _GameDetailScreenState extends State<GameDetailScreen> {
   final bloc2 = GameDetailsBloc();
+  final bloc3 = AdditionalGameDetails();
   SliverPersistentHeaderDelegate _test;
 
   @override
   void initState() {
     super.initState();
     bloc2.fetchPost2(widget.gameId);
+    bloc3.fetchPost2(widget.gameId);
   }
 
   @override
@@ -34,6 +36,36 @@ class _GameDetailScreenState extends State<GameDetailScreen> {
 
   Size screenSize(BuildContext context) {
     return MediaQuery.of(context).size;
+  }
+
+  quarterPoints() {
+    return Container(
+      child: StreamBuilder<Quarters0>(
+        stream: bloc3.dataScores,
+        builder: (context, snapshot) {
+          List<dynamic> dataList;
+          if (snapshot.hasData){
+            int quarter;
+            dataList = snapshot.data.game;
+            List<dynamic> vTeam = dataList[0]['vTeam']['score']['linescore'];
+            return Container(
+              child: Row(
+                children: <Widget>[
+                  Text(dataList[0]['vTeam']['score']['linescore'][0]),
+                  Text(vTeam[1]),
+                  Text(vTeam[2]),
+                  Text(vTeam[3]),
+
+                ],
+              ),
+              
+            );
+          }else return Container();
+          
+        },
+        
+      ),
+    );
   }
 
   body() {
@@ -50,12 +82,12 @@ class _GameDetailScreenState extends State<GameDetailScreen> {
         SliverList(
           delegate: SliverChildListDelegate(
             [
+              quarterPoints(),
               Container(
                 height: 100,
                 width: 200,
                 color: Colors.orange,
               ),
-
               Container(
                 height: 100,
                 width: 200,
@@ -66,7 +98,6 @@ class _GameDetailScreenState extends State<GameDetailScreen> {
                 width: 200,
                 color: Colors.orange,
               ),
-
               Container(
                 height: 100,
                 width: 200,
@@ -77,29 +108,35 @@ class _GameDetailScreenState extends State<GameDetailScreen> {
                 width: 200,
                 color: Colors.orange,
               ),
-
               Container(
                 height: 100,
                 width: 200,
                 color: Colors.blue,
               ),
-
             ],
           ),
         ),
         SliverPersistentHeader(
           pinned: true,
           floating: false,
-
-
-          delegate: _Delegate(child: Container(height: 200, child: _table(),),maxHeight: 200,minHeight: 50),
+          delegate: _Delegate(
+              child: Container(
+                height: 200,
+                child: _table(),
+              ),
+              maxHeight: 200,
+              minHeight: 50),
         ),
         SliverPersistentHeader(
           pinned: true,
           floating: false,
-
-
-          delegate: _Delegate(child: Container(height: 200, child: _table(),),maxHeight: 200,minHeight: 50),
+          delegate: _Delegate(
+              child: Container(
+                height: 200,
+                child: _table(),
+              ),
+              maxHeight: 200,
+              minHeight: 50),
         ),
         SliverList(
           delegate: SliverChildListDelegate(
@@ -108,7 +145,6 @@ class _GameDetailScreenState extends State<GameDetailScreen> {
                 height: 15,
                 width: 200,
               ),
-
               Container(
                 height: 100,
                 width: 200,
@@ -119,7 +155,6 @@ class _GameDetailScreenState extends State<GameDetailScreen> {
                 width: 200,
                 color: Colors.orange,
               ),
-
               Container(
                 height: 100,
                 width: 200,
@@ -130,19 +165,18 @@ class _GameDetailScreenState extends State<GameDetailScreen> {
                 width: 200,
                 color: Colors.orange,
               ),
-
               Container(
                 height: 400,
                 width: 200,
                 color: Colors.blue,
               ),
-
             ],
           ),
         ),
       ],
     );
   }
+
   _table() {
     return Container(
       child: StreamBuilder<LiveGame1>(
@@ -201,8 +235,8 @@ class _GameDetailScreenState extends State<GameDetailScreen> {
                                       alignment: Alignment.center,
                                       child: Text(
                                         index['plusMinus'],
-                                        style:
-                                            TextStyle(fontWeight: FontWeight.bold),
+                                        style: TextStyle(
+                                            fontWeight: FontWeight.bold),
                                       ),
                                     ),
                                   ),
@@ -224,37 +258,36 @@ class _GameDetailScreenState extends State<GameDetailScreen> {
     );
   }
 }
-class _Delegate extends SliverPersistentHeaderDelegate{
 
-  _Delegate({@required this.child,@required  this.maxHeight,@required this.minHeight});
+class _Delegate extends SliverPersistentHeaderDelegate {
+  _Delegate(
+      {@required this.child,
+      @required this.maxHeight,
+      @required this.minHeight});
 
   double minHeight;
   double maxHeight;
 
-
   Widget child;
 
   @override
-  Widget build(BuildContext context, double shrinkOffset,
-      bool overlapsContent) {
+  Widget build(
+      BuildContext context, double shrinkOffset, bool overlapsContent) {
     return child;
   }
 
   @override
   bool shouldRebuild(SliverPersistentHeaderDelegate oldDelegate) {
     return true;
-
   }
 
   @override
   double get maxExtent {
     return maxHeight;
-
   }
 
   @override
   double get minExtent {
     return minHeight;
-
   }
 }

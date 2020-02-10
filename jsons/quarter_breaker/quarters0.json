@@ -1,0 +1,9 @@
+{
+  "status":200,
+  "message":"GET gameDetails/",
+  "results":2,
+  "filters":[
+    ""
+  ],
+  "game":["$quarters0"]
+}
