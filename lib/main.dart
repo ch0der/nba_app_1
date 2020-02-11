@@ -13,6 +13,7 @@ void main() {
       routes: {
         // When we navigate to the "/" route, build the FirstScreen Widget
         '/': (context) => MyApp(),
+        '/home': (context) => Tabs(),
         '/second': (context) => ScorePage(),
         '/player': (context) => GameDetailScreen(),
       },

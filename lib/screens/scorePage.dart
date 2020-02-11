@@ -37,16 +37,15 @@ class _ScorePageState extends State<ScorePage> {
     double iconSize = 60;
 
     return Scaffold(
+      appBar: AppBar(
+        title: Text('SCORES'),
+      ),
       drawer: (Container(
         height: MediaQuery.of(context).size.height,
         width: 200,
         color: Colors.red,
         child: Text('sxfsdfsdfsdfsdfs'),
       )),
-      appBar: AppBar(
-        backgroundColor: Colors.orange[400],
-        title: Text('NBA SCORES'),
-      ),
       body: Center(
         child: StreamBuilder<LiveGameData01>(
           stream: bloc.dataScores,
@@ -384,7 +383,7 @@ class _ScorePageState extends State<ScorePage> {
                         ),
                       )
                     : Container(
-                        child: Text('API ERROR'),
+                        child: Text('Endpoint Outage'),
                       )),
               );
             } else if (snapshot.hasError) {
