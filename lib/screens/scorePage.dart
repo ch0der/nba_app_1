@@ -192,7 +192,8 @@ class _ScorePageState extends State<ScorePage> {
                                       Navigator.push(
                                         context,
                                         MaterialPageRoute(
-                                          builder: (context) => GameDetailScreen(gameId: dataList[index]['gameId'],),
+                                          builder: (context) => GameDetailScreen(gameId: dataList[index]['gameId'],homeId: dataList[index]['hTeam']['teamId'],
+                                            awayId: dataList[index]['vTeam']['teamId'],),
                                           // Pass the arguments as part of the RouteSettings. The
                                           // DetailScreen reads the arguments from these settings.
                                           settings: RouteSettings(

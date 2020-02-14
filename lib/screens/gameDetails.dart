@@ -9,9 +9,11 @@ import 'package:nba_app/blocs/live_scores_bloc.dart';
 import 'dart:async';
 
 class GameDetailScreen extends StatefulWidget {
-  GameDetailScreen({this.gameId});
+  GameDetailScreen({this.gameId,this.homeId,this.awayId});
 
   final String gameId;
+  final String homeId;
+  final String awayId;
 
   @override
   _GameDetailScreenState createState() => _GameDetailScreenState();
@@ -88,31 +90,6 @@ class _GameDetailScreenState extends State<GameDetailScreen> {
                 width: 200,
                 color: Colors.orange,
               ),
-              Container(
-                height: 100,
-                width: 200,
-                color: Colors.blue,
-              ),
-              Container(
-                height: 100,
-                width: 200,
-                color: Colors.orange,
-              ),
-              Container(
-                height: 100,
-                width: 200,
-                color: Colors.blue,
-              ),
-              Container(
-                height: 100,
-                width: 200,
-                color: Colors.orange,
-              ),
-              Container(
-                height: 100,
-                width: 200,
-                color: Colors.blue,
-              ),
             ],
           ),
         ),
@@ -122,7 +99,7 @@ class _GameDetailScreenState extends State<GameDetailScreen> {
           delegate: _Delegate(
               child: Container(
                 height: 200,
-                child: _table(),
+                child: _table(widget.homeId),
               ),
               maxHeight: 200,
               minHeight: 50),
@@ -133,7 +110,7 @@ class _GameDetailScreenState extends State<GameDetailScreen> {
           delegate: _Delegate(
               child: Container(
                 height: 200,
-                child: _table(),
+                child: _table(widget.awayId),
               ),
               maxHeight: 200,
               minHeight: 50),
@@ -177,7 +154,8 @@ class _GameDetailScreenState extends State<GameDetailScreen> {
     );
   }
 
-  _table() {
+  _table(String team) {
+    int index;
     return Container(
       child: StreamBuilder<LiveGame1>(
         stream: bloc2.dataScores,
@@ -185,6 +163,8 @@ class _GameDetailScreenState extends State<GameDetailScreen> {
           List<dynamic> dataList;
           if (snapshot.hasData) {
             dataList = snapshot.data.statistics;
+            List homeList2 = dataList.where((index1)=> index1['teamId'] == team).toList();
+            // List homeList3 = dataList.where((fn)=>dataList[index]['teamId'] == team).toList();
             return RefreshIndicator(
               onRefresh: () async {
                 await bloc2.fetchPost2(widget.gameId);
@@ -206,7 +186,7 @@ class _GameDetailScreenState extends State<GameDetailScreen> {
                           DataColumn(label: Text('REB')),
                           DataColumn(label: Align(child: Text('+/-'))),
                         ],
-                        rows: dataList
+                        rows: homeList2
                             .map(
                               (index) => DataRow(
                                 cells: [
