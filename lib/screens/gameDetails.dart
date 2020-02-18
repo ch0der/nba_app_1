@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:nba_app/PlayerInfo.dart';
 import 'package:nba_app/animations/score_animation.dart';
 import 'package:nba_app/blocs/gameDetailsBloc.dart';
 
@@ -9,12 +10,12 @@ import 'package:nba_app/blocs/live_scores_bloc.dart';
 import 'dart:async';
 
 class GameDetailScreen extends StatefulWidget {
-  GameDetailScreen({this.gameId, this.homeId, this.awayId,this.liststuff});
+  GameDetailScreen({this.gameId, this.homeId, this.awayId,this.playerDetailsList});
 
   final String gameId;
   final String homeId;
   final String awayId;
-  final List liststuff;
+  final List playerDetailsList;
 
   @override
   _GameDetailScreenState createState() => _GameDetailScreenState();
@@ -27,6 +28,7 @@ class _GameDetailScreenState extends State<GameDetailScreen> {
   List<PlayerStats> players;
   List testList;
   bool ascending = true;
+  bool assistBool = true;
 
   @override
   void initState() {
@@ -117,7 +119,7 @@ class _GameDetailScreenState extends State<GameDetailScreen> {
           delegate: _Delegate(
               child: Container(
                 height: 200,
-                child: _table(widget.awayId),
+                child: _testTable(),
               ),
               maxHeight: 200,
               minHeight: 50),
@@ -257,31 +259,34 @@ class _GameDetailScreenState extends State<GameDetailScreen> {
       ),
     );
   }
-  onSortColumn(bool ascending1){
-    if(ascending1 == true){
-      players.sort((a,b)=> a.pts.compareTo(b.pts));
+  onSortColumn(bool sort){
+    List<PlayerInfo> _list = widget.playerDetailsList;
+    if(sort == true){
+      _list.sort((a,b)=> a.assists.compareTo(b.assists));
       setState(() {
-        ascending1 = false;
+        sort = false;
       });
-    } else if(ascending1 == false){
-      players.sort((a,b)=> b.pts.compareTo(a.pts));
+    } else if(sort == false){
+     _list.sort((a,b)=> b.assists.compareTo(a.assists));
       setState(() {
-        ascending1 = true;
+        sort = true;
       });
     }
-    print(ascending);
+    print(sort);
   }
-  _testTable(String team){
+  _testTable(){
+
+    List<PlayerInfo> playerList = widget.playerDetailsList;
     return Container(
       child: SingleChildScrollView(
         child: Column(
           children: <Widget>[
             DataTable(
               sortAscending: ascending,
-              sortColumnIndex: 0,
+              sortColumnIndex: 1,
               horizontalMargin: 24,
-              dataRowHeight: 40,
-              columnSpacing: 1,
+              dataRowHeight: 30,
+              columnSpacing: 2,
               columns: [
                 DataColumn(
                   onSort: (i,b){
@@ -290,35 +295,79 @@ class _GameDetailScreenState extends State<GameDetailScreen> {
                   label: Text('PlayerID'),
                 ),
                 DataColumn(
+                    numeric: true,
                     onSort: (i,b){
-                      onSortColumn(ascending);
-                      setState(() {
-                        ascending = !ascending;
-                      });
+                      if(ascending == true){
+                        playerList.sort((a,b)=> a.points.compareTo(b.points));
+                        setState(() {
+                          ascending = false;
+                        });
+                      } else
+                      if(ascending == false){
+                        playerList.sort((a,b)=> b.points.compareTo(a.points));
+                        setState(() {
+                          ascending = true;
+                        });
+                      }
+                      print(ascending);
 
                     },
                     label: Text('PTS')),
-                DataColumn(label: Text('AST')),
-                DataColumn(label: Text('REB')),
-                DataColumn(label: Align(child: Text('+/-'))),
+                DataColumn(
+                  numeric: true,
+                  onSort: (i,b){
+
+                    if(assistBool== true){
+                      playerList.sort((a,b)=> a.assists.compareTo(b.assists));
+                      setState(() {
+                        assistBool = false;
+                      });
+                    } else if(assistBool == false){
+                      playerList.sort((a,b)=> b.assists.compareTo(a.assists));
+                      setState(() {
+                        assistBool = true;
+                      });
+                    }
+
+                  },
+
+                    label: Text('AST')),
+                DataColumn(
+                    numeric: true,
+                    label: Text('REB')),
+                DataColumn(
+                    numeric: true,
+                    label: Align(child: Text('+/-'))),
+                DataColumn(
+                    label: Text('MIN')),
+                DataColumn(
+                    numeric: true,
+                    label: Text('POS')),
               ],
-              rows: players.map((player) => DataRow(
+              rows: playerList.map((player) => DataRow(
 
                   cells: [
                     DataCell(
-                        Text(player.id)
+                        Text(player.playerId)
                     ),
                     DataCell(
-                        Text((player.pts))
+                        Text('${player.points}')
                     ),
                     DataCell(
-                        Text(player.ast)
+                        Text('${player.assists}'),
                     ),
                     DataCell(
-                        Text(player.reb)
+                        Text(player.totReb)
                     ),
                     DataCell(
-                        Text(player.plusMin)
+                        Text(player.plusMinus)
+                    ),
+                    DataCell(
+                        Align(alignment: Alignment.centerRight,
+                            child: Text(player.min))
+                    ),
+                    DataCell(
+                        Text(player.pos)
                     ),
                   ]
               )).toList(),

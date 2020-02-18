@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:nba_app/PlayerInfo.dart';
 import 'package:nba_app/animations/score_animation.dart';
 import 'package:nba_app/blocs/gameDetailsBloc.dart';
 
@@ -6,6 +7,8 @@ import 'package:nba_app/library.dart';
 import 'package:nba_app/models/index.dart';
 import 'package:nba_app/models/liveScoreJsonData/liveGameData01.dart';
 import 'package:nba_app/blocs/live_scores_bloc.dart';
+import 'package:http/http.dart' as http;
+import 'dart:convert';
 
 class ScorePage extends StatefulWidget {
   @override
@@ -16,6 +19,9 @@ class _ScorePageState extends State<ScorePage> {
   final bloc = LiveScoreBloc();
   final scoreBloc = LiveStandingsBloc();
   final quarterBloc = AdditionalGameDetails();
+  final playerBloc = GameDetailsBloc();
+  List someList;
+   Future scoreFuture;
 
   @override
   void initState() {
@@ -76,9 +82,10 @@ class _ScorePageState extends State<ScorePage> {
 
                             String homeLogo =
                                 'assets/team_logos/${dataList[index]['hTeam']['nickName']}.png';
-                            String teamIdHome = dataList[index]['hTeam']['teamId'];
-                            String teamIdAway = dataList[index]['vTeam']['teamId'];
-
+                            String teamIdHome =
+                                dataList[index]['hTeam']['teamId'];
+                            String teamIdAway =
+                                dataList[index]['vTeam']['teamId'];
 
                             return Center(
                               child: Stack(
@@ -107,25 +114,74 @@ class _ScorePageState extends State<ScorePage> {
                                       mainAxisAlignment:
                                           MainAxisAlignment.center,
                                       children: <Widget>[
-                                      shaderContainer("assets/collages/${dataList[index]['vTeam']['shortName']}away.jpg", .7),
-                                        shaderContainer("assets/collages/${dataList[index]['hTeam']['shortName']}home.jpg", .85)
+                                        shaderContainer(
+                                            "assets/collages/${dataList[index]['vTeam']['shortName']}away.jpg",
+                                            .7),
+                                        shaderContainer(
+                                            "assets/collages/${dataList[index]['hTeam']['shortName']}home.jpg",
+                                            .85)
                                       ],
                                     ),
                                   ),
                                   FlatButton(
-                                    onPressed: null,
-                                    onLongPress: (){
-                                      Navigator.push(
-                                        context,
-                                        MaterialPageRoute(
-                                          builder: (context) => GameDetailScreen(gameId: dataList[index]['gameId'],homeId: dataList[index]['hTeam']['teamId'],
-                                            awayId: dataList[index]['vTeam']['teamId'],),
-                                          // Pass the arguments as part of the RouteSettings. The
-                                          // DetailScreen reads the arguments from these settings.
-                                          settings: RouteSettings(
-                                          ),
-                                        ),
-                                      );
+                                    onPressed: (){
+                            playerBloc.fetchPost3(dataList[index]['gameId']);
+                            },
+                                    onLongPress: () {
+                                     final future =
+                                     playerBloc.fetchPost2(dataList[index]['gameId']);
+                                     future.then((resp){
+                                       someList = resp.statistics.map((index1)=> PlayerInfo(
+                                           gameId: index1['gameId'],
+                                           min: index1['min'],
+                                           teamId: index1['teamId'],
+                                           points: int.parse(index1['points']),
+                                           pos: index1['pos'],
+                                           fgm: index1['fgm'],
+                                           fga: index1['fga'],
+                                           fta: index1['fta'],
+                                           fgp: index1['fgp'],
+                                           ftm: index1['ftm'],
+                                           ftp: index1['ftp'],
+                                           defReb: index1['defReb'],
+                                           offReb: index1['offReb'],
+                                           blocks: index1['blocks'],
+                                           totReb: index1['totReb'],
+                                           playerId: index1['playerId'],
+                                           pFouls: index1['pFouls'],
+                                           plusMinus: index1['plusMinus'],
+                                           tpa: index1['tpa'],
+                                           tpm: index1['tpm'],
+                                           tpp: index1['tpp'],
+                                           turnovers: index1['turnovers'],
+                                           assists: int.parse(index1['assists']),
+                                           steals: index1['steals']
+
+                                       )).toList();
+                                     });
+                                     future.then((resp2)
+                                         {
+                                           Navigator.push(
+                                             context,
+                                             MaterialPageRoute(
+                                               builder: (context) =>
+                                                   GameDetailScreen(
+                                                     gameId: dataList[index]['gameId'],
+                                                     homeId: dataList[index]['hTeam']
+                                                     ['teamId'],
+                                                     awayId: dataList[index]['vTeam']
+                                                     ['teamId'],
+                                                     playerDetailsList: someList,
+                                                   ),
+                                               // Pass the arguments as part of the RouteSettings. The
+                                               // DetailScreen reads the arguments from these settings.
+                                               settings: RouteSettings(),
+                                             ),
+                                           );
+                                           print(someList);
+                                         }
+                                     );
+
                                     },
                                     child: Container(
                                       width: screenSize(context).width * .9,
@@ -324,6 +380,30 @@ class _ScorePageState extends State<ScorePage> {
       ),
     );
   }
+  Future<LiveGame1> fetchPost4(String uniqueID) async {
+    String myPath = "statistics/players/gameId/$uniqueID";
+
+    final response = await http
+        .get(Uri.https("api-nba-v1.p.rapidapi.com", myPath), headers: {
+      "x-rapidapi-host": "api-nba-v1.p.rapidapi.com",
+      "x-rapidapi-key": "6e137c5c98mshcfe3870862cc847p12a327jsn818c1cb513dd"
+    });
+
+    if (response.statusCode == 200) {
+      // If the call to the server was successful, parse the JSON.
+
+      var info = json.decode(response.body);
+
+      print( info['api']);
+
+
+
+      return LiveGame1.fromJson(info['api']);
+    } else {
+      // If that call was not successful, throw an error.
+      throw Exception('Failed to load post');
+    }
+  }
 
   Container _logoContainer(double size, String logo) {
     return Container(
@@ -335,7 +415,8 @@ class _ScorePageState extends State<ScorePage> {
       )),
     );
   }
-  shaderContainer(String imageString, double stop2){
+
+  shaderContainer(String imageString, double stop2) {
     return Container(
       decoration: BoxDecoration(
         borderRadius: BorderRadius.only(
@@ -343,8 +424,7 @@ class _ScorePageState extends State<ScorePage> {
           bottomLeft: Radius.circular(8),
         ),
       ),
-      width:
-      screenSize(context).width * .45,
+      width: screenSize(context).width * .45,
       height: 200,
       child: ClipRRect(
         borderRadius: BorderRadius.only(
@@ -353,17 +433,12 @@ class _ScorePageState extends State<ScorePage> {
         ),
         child: ShaderMask(
           child: Image(
-            image: AssetImage(
-                imageString),
+            image: AssetImage(imageString),
           ),
           shaderCallback: (Rect bounds) {
             return LinearGradient(
               tileMode: TileMode.mirror,
-              colors: [
-                Colors.white
-                    .withOpacity(.7),
-                Colors.white
-              ],
+              colors: [Colors.white.withOpacity(.7), Colors.white],
               stops: [
                 0.0,
                 stop2,
