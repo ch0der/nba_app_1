@@ -9,11 +9,12 @@ import 'package:nba_app/blocs/live_scores_bloc.dart';
 import 'dart:async';
 
 class GameDetailScreen extends StatefulWidget {
-  GameDetailScreen({this.gameId,this.homeId,this.awayId});
+  GameDetailScreen({this.gameId, this.homeId, this.awayId,this.liststuff});
 
   final String gameId;
   final String homeId;
   final String awayId;
+  final List liststuff;
 
   @override
   _GameDetailScreenState createState() => _GameDetailScreenState();
@@ -23,12 +24,21 @@ class _GameDetailScreenState extends State<GameDetailScreen> {
   final bloc2 = GameDetailsBloc();
   final bloc3 = AdditionalGameDetails();
   SliverPersistentHeaderDelegate _test;
+  List<PlayerStats> players;
+  List testList;
+  bool ascending = true;
 
   @override
   void initState() {
     super.initState();
     bloc2.fetchPost2(widget.gameId);
     bloc3.fetchPost2(widget.gameId);
+  }
+
+  void dispose() {
+    super.dispose();
+    bloc2.dispose();
+    bloc3.dispose();
   }
 
   @override
@@ -45,27 +55,24 @@ class _GameDetailScreenState extends State<GameDetailScreen> {
       child: StreamBuilder<Quarters0>(
         stream: bloc3.dataScores,
         builder: (context, snapshot) {
-          List<dynamic> dataList;
-          if (snapshot.hasData){
+          if (snapshot.hasData) {
+            List<dynamic> dataList;
             int quarter;
             dataList = snapshot.data.game;
             List<dynamic> vTeam = dataList[0]['vTeam']['score']['linescore'];
             return Container(
               child: Row(
                 children: <Widget>[
-                  Text(dataList[0]['vTeam']['score']['linescore'][0]),
+                  Text(vTeam[0]),
                   Text(vTeam[1]),
                   Text(vTeam[2]),
                   Text(vTeam[3]),
-
                 ],
               ),
-              
             );
-          }else return Container();
-          
+          } else
+            return Container();
         },
-        
       ),
     );
   }
@@ -153,18 +160,36 @@ class _GameDetailScreenState extends State<GameDetailScreen> {
       ],
     );
   }
+  List getPlayers(List list) {
+        return list.map(
+          (index) => PlayerStats(
+          id: index['playerId'],
+          pts: index['pos'],
+          ast: index['assists'],
+          reb: index['totReb'],
+          plusMin: index['plusMinus']),
+    )
+        .toList();
+  }
+
+
 
   _table(String team) {
-    int index;
     return Container(
       child: StreamBuilder<LiveGame1>(
         stream: bloc2.dataScores,
         builder: (context, snapshot) {
-          List<dynamic> dataList;
           if (snapshot.hasData) {
+            List<dynamic> dataList;
             dataList = snapshot.data.statistics;
-            List homeList2 = dataList.where((index1)=> index1['teamId'] == team).toList();
-            // List homeList3 = dataList.where((fn)=>dataList[index]['teamId'] == team).toList();
+            List homeList2 =
+                dataList.where((index1) => index1['teamId'] == team).toList();
+
+            testList = homeList2;
+
+
+            players = getPlayers(testList);
+            print(players[3].pts);
             return RefreshIndicator(
               onRefresh: () async {
                 await bloc2.fetchPost2(widget.gameId);
@@ -174,56 +199,51 @@ class _GameDetailScreenState extends State<GameDetailScreen> {
                   child: Column(
                     children: <Widget>[
                       DataTable(
+                        sortAscending: ascending,
+                        sortColumnIndex: 0,
                         horizontalMargin: 24,
                         dataRowHeight: 40,
                         columnSpacing: 1,
                         columns: [
                           DataColumn(
+                            onSort: (i,b){
+                              onSortColumn(b);
+                            },
                             label: Text('PlayerID'),
                           ),
-                          DataColumn(label: Text('PTS')),
+                          DataColumn(
+                              onSort: (i,b){
+                                onSortColumn(ascending);
+                                setState(() {
+                                  ascending = !ascending;
+                                });
+
+                              },
+                              label: Text('PTS')),
                           DataColumn(label: Text('AST')),
                           DataColumn(label: Text('REB')),
                           DataColumn(label: Align(child: Text('+/-'))),
                         ],
-                        rows: homeList2
-                            .map(
-                              (index) => DataRow(
-                                cells: [
-                                  DataCell(
-                                    Text(
-                                      index['playerId'],
-                                    ),
-                                  ),
-                                  DataCell(
-                                    Text(
-                                      index['points'],
-                                    ),
-                                  ),
-                                  DataCell(
-                                    Text(
-                                      index['assists'],
-                                    ),
-                                  ),
-                                  DataCell(
-                                    Text(
-                                      index['totReb'],
-                                    ),
-                                  ),
-                                  DataCell(
-                                    Align(
-                                      alignment: Alignment.center,
-                                      child: Text(
-                                        index['plusMinus'],
-                                        style: TextStyle(
-                                            fontWeight: FontWeight.bold),
-                                      ),
-                                    ),
-                                  ),
-                                ],
+                        rows: players.map((player) => DataRow(
+
+                            cells: [
+                              DataCell(
+                                  Text(player.id)
                               ),
-                            )
-                            .toList(),
+                              DataCell(
+                                  Text((player.pts))
+                              ),
+                              DataCell(
+                                  Text(player.ast)
+                              ),
+                              DataCell(
+                                  Text(player.reb)
+                              ),
+                              DataCell(
+                                  Text(player.plusMin)
+                              ),
+                            ]
+                        )).toList(),
                       ),
                     ],
                   ),
@@ -234,6 +254,77 @@ class _GameDetailScreenState extends State<GameDetailScreen> {
             return Container();
           }
         },
+      ),
+    );
+  }
+  onSortColumn(bool ascending1){
+    if(ascending1 == true){
+      players.sort((a,b)=> a.pts.compareTo(b.pts));
+      setState(() {
+        ascending1 = false;
+      });
+    } else if(ascending1 == false){
+      players.sort((a,b)=> b.pts.compareTo(a.pts));
+      setState(() {
+        ascending1 = true;
+      });
+    }
+    print(ascending);
+  }
+  _testTable(String team){
+    return Container(
+      child: SingleChildScrollView(
+        child: Column(
+          children: <Widget>[
+            DataTable(
+              sortAscending: ascending,
+              sortColumnIndex: 0,
+              horizontalMargin: 24,
+              dataRowHeight: 40,
+              columnSpacing: 1,
+              columns: [
+                DataColumn(
+                  onSort: (i,b){
+                    onSortColumn(b);
+                  },
+                  label: Text('PlayerID'),
+                ),
+                DataColumn(
+                    onSort: (i,b){
+                      onSortColumn(ascending);
+                      setState(() {
+                        ascending = !ascending;
+                      });
+
+                    },
+                    label: Text('PTS')),
+                DataColumn(label: Text('AST')),
+                DataColumn(label: Text('REB')),
+                DataColumn(label: Align(child: Text('+/-'))),
+              ],
+              rows: players.map((player) => DataRow(
+
+                  cells: [
+                    DataCell(
+                        Text(player.id)
+                    ),
+                    DataCell(
+                        Text((player.pts))
+                    ),
+                    DataCell(
+                        Text(player.ast)
+                    ),
+                    DataCell(
+                        Text(player.reb)
+                    ),
+                    DataCell(
+                        Text(player.plusMin)
+                    ),
+                  ]
+              )).toList(),
+            ),
+          ],
+        ),
       ),
     );
   }
@@ -270,4 +361,14 @@ class _Delegate extends SliverPersistentHeaderDelegate {
   double get minExtent {
     return minHeight;
   }
+}
+
+class PlayerStats {
+  String id;
+  String pts;
+  String ast;
+  String reb;
+  String plusMin;
+
+  PlayerStats({this.id, this.pts, this.ast, this.reb, this.plusMin});
 }

@@ -107,82 +107,8 @@ class _ScorePageState extends State<ScorePage> {
                                       mainAxisAlignment:
                                           MainAxisAlignment.center,
                                       children: <Widget>[
-                                        Container(
-                                          decoration: BoxDecoration(
-                                            borderRadius: BorderRadius.only(
-                                              topLeft: Radius.circular(8),
-                                              bottomLeft: Radius.circular(8),
-                                            ),
-                                          ),
-                                          width:
-                                              screenSize(context).width * .45,
-                                          height: 200,
-                                          child: ClipRRect(
-                                            borderRadius: BorderRadius.only(
-                                              topLeft: Radius.circular(8),
-                                              bottomLeft: Radius.circular(8),
-                                            ),
-                                            child: ShaderMask(
-                                              child: Image(
-                                                image: AssetImage(
-                                                    "assets/collages/${dataList[index]['vTeam']['shortName']}away.jpg"),
-                                              ),
-                                              shaderCallback: (Rect bounds) {
-                                                return LinearGradient(
-                                                  tileMode: TileMode.mirror,
-                                                  colors: [
-                                                    Colors.white
-                                                        .withOpacity(.7),
-                                                    Colors.white
-                                                  ],
-                                                  stops: [
-                                                    0.0,
-                                                    .7,
-                                                  ],
-                                                ).createShader(bounds);
-                                              },
-                                              blendMode: BlendMode.srcATop,
-                                            ),
-                                          ),
-                                        ),
-                                        Container(
-                                          width:
-                                              screenSize(context).width * .45,
-                                          height: 200,
-                                          decoration: BoxDecoration(
-                                            borderRadius: BorderRadius.only(
-                                              topRight: Radius.circular(8),
-                                              bottomRight: Radius.circular(8),
-                                            ),
-                                          ),
-                                          child: ClipRRect(
-                                            borderRadius: BorderRadius.only(
-                                              topRight: Radius.circular(8),
-                                              bottomRight: Radius.circular(8),
-                                            ),
-                                            child: ShaderMask(
-                                              child: Image(
-                                                image: AssetImage(
-                                                    "assets/collages/${dataList[index]['hTeam']['shortName']}home.jpg"),
-                                              ),
-                                              shaderCallback: (Rect bounds) {
-                                                return LinearGradient(
-                                                  tileMode: TileMode.mirror,
-                                                  colors: [
-                                                    Colors.white
-                                                        .withOpacity(.7),
-                                                    Colors.white
-                                                  ],
-                                                  stops: [
-                                                    0.0,
-                                                    .85,
-                                                  ],
-                                                ).createShader(bounds);
-                                              },
-                                              blendMode: BlendMode.srcATop,
-                                            ),
-                                          ),
-                                        ),
+                                      shaderContainer("assets/collages/${dataList[index]['vTeam']['shortName']}away.jpg", .7),
+                                        shaderContainer("assets/collages/${dataList[index]['hTeam']['shortName']}home.jpg", .85)
                                       ],
                                     ),
                                   ),
@@ -407,6 +333,46 @@ class _ScorePageState extends State<ScorePage> {
           image: DecorationImage(
         image: AssetImage(logo),
       )),
+    );
+  }
+  shaderContainer(String imageString, double stop2){
+    return Container(
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.only(
+          topLeft: Radius.circular(8),
+          bottomLeft: Radius.circular(8),
+        ),
+      ),
+      width:
+      screenSize(context).width * .45,
+      height: 200,
+      child: ClipRRect(
+        borderRadius: BorderRadius.only(
+          topLeft: Radius.circular(8),
+          bottomLeft: Radius.circular(8),
+        ),
+        child: ShaderMask(
+          child: Image(
+            image: AssetImage(
+                imageString),
+          ),
+          shaderCallback: (Rect bounds) {
+            return LinearGradient(
+              tileMode: TileMode.mirror,
+              colors: [
+                Colors.white
+                    .withOpacity(.7),
+                Colors.white
+              ],
+              stops: [
+                0.0,
+                stop2,
+              ],
+            ).createShader(bounds);
+          },
+          blendMode: BlendMode.srcATop,
+        ),
+      ),
     );
   }
 

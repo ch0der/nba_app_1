@@ -90,7 +90,6 @@ class AdditionalGameDetails{
 
       _data.sink.add(Quarters0.fromJson(info['api']));
 
-      print(info['api']['statistics'][0]);
 
       return Quarters0.fromJson(info['api']);
     } else {
