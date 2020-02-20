@@ -29,12 +29,21 @@ class _GameDetailScreenState extends State<GameDetailScreen> {
   List testList;
   bool ascending = true;
   bool assistBool = true;
+  List<PlayerInfo> homeList1;
+  List<PlayerInfo> awayList1;
+  bool points = true;
+
 
   @override
   void initState() {
     super.initState();
     bloc2.fetchPost2(widget.gameId);
     bloc3.fetchPost2(widget.gameId);
+    List<PlayerInfo> players = widget.playerDetailsList;
+    homeList1 = players.where((index)=>index.teamId == widget.homeId).toList();
+    awayList1 = players.where((index)=>index.teamId == widget.awayId).toList();
+
+
   }
 
   void dispose() {
@@ -80,87 +89,55 @@ class _GameDetailScreenState extends State<GameDetailScreen> {
   }
 
   body() {
-    return CustomScrollView(
-      slivers: [
-        SliverAppBar(
-          floating: true,
-          snap: true,
-          expandedHeight: 50,
-          flexibleSpace: FlexibleSpaceBar(
-            title: Text('Test'),
-          ),
+
+
+
+    return Column(
+      children: <Widget>[
+        Container(
+          height: screenSize(context).height*(1/4),
         ),
-        SliverList(
-          delegate: SliverChildListDelegate(
-            [
-              quarterPoints(),
-              Container(
-                height: 100,
-                width: 200,
-                color: Colors.orange,
-              ),
-            ],
-          ),
+        Column(
+          children: <Widget>[
+            Container(
+              child: testSort(homeList1,points),
+            ),
+            Container(
+              height: screenSize(context).height*(1/3),
+              child: _testTable(homeList1),
+            ),
+          ],
         ),
-        SliverPersistentHeader(
-          pinned: true,
-          floating: false,
-          delegate: _Delegate(
-              child: Container(
-                height: 200,
-                child: _table(widget.homeId),
-              ),
-              maxHeight: 200,
-              minHeight: 50),
-        ),
-        SliverPersistentHeader(
-          pinned: true,
-          floating: false,
-          delegate: _Delegate(
-              child: Container(
-                height: 200,
-                child: _testTable(),
-              ),
-              maxHeight: 200,
-              minHeight: 50),
-        ),
-        SliverList(
-          delegate: SliverChildListDelegate(
-            [
-              Container(
-                height: 15,
-                width: 200,
-              ),
-              Container(
-                height: 100,
-                width: 200,
-                color: Colors.blue,
-              ),
-              Container(
-                height: 100,
-                width: 200,
-                color: Colors.orange,
-              ),
-              Container(
-                height: 100,
-                width: 200,
-                color: Colors.blue,
-              ),
-              Container(
-                height: 100,
-                width: 200,
-                color: Colors.orange,
-              ),
-              Container(
-                height: 400,
-                width: 200,
-                color: Colors.blue,
-              ),
-            ],
-          ),
+        Container(
+          height: screenSize(context).height*(1/3),
+          child: _testTable(awayList1),
         ),
       ],
     );
+  }
+  _columnHeaders(){
+    return Row(
+      children: <Widget>[
+        Container(width: screenSize(context).width*(1/5),),
+        _columnHeader('Pts'),
+        _columnHeader('AST'),
+        _columnHeader('REB'),
+        _columnHeader('+/-'),
+        _columnHeader('MIN'),
+        _columnHeader('POS'),
+      ],
+    );
+  }
+
+  _columnHeader(String header){
+    return Container(
+      width: screenSize(context).width*1/10,
+        child: FlatButton(
+          onPressed: (){
+
+          },
+            child: Text(header)));
+
   }
   List getPlayers(List list) {
         return list.map(
@@ -173,110 +150,59 @@ class _GameDetailScreenState extends State<GameDetailScreen> {
     )
         .toList();
   }
-
-
-
-  _table(String team) {
-    return Container(
-      child: StreamBuilder<LiveGame1>(
-        stream: bloc2.dataScores,
-        builder: (context, snapshot) {
-          if (snapshot.hasData) {
-            List<dynamic> dataList;
-            dataList = snapshot.data.statistics;
-            List homeList2 =
-                dataList.where((index1) => index1['teamId'] == team).toList();
-
-            testList = homeList2;
-
-
-            players = getPlayers(testList);
-            print(players[3].pts);
-            return RefreshIndicator(
-              onRefresh: () async {
-                await bloc2.fetchPost2(widget.gameId);
-              },
-              child: Container(
-                child: SingleChildScrollView(
-                  child: Column(
-                    children: <Widget>[
-                      DataTable(
-                        sortAscending: ascending,
-                        sortColumnIndex: 0,
-                        horizontalMargin: 24,
-                        dataRowHeight: 40,
-                        columnSpacing: 1,
-                        columns: [
-                          DataColumn(
-                            onSort: (i,b){
-                              onSortColumn(b);
-                            },
-                            label: Text('PlayerID'),
-                          ),
-                          DataColumn(
-                              onSort: (i,b){
-                                onSortColumn(ascending);
-                                setState(() {
-                                  ascending = !ascending;
-                                });
-
-                              },
-                              label: Text('PTS')),
-                          DataColumn(label: Text('AST')),
-                          DataColumn(label: Text('REB')),
-                          DataColumn(label: Align(child: Text('+/-'))),
-                        ],
-                        rows: players.map((player) => DataRow(
-
-                            cells: [
-                              DataCell(
-                                  Text(player.id)
-                              ),
-                              DataCell(
-                                  Text((player.pts))
-                              ),
-                              DataCell(
-                                  Text(player.ast)
-                              ),
-                              DataCell(
-                                  Text(player.reb)
-                              ),
-                              DataCell(
-                                  Text(player.plusMin)
-                              ),
-                            ]
-                        )).toList(),
-                      ),
-                    ],
-                  ),
-                ),
-              ),
-            );
-          } else {
-            return Container();
-          }
+  testSort(List<PlayerInfo> _list,bool point2s){
+    return RaisedButton(
+      onPressed: (){
+        if (points == true){
+          setState(() {
+            _list.sort((a,b)=>b.points.compareTo(a.points));
+            points = false;
+          });
+        } else if(points == false){
+          setState(() {
+            _list.sort((a,b)=>a.points.compareTo(b.points));
+            points = true;
+          });
+        }
+       print(_list);
         },
+      child: Container(
+        height: 40,
+        width: 40,
+        child: Text('points'),
+
       ),
     );
   }
-  onSortColumn(bool sort){
-    List<PlayerInfo> _list = widget.playerDetailsList;
+
+
+  onSortColumn(bool sort,List _list1){
+    List<PlayerInfo> _list = _list1;
     if(sort == true){
-      _list.sort((a,b)=> a.assists.compareTo(b.assists));
+      _list.sort((a,b)=> b.assists.compareTo(a.assists));
       setState(() {
         sort = false;
       });
     } else if(sort == false){
-     _list.sort((a,b)=> b.assists.compareTo(a.assists));
+     _list.sort((a,b)=> a.assists.compareTo(b.assists));
       setState(() {
         sort = true;
       });
     }
-    print(sort);
   }
-  _testTable(){
 
-    List<PlayerInfo> playerList = widget.playerDetailsList;
+  sort(List<PlayerInfo> _list){
+
+    _list.sort((a,b)=>a.points.compareTo(b.points));
+    setState(() {
+      homeList1 = _list;
+    });
+
+
+
+  }
+  _testTable(List<PlayerInfo> _list){
+
     return Container(
       child: SingleChildScrollView(
         child: Column(
@@ -290,7 +216,7 @@ class _GameDetailScreenState extends State<GameDetailScreen> {
               columns: [
                 DataColumn(
                   onSort: (i,b){
-                    onSortColumn(b);
+                    onSortColumn(b,_list);
                   },
                   label: Text('PlayerID'),
                 ),
@@ -298,19 +224,17 @@ class _GameDetailScreenState extends State<GameDetailScreen> {
                     numeric: true,
                     onSort: (i,b){
                       if(ascending == true){
-                        playerList.sort((a,b)=> a.points.compareTo(b.points));
+                        _list.sort((a,b)=> a.points.compareTo(b.points));
                         setState(() {
                           ascending = false;
                         });
                       } else
                       if(ascending == false){
-                        playerList.sort((a,b)=> b.points.compareTo(a.points));
+                        _list.sort((a,b)=> b.points.compareTo(a.points));
                         setState(() {
                           ascending = true;
                         });
                       }
-                      print(ascending);
-
                     },
                     label: Text('PTS')),
                 DataColumn(
@@ -318,12 +242,12 @@ class _GameDetailScreenState extends State<GameDetailScreen> {
                   onSort: (i,b){
 
                     if(assistBool== true){
-                      playerList.sort((a,b)=> a.assists.compareTo(b.assists));
+                      _list.sort((a,b)=> a.assists.compareTo(b.assists));
                       setState(() {
                         assistBool = false;
                       });
                     } else if(assistBool == false){
-                      playerList.sort((a,b)=> b.assists.compareTo(a.assists));
+                      _list.sort((a,b)=> b.assists.compareTo(a.assists));
                       setState(() {
                         assistBool = true;
                       });
@@ -344,7 +268,7 @@ class _GameDetailScreenState extends State<GameDetailScreen> {
                     numeric: true,
                     label: Text('POS')),
               ],
-              rows: playerList.map((player) => DataRow(
+              rows: _list.map((player) => DataRow(
 
                   cells: [
                     DataCell(

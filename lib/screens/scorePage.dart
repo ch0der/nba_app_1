@@ -20,7 +20,7 @@ class _ScorePageState extends State<ScorePage> {
   final scoreBloc = LiveStandingsBloc();
   final quarterBloc = AdditionalGameDetails();
   final playerBloc = GameDetailsBloc();
-  List someList;
+  List<PlayerInfo> someList;
    Future scoreFuture;
 
   @override
@@ -128,7 +128,7 @@ class _ScorePageState extends State<ScorePage> {
                             playerBloc.fetchPost3(dataList[index]['gameId']);
                             },
                                     onLongPress: () {
-                                     final future =
+                                     final Future<LiveGame1> future =
                                      playerBloc.fetchPost2(dataList[index]['gameId']);
                                      future.then((resp){
                                        someList = resp.statistics.map((index1)=> PlayerInfo(
