@@ -22,7 +22,7 @@ Quarters01 _$Quarters01FromJson(Map<String, dynamic> json) {
     ..leadChanges = json['leadChanges'] as String
     ..currentPeriod = json['currentPeriod'] as String
     ..halftime = json['halftime'] as String
-    ..EndOfPeriod = json['EndOfPeriod'] as String
+    ..endOfPeriod = json['EndOfPeriod'] as String
     ..seasonStage = json['seasonStage'] as String
     ..statusShortGame = json['statusShortGame'] as String
     ..statusGame = json['statusGame'] as String
@@ -47,7 +47,7 @@ Map<String, dynamic> _$Quarters01ToJson(Quarters01 instance) =>
       'leadChanges': instance.leadChanges,
       'currentPeriod': instance.currentPeriod,
       'halftime': instance.halftime,
-      'EndOfPeriod': instance.EndOfPeriod,
+      'EndOfPeriod': instance.endOfPeriod,
       'seasonStage': instance.seasonStage,
       'statusShortGame': instance.statusShortGame,
       'statusGame': instance.statusGame,

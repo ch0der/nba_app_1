@@ -1,14 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:nba_app/PlayerInfo.dart';
-import 'package:nba_app/animations/score_animation.dart';
 import 'package:nba_app/blocs/gameDetailsBloc.dart';
 
-import 'package:nba_app/library.dart';
 import 'package:nba_app/models/index.dart';
-import 'package:nba_app/models/liveScoreJsonData/liveGameData01.dart';
-import 'package:nba_app/blocs/live_scores_bloc.dart';
-import 'dart:async';
-
 class GameDetailScreen extends StatefulWidget {
   GameDetailScreen({this.gameId, this.homeId, this.awayId,this.playerDetailsList});
 
@@ -37,8 +31,6 @@ class _GameDetailScreenState extends State<GameDetailScreen> {
   @override
   void initState() {
     super.initState();
-    bloc2.fetchPost2(widget.gameId);
-    bloc3.fetchPost2(widget.gameId);
     List<PlayerInfo> players = widget.playerDetailsList;
     homeList1 = players.where((index)=>index.teamId == widget.homeId).toList();
     awayList1 = players.where((index)=>index.teamId == widget.awayId).toList();
@@ -68,8 +60,7 @@ class _GameDetailScreenState extends State<GameDetailScreen> {
         builder: (context, snapshot) {
           if (snapshot.hasData) {
             List<dynamic> dataList;
-            int quarter;
-            dataList = snapshot.data.game;
+                dataList = snapshot.data.game;
             List<dynamic> vTeam = dataList[0]['vTeam']['score']['linescore'];
             return Container(
               child: Row(
@@ -138,17 +129,6 @@ class _GameDetailScreenState extends State<GameDetailScreen> {
           },
             child: Text(header)));
 
-  }
-  List getPlayers(List list) {
-        return list.map(
-          (index) => PlayerStats(
-          id: index['playerId'],
-          pts: index['pos'],
-          ast: index['assists'],
-          reb: index['totReb'],
-          plusMin: index['plusMinus']),
-    )
-        .toList();
   }
   testSort(List<PlayerInfo> _list,bool point2s){
     return RaisedButton(

@@ -82,10 +82,7 @@ class _ScorePageState extends State<ScorePage> {
 
                             String homeLogo =
                                 'assets/team_logos/${dataList[index]['hTeam']['nickName']}.png';
-                            String teamIdHome =
-                                dataList[index]['hTeam']['teamId'];
-                            String teamIdAway =
-                                dataList[index]['vTeam']['teamId'];
+
 
                             return Center(
                               child: Stack(
@@ -135,7 +132,7 @@ class _ScorePageState extends State<ScorePage> {
                                            gameId: index1['gameId'],
                                            min: index1['min'],
                                            teamId: index1['teamId'],
-                                           points: int.parse(index1['points']),
+                                           points: "${index1['points']}".isNotEmpty ? int.parse(index1['points']) : 0,
                                            pos: index1['pos'],
                                            fgm: index1['fgm'],
                                            fga: index1['fga'],
@@ -154,7 +151,7 @@ class _ScorePageState extends State<ScorePage> {
                                            tpm: index1['tpm'],
                                            tpp: index1['tpp'],
                                            turnovers: index1['turnovers'],
-                                           assists: int.parse(index1['assists']),
+                                           assists: "${index1['assists']}".isNotEmpty ? index1['assists']:'0',
                                            steals: index1['steals']
 
                                        )).toList();
@@ -239,9 +236,7 @@ class _ScorePageState extends State<ScorePage> {
                                                           scoreBloc.dataScores,
                                                       builder:
                                                           (context, snapshot2) {
-                                                        List<dynamic>
-                                                            standingsList;
-                                                        String record;
+                                                          String record;
                                                         if (snapshot2.hasData) {
                                                           record = snapshot2
                                                                       .data[
@@ -311,8 +306,6 @@ class _ScorePageState extends State<ScorePage> {
                                                           scoreBloc.dataScores,
                                                       builder:
                                                           (context, snapshot2) {
-                                                        List<dynamic>
-                                                            standingsList;
                                                         String record;
                                                         if (snapshot2.hasData) {
                                                           record = snapshot2
@@ -449,33 +442,6 @@ class _ScorePageState extends State<ScorePage> {
         ),
       ),
     );
-  }
-
-  Color _color(String team) {
-    String test = team;
-
-    switch (test) {
-      case "LAL":
-        {
-          return Color.fromRGBO(255, 249, 82, 1);
-        }
-        break;
-      case "SAS":
-        {
-          return Colors.black;
-        }
-        break;
-      case "HOU":
-        {
-          return Colors.red;
-        }
-        break;
-      case "POR":
-        {
-          return Colors.deepOrange;
-        }
-        break;
-    }
   }
 
   buildBody() {

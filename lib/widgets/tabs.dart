@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:nba_app/library.dart';
-import 'package:nba_app/models/liveScoreJsonData/liveGameData01.dart';
 import 'package:nba_app/blocs/live_scores_bloc.dart';
 
 

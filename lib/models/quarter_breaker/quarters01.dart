@@ -20,7 +20,7 @@ class Quarters01 {
     String leadChanges;
     String currentPeriod;
     String halftime;
-    String EndOfPeriod;
+    String endOfPeriod;
     String seasonStage;
     String statusShortGame;
     String statusGame;

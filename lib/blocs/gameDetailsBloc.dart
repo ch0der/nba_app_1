@@ -5,13 +5,13 @@ import 'package:http/http.dart' as http;
 import 'package:nba_app/models/index.dart';
 import 'package:nba_app/models/live_game_details/liveGame1.dart';
 import 'package:rxdart/rxdart.dart';
-import 'package:nba_app/PlayerInfo.dart';
+
 
 class GameDetailsBloc {
   final _data = BehaviorSubject<LiveGame1>();
 
   Stream<LiveGame1> get dataScores => _data.stream;
-  List _list;
+
 
   Function(LiveGame1) get addData => _data.sink.add;
 
@@ -21,14 +21,6 @@ class GameDetailsBloc {
 
   GameDetailsBloc();
 
-  getInfo(String info) {}
-
-  List fetcher(String iD) {
-    return _list.map((index) => PlayerInfo(
-      gameId: iD,
-
-    )).toList();
-  }
 
   Future<LiveGame1> fetchPost2(String uniqueID) async {
     String myPath = "statistics/players/gameId/$uniqueID";

@@ -41,7 +41,7 @@ class PlayerInfo {
   String offReb;
   String defReb;
   String totReb;
-  int assists;
+  String assists;
   String pFouls;
   String steals;
   String turnovers;

@@ -20,7 +20,7 @@ class LiveScore0 {
     String gameDuration;
     String currentPeriod;
     String halftime;
-    String EndOfPeriod;
+    String endOfPeriod;
     String seasonStage;
     String statusShortGame;
     String statusGame;
