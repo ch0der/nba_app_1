@@ -40,13 +40,13 @@ class PlayerInfo {
   String tpp;
   String offReb;
   String defReb;
-  String totReb;
-  String assists;
+  int totReb;
+  int assists;
   String pFouls;
   String steals;
   String turnovers;
   String blocks;
-  String plusMinus;
+  int plusMinus;
   String playerId;
 
 }

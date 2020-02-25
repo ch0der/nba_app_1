@@ -143,15 +143,15 @@ class _ScorePageState extends State<ScorePage> {
                                            defReb: index1['defReb'],
                                            offReb: index1['offReb'],
                                            blocks: index1['blocks'],
-                                           totReb: index1['totReb'],
+                                           totReb: "${index1['totReb']}".isNotEmpty ? int.parse(index1['totReb']) : 0,
                                            playerId: index1['playerId'],
                                            pFouls: index1['pFouls'],
-                                           plusMinus: index1['plusMinus'],
+                                           plusMinus: "${index1['plusMinus']}".isNotEmpty ? int.parse(index1['plusMinus']) : 0,
                                            tpa: index1['tpa'],
                                            tpm: index1['tpm'],
                                            tpp: index1['tpp'],
                                            turnovers: index1['turnovers'],
-                                           assists: "${index1['assists']}".isNotEmpty ? index1['assists']:'0',
+                                           assists: "${index1['assists']}".isNotEmpty ? int.parse(index1['assists']): 0,
                                            steals: index1['steals']
 
                                        )).toList();
