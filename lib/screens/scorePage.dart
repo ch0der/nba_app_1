@@ -10,6 +10,8 @@ import 'package:nba_app/blocs/live_scores_bloc.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 
+import 'package:nba_app/widgets/shaderContainer.dart';
+
 class ScorePage extends StatefulWidget {
   @override
   _ScorePageState createState() => _ScorePageState();
@@ -111,12 +113,13 @@ class _ScorePageState extends State<ScorePage> {
                                       mainAxisAlignment:
                                           MainAxisAlignment.center,
                                       children: <Widget>[
-                                        shaderContainer(
-                                            "assets/collages/${dataList[index]['vTeam']['shortName']}away.jpg",
-                                            .7),
-                                        shaderContainer(
-                                            "assets/collages/${dataList[index]['hTeam']['shortName']}home.jpg",
-                                            .85)
+                                        ShaderContainer(
+                                          width: screenSize(context).width*.45,height: 200,image: "assets/collages/${dataList[index]['vTeam']['shortName']}away.jpg",stop: .7,
+                                        ),
+                                        ShaderContainer(
+                                          width: screenSize(context).width*.45,height: 200,image: "assets/collages/${dataList[index]['hTeam']['shortName']}home.jpg",stop: .85,
+                                        ),
+
                                       ],
                                     ),
                                   ),

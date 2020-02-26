@@ -1,9 +1,11 @@
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:nba_app/PlayerInfo.dart';
 import 'package:nba_app/blocs/gameDetailsBloc.dart';
 
 import 'package:nba_app/models/index.dart';
-import 'dart:math'as math;
+import 'dart:math' as math;
+import 'package:parallax_image/parallax_image.dart';
 
 class GameDetailScreen extends StatefulWidget {
   GameDetailScreen(
@@ -32,8 +34,9 @@ class _GameDetailScreenState extends State<GameDetailScreen> {
   bool rebSort = true;
   bool plusMinSort = true;
   double sortWidth = 50;
-
-
+  String asset = 'assets/collages/details/';
+  ScrollController _controllerScroll;
+  ScrollPhysics _physics;
 
   @override
   void initState() {
@@ -43,6 +46,8 @@ class _GameDetailScreenState extends State<GameDetailScreen> {
         players.where((index) => index.teamId == widget.homeId).toList();
     awayList1 =
         players.where((index) => index.teamId == widget.awayId).toList();
+    _controllerScroll = ScrollController();
+    _physics = ScrollPhysics();
   }
 
   void dispose() {
@@ -60,40 +65,38 @@ class _GameDetailScreenState extends State<GameDetailScreen> {
     return MediaQuery.of(context).size;
   }
 
-
   body() {
     PlayerInfo player;
     return Center(
-      child: Column(
+      child: Stack(
         children: <Widget>[
-          Container(
-            height: 150,
-          ),
-          _columnHeaders(homeList1),
           Column(
             children: <Widget>[
               Container(
-                height: screenSize(context).height * (1 / 3),
-                child: Theme(
-                  data: Theme.of(context).copyWith(
-                      dividerColor: Colors.blueAccent,
-                      selectedRowColor: Colors.orange),
-                  child: tableBuilder(homeList1,Colors.green),
-                ),
+                height: 150,
               ),
+              _columnHeaders(homeList1),
+              Column(
+                children: <Widget>[
+                  Container(
+                    child: backgroundImage(Colors.greenAccent, '${asset}NOPdet.jpg',
+                        tableBuilder(homeList1, Colors.greenAccent)),
+                  ),
+                ],
+              ),
+              Container(
+                height: 25,
+              ),
+              _columnHeaders(awayList1),
+              backgroundImage(Colors.yellow, '${asset}LALdet.jpg',
+                  tableBuilder(awayList1, Colors.yellow)),
             ],
-          ),
-          Container(
-            height: 25,
-          ),
-          _columnHeaders(awayList1),
-          Container(
-            child: tableBuilder(awayList1,Colors.amberAccent),
           ),
         ],
       ),
     );
   }
+
   // -----------------------------------------------------------------------------------------------------------------------------------------------------------
   // -----------------------------------------------------------------------------------------------------------------------------------------------------------
   // -----------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -102,8 +105,28 @@ class _GameDetailScreenState extends State<GameDetailScreen> {
   // -----------------------------------------------------------------------------------------------------------------------------------------------------------
   // -----------------------------------------------------------------------------------------------------------------------------------------------------------
   // -----------------------------------------------------------------------------------------------------------------------------------------------------------
+  backgroundImages() {
+    String asset = 'assets/collages/details/';
+    return Column(
+      children: <Widget>[],
+    );
+  }
 
-
+  backgroundImage(Color color, String assetImage, Widget child) {
+    return Container(
+      decoration: BoxDecoration(
+        image: DecorationImage(
+          fit: BoxFit.cover,
+          image: AssetImage(assetImage),
+          colorFilter: ColorFilter.mode(
+            color.withOpacity(.2),
+            BlendMode.modulate,
+          ),
+        ),
+      ),
+      child: child,
+    );
+  }
 
   quarterPoints() {
     return Container(
@@ -179,7 +202,6 @@ class _GameDetailScreenState extends State<GameDetailScreen> {
       ],
     );
   }
-
 
   sortName(List<PlayerInfo> _list, String str) {
     return Container(
@@ -286,44 +308,43 @@ class _GameDetailScreenState extends State<GameDetailScreen> {
     );
   }
 
-  tableBuilder(List<PlayerInfo>_list,Color color1){
-    
+  tableBuilder(List<PlayerInfo> _list, Color color1) {
     int listSize = _list.length;
-    return SingleChildScrollView(
-   child: Container(
-     width: screenSize(context).width*.8,
-     height: screenSize(context).height * (1 / 3),
-     child: ListView.builder(
-       padding: EdgeInsets.only(top: 0),
-         itemCount: listSize,
-         itemBuilder: (BuildContext context, int index){
-           if(listSize != null){
-             bool test = index.isOdd;
-             return Container(
-               height: 30,
-               color: test == true ? Colors.white70 : color1.withOpacity(.3),
-               child: Row(
-                 children: <Widget>[
-                   Expanded(flex: 2,
-                       child: Text("${_list[index].playerId}")),
-                   Expanded(child: Center(child: Text("${_list[index].points}"))),
-                   Expanded(child: Center(child: Text("${_list[index].assists}"))),
-                   Expanded(child: Center(child: Text("${_list[index].totReb}"))),
-                   Expanded(child: Center(child: Text("${_list[index].plusMinus}"))),
-                   Expanded(child: Center(child: Text("${_list[index].min}"))),
-                   Expanded(child: Center(child: Text("${_list[index].pos}"))),
-                 ],
-
-               ),
-             );
-           } else return Container(
-             height: 30,
-             color: Colors.orange,
-           );
-
-         }
-     ),
-   ),
+    return Container(
+      width: screenSize(context).width * .8,
+      height: screenSize(context).height * (1 / 3),
+      child: ListView.builder(
+          padding: EdgeInsets.only(top: 0),
+          itemCount: listSize,
+          itemBuilder: (BuildContext context, int index) {
+            if (listSize != null) {
+              bool test = index.isOdd;
+              return Container(
+                height: 30,
+                color: test == true ? Colors.grey[50] : color1.withOpacity(.5),
+                child: Row(
+                  children: <Widget>[
+                    Expanded(flex: 2, child: Text("${_list[index].playerId}")),
+                    Expanded(
+                        child: Center(child: Text("${_list[index].points}"))),
+                    Expanded(
+                        child: Center(child: Text("${_list[index].assists}"))),
+                    Expanded(
+                        child: Center(child: Text("${_list[index].totReb}"))),
+                    Expanded(
+                        child:
+                            Center(child: Text("${_list[index].plusMinus}"))),
+                    Expanded(child: Center(child: Text("${_list[index].min}"))),
+                    Expanded(child: Center(child: Text("${_list[index].pos}"))),
+                  ],
+                ),
+              );
+            } else
+              return Container(
+                height: 30,
+                color: Colors.orange,
+              );
+          }),
     );
   }
 }
@@ -361,3 +382,39 @@ class _Delegate extends SliverPersistentHeaderDelegate {
   }
 }
 
+class CustomScrollSimulation extends Simulation {
+  final double initPosition;
+  final double velocity;
+
+  @override
+  double x(double time) {
+    var max = math.max(
+        math.min(initPosition, 0.0), initPosition + velocity / 4 * time);
+    return max;
+  }
+
+  @override
+  bool isDone(double time) {
+    return false;
+  }
+
+  @override
+  double dx(double time) {
+    return velocity;
+  }
+
+  CustomScrollSimulation(this.initPosition, this.velocity);
+}
+
+class CustomScrollPhysics2 extends ScrollPhysics {
+  @override
+  ScrollPhysics applyTo(ScrollPhysics ancestor) {
+    return CustomScrollPhysics2();
+  }
+
+  @override
+  Simulation createBallisticSimulation(
+      ScrollMetrics position, double velocity) {
+    return CustomScrollSimulation(position.pixels, velocity);
+  }
+}
