@@ -9,12 +9,16 @@ import 'package:parallax_image/parallax_image.dart';
 
 class GameDetailScreen extends StatefulWidget {
   GameDetailScreen(
-      {this.gameId, this.homeId, this.awayId, this.playerDetailsList});
+      {this.gameId, this.homeId, this.awayId, this.playerDetailsList,this.homeLogo,this.awayLogo,this.awayFullName,this.homeFullName});
 
   final String gameId;
   final String homeId;
   final String awayId;
   final List playerDetailsList;
+  final String homeLogo;
+  final String awayLogo;
+  final String homeFullName;
+  final String awayFullName;
 
   @override
   _GameDetailScreenState createState() => _GameDetailScreenState();
@@ -37,6 +41,7 @@ class _GameDetailScreenState extends State<GameDetailScreen> {
   String asset = 'assets/collages/details/';
   ScrollController _controllerScroll;
   ScrollPhysics _physics;
+  final Color colorBar = Color.fromRGBO(150, 200, 10, 1);
 
   @override
   void initState() {
@@ -58,7 +63,14 @@ class _GameDetailScreenState extends State<GameDetailScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(body: body());
+    return Scaffold(
+      appBar: AppBar(
+        title: Text('MIL vs. TOR',style: TextStyle(color: Colors.grey[50]),),
+
+        backgroundColor: colorBar,
+      ),
+
+        body: body());
   }
 
   Size screenSize(BuildContext context) {
@@ -72,24 +84,40 @@ class _GameDetailScreenState extends State<GameDetailScreen> {
         children: <Widget>[
           Column(
             children: <Widget>[
-              Container(
-                height: 150,
-              ),
-              _columnHeaders(homeList1),
-              Column(
-                children: <Widget>[
-                  Container(
-                    child: backgroundImage(Colors.greenAccent, '${asset}NOPdet.jpg',
-                        tableBuilder(homeList1, Colors.greenAccent)),
-                  ),
-                ],
-              ),
+              teamHeader(widget.awayLogo,widget.awayFullName),
+              _columnHeaders(awayList1),
+              backgroundImage(Colors.red, '${asset}LALdet.jpg',
+                  tableBuilder(awayList1, Colors.red)),
               Container(
                 height: 25,
               ),
-              _columnHeaders(awayList1),
-              backgroundImage(Colors.yellow, '${asset}LALdet.jpg',
-                  tableBuilder(awayList1, Colors.yellow)),
+              teamHeader(widget.homeLogo,widget.homeFullName),
+              _columnHeaders(homeList1),
+              Container(
+                width: screenSize(context).width * .8,
+                height: screenSize(context).height * (1*.3),
+                child: PageView(
+                  children: <Widget>[
+                    Column(
+                      children: <Widget>[
+                        Container(
+                          child: backgroundImage(Colors.green, '${asset}NOPdet.jpg',
+                              tableBuilder(homeList1, Colors.green)),
+                        ),
+                      ],
+                    ),
+                    Column(
+                      children: <Widget>[
+                        Container(
+                          child: backgroundImage(Colors.green, '${asset}NOPdet.jpg',
+                              tableBuilder(homeList1, Colors.green)),
+                        ),
+                      ],
+                    ),
+
+                  ],
+                ),
+              ),
             ],
           ),
         ],
@@ -111,6 +139,33 @@ class _GameDetailScreenState extends State<GameDetailScreen> {
       children: <Widget>[],
     );
   }
+  teamHeader(String logo,String name){
+    return Row(
+      children: <Widget>[
+        Container(
+          width: 15,
+        ),
+        _logoContainer(60,logo ),
+        Container(
+          width: 30,
+        ),
+        Container(
+          child: Text(name,style: TextStyle(fontSize: 20),),
+
+        ),
+      ],
+    );
+  }
+  Container _logoContainer(double size, String logo) {
+    return Container(
+      height: size,
+      width: size,
+      decoration: BoxDecoration(
+          image: DecorationImage(
+            image: AssetImage(logo),
+          )),
+    );
+  }
 
   backgroundImage(Color color, String assetImage, Widget child) {
     return Container(
@@ -119,7 +174,7 @@ class _GameDetailScreenState extends State<GameDetailScreen> {
           fit: BoxFit.cover,
           image: AssetImage(assetImage),
           colorFilter: ColorFilter.mode(
-            color.withOpacity(.2),
+            color.withOpacity(.1),
             BlendMode.modulate,
           ),
         ),
@@ -175,8 +230,8 @@ class _GameDetailScreenState extends State<GameDetailScreen> {
             Expanded(child: sortAssists(_list, 'Ast')),
             Expanded(child: sortRebounds(_list, 'Reb')),
             Expanded(child: sortPlusMin(_list, '+/-')),
-            Expanded(child: sortAssists(_list, 'Ast')),
-            Expanded(child: sortAssists(_list, 'Ast')),
+            Expanded(child: sortAssists(_list, 'Min')),
+            Expanded(child: sortAssists(_list, 'Pos')),
           ],
         ),
       ),
@@ -197,8 +252,8 @@ class _GameDetailScreenState extends State<GameDetailScreen> {
         Expanded(child: sortAssists(homeList1, 'Ast')),
         Expanded(child: sortRebounds(homeList1, 'Reb')),
         Expanded(child: sortPlusMin(homeList1, '+/-')),
-        Expanded(child: sortAssists(homeList1, 'Ast')),
-        Expanded(child: sortAssists(homeList1, 'Ast')),
+        Expanded(child: sortAssists(homeList1, 'Min')),
+        Expanded(child: sortAssists(homeList1, 'Pos')),
       ],
     );
   }
@@ -312,7 +367,7 @@ class _GameDetailScreenState extends State<GameDetailScreen> {
     int listSize = _list.length;
     return Container(
       width: screenSize(context).width * .8,
-      height: screenSize(context).height * (1 / 3),
+      height: screenSize(context).height * (1*.3),
       child: ListView.builder(
           padding: EdgeInsets.only(top: 0),
           itemCount: listSize,
@@ -321,7 +376,7 @@ class _GameDetailScreenState extends State<GameDetailScreen> {
               bool test = index.isOdd;
               return Container(
                 height: 30,
-                color: test == true ? Colors.grey[50] : color1.withOpacity(.5),
+                color: test == true ? Colors.grey[50] : color1.withOpacity(.4),
                 child: Row(
                   children: <Widget>[
                     Expanded(flex: 2, child: Text("${_list[index].playerId}")),
