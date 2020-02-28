@@ -5,6 +5,8 @@ import 'package:http/http.dart' as http;
 import 'package:nba_app/models/index.dart';
 import 'package:nba_app/models/live_game_details/liveGame1.dart';
 import 'package:rxdart/rxdart.dart';
+import 'package:flutter/material.dart';
+import 'package:nba_app/teamColors.dart';
 
 
 class GameDetailsBloc {
@@ -108,3 +110,4 @@ class AdditionalGameDetails {
     }
   }
 }
+

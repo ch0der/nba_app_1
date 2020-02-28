@@ -4,12 +4,14 @@ import 'package:nba_app/PlayerInfo.dart';
 import 'package:nba_app/blocs/gameDetailsBloc.dart';
 
 import 'package:nba_app/models/index.dart';
+import 'package:nba_app/teamColors.dart';
 import 'dart:math' as math;
 import 'package:parallax_image/parallax_image.dart';
+import 'package:nba_app/blocs/colorBloc.dart';
 
 class GameDetailScreen extends StatefulWidget {
   GameDetailScreen(
-      {this.gameId, this.homeId, this.awayId, this.playerDetailsList,this.homeLogo,this.awayLogo,this.awayFullName,this.homeFullName,this.awayNickname,this.homeNickname});
+      {this.gameId, this.homeId, this.awayId, this.playerDetailsList,this.homeLogo,this.awayLogo,this.awayFullName,this.homeFullName,this.awayNickname,this.homeNickname,this.awayShort,this.homeShort});
 
   final String gameId;
   final String homeId;
@@ -21,6 +23,8 @@ class GameDetailScreen extends StatefulWidget {
   final String awayFullName;
   final String homeNickname;
   final String awayNickname;
+  final String homeShort;
+  final String awayShort;
 
   @override
   _GameDetailScreenState createState() => _GameDetailScreenState();
@@ -40,10 +44,11 @@ class _GameDetailScreenState extends State<GameDetailScreen> {
   bool rebSort = true;
   bool plusMinSort = true;
   double sortWidth = 50;
-  String asset = 'assets/collages/details/';
   ScrollController _controllerScroll;
   ScrollPhysics _physics;
   final Color colorBar = Color.fromRGBO(150, 200, 10, 1);
+  final colorBloc = ColorsBloc();
+  TeamColors _teamColors;
 
   @override
   void initState() {
@@ -55,12 +60,14 @@ class _GameDetailScreenState extends State<GameDetailScreen> {
         players.where((index) => index.teamId == widget.awayId).toList();
     _controllerScroll = ScrollController();
     _physics = ScrollPhysics();
+    _teamColors = getColors();
   }
 
   void dispose() {
     super.dispose();
     bloc2.dispose();
     bloc3.dispose();
+    colorBloc.dispose();
   }
 
   @override
@@ -79,8 +86,14 @@ class _GameDetailScreenState extends State<GameDetailScreen> {
     return MediaQuery.of(context).size;
   }
 
+  getColors<PlayerInfo>(){
+    return colorBloc.fetchColors(widget.awayShort, widget.homeShort);
+  }
+
   body() {
     PlayerInfo player;
+    String asset = 'assets/collages/details/';
+
     return Center(
       child: Stack(
         children: <Widget>[
@@ -89,7 +102,7 @@ class _GameDetailScreenState extends State<GameDetailScreen> {
               teamHeader(widget.awayLogo,widget.awayFullName),
               _columnHeaders(awayList1),
               backgroundImage(Colors.red, '${asset}LALdet.jpg',
-                  tableBuilder(awayList1, Colors.red)),
+                  tableBuilder(awayList1, _teamColors.awayColor)),
               Container(
                 height: 25,
               ),
@@ -104,7 +117,7 @@ class _GameDetailScreenState extends State<GameDetailScreen> {
                       children: <Widget>[
                         Container(
                           child: backgroundImage(Colors.green, '${asset}NOPdet.jpg',
-                              tableBuilder(homeList1, Colors.green)),
+                              tableBuilder(homeList1, _teamColors.homeColor)),
                         ),
                       ],
                     ),
@@ -405,6 +418,8 @@ class _GameDetailScreenState extends State<GameDetailScreen> {
     );
   }
 }
+
+List teamColorList = [Color];
 
 class _Delegate extends SliverPersistentHeaderDelegate {
   _Delegate(
