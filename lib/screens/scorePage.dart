@@ -176,6 +176,8 @@ class _ScorePageState extends State<ScorePage> {
                                                      awayLogo: awayLogo,
                                                      homeFullName: dataList[index]['hTeam']['fullName'],
                                                      awayFullName: dataList[index]['vTeam']['fullName'],
+                                                     homeNickname: dataList[index]['hTeam']['nickName'],
+                                                     awayNickname: dataList[index]['vTeam']['nickName'],
                                                    ),
                                                // Pass the arguments as part of the RouteSettings. The
                                                // DetailScreen reads the arguments from these settings.

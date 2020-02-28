@@ -9,7 +9,7 @@ import 'package:parallax_image/parallax_image.dart';
 
 class GameDetailScreen extends StatefulWidget {
   GameDetailScreen(
-      {this.gameId, this.homeId, this.awayId, this.playerDetailsList,this.homeLogo,this.awayLogo,this.awayFullName,this.homeFullName});
+      {this.gameId, this.homeId, this.awayId, this.playerDetailsList,this.homeLogo,this.awayLogo,this.awayFullName,this.homeFullName,this.awayNickname,this.homeNickname});
 
   final String gameId;
   final String homeId;
@@ -19,6 +19,8 @@ class GameDetailScreen extends StatefulWidget {
   final String awayLogo;
   final String homeFullName;
   final String awayFullName;
+  final String homeNickname;
+  final String awayNickname;
 
   @override
   _GameDetailScreenState createState() => _GameDetailScreenState();
@@ -65,7 +67,7 @@ class _GameDetailScreenState extends State<GameDetailScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('MIL vs. TOR',style: TextStyle(color: Colors.grey[50]),),
+        title: Text('${widget.awayNickname} @ ${widget.homeNickname}',style: TextStyle(color: Colors.grey[50]),),
 
         backgroundColor: colorBar,
       ),

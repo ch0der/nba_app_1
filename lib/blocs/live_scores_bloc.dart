@@ -30,7 +30,7 @@ class LiveScoreBloc{
     String myPath = "/games/date/2020-02-21";
     String livePath = "/games/live/";
     final response = await http
-        .get(Uri.https("api-nba-v1.p.rapidapi.com", myPath), headers: {
+        .get(Uri.https("api-nba-v1.p.rapidapi.com", livePath), headers: {
       "x-rapidapi-host": "api-nba-v1.p.rapidapi.com",
       "x-rapidapi-key": "6e137c5c98mshcfe3870862cc847p12a327jsn818c1cb513dd"
     });
