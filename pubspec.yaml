@@ -165,6 +165,12 @@ flutter:
     - family: Alatsi
       fonts:
         - asset: assets/fonts/Alatsi-Regular.ttf
+    - family: Jomo
+      fonts:
+        - asset: assets/fonts/Jomolhari-Regular.ttf
+    - family: Caladea
+      fonts:
+        - asset: assets/fonts/Caladea-Regular.ttf
   #   - family: Trajan Pro
   #     fonts:
   #       - asset: fonts/TrajanPro.ttf

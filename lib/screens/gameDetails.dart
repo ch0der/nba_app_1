@@ -100,17 +100,14 @@ class _GameDetailScreenState extends State<GameDetailScreen> {
         children: <Widget>[
           Column(
             children: <Widget>[
-              teamHeader(widget.awayLogo,widget.awayFullName),
+              teamHeader(widget.awayLogo,widget.awayFullName,_teamColors.awayColor),
               _columnHeaders(awayList1),
               backgroundImage(Colors.red, '${asset}LALdet.jpg',
                   tableBuilder(awayList1, _teamColors.awayColor)),
-              Container(
-                height: 25,
-              ),
-              teamHeader(widget.homeLogo,widget.homeFullName),
+              teamHeader(widget.homeLogo,widget.homeFullName,_teamColors.homeColor),
               _columnHeaders(homeList1),
               Container(
-                width: screenSize(context).width * .8,
+                width: screenSize(context).width,
                 height: screenSize(context).height * (1*.3),
                 child: PageView(
                   children: <Widget>[
@@ -155,21 +152,23 @@ class _GameDetailScreenState extends State<GameDetailScreen> {
       children: <Widget>[],
     );
   }
-  teamHeader(String logo,String name){
-    return Row(
-      children: <Widget>[
-        Container(
-          width: 15,
-        ),
-        _logoContainer(60,logo ),
-        Container(
-          width: 30,
-        ),
-        Container(
-          child: Text(name,style: TextStyle(fontSize: 20),),
+  teamHeader(String logo,String name,color){
+    return Container(
+      width: screenSize(context).width,
 
-        ),
-      ],
+      decoration: BoxDecoration(
+        color: color
+      ),
+      child: Container(
+        child: Center(child: Text(name,style: TextStyle(fontSize: 30,fontFamily: 'Caladea',color: Colors.white),)),
+
+      ),
+    );
+  }
+  teamHeader2(String name){
+    return    Container(
+      child: Text(name,style: TextStyle(fontSize: 30,fontFamily: 'Caladea',color: Colors.white),),
+
     );
   }
   Container _logoContainer(double size, String logo) {
@@ -231,7 +230,7 @@ class _GameDetailScreenState extends State<GameDetailScreen> {
         decoration: BoxDecoration(
           color: Colors.grey[200],
         ),
-        width: screenSize(context).width * .8,
+        width: screenSize(context).width,
         height: 30,
         child: Row(
           children: <Widget>[
@@ -385,7 +384,7 @@ class _GameDetailScreenState extends State<GameDetailScreen> {
   tableBuilder(List<PlayerInfo> _list, Color color1) {
     int listSize = _list.length;
     return Container(
-      width: screenSize(context).width * .8,
+      width: screenSize(context).width,
       height: screenSize(context).height * (1*.3),
       child: ListView.builder(
           padding: EdgeInsets.only(top: 0),
