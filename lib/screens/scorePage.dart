@@ -23,7 +23,9 @@ class _ScorePageState extends State<ScorePage> {
   final quarterBloc = AdditionalGameDetails();
   final playerBloc = GameDetailsBloc();
   List<PlayerInfo> someList;
-   Future scoreFuture;
+  Future scoreFuture;
+  final double boxHeight = 175;
+  List scoreList;
 
   @override
   void initState() {
@@ -61,6 +63,7 @@ class _ScorePageState extends State<ScorePage> {
             List<dynamic> dataList;
             if (snapshot.hasData) {
               dataList = snapshot.data.games;
+              scoreList = dataList;
 
               return Container(
                 child: (snapshot.data.games.length > 0
@@ -85,7 +88,6 @@ class _ScorePageState extends State<ScorePage> {
                             String homeLogo =
                                 'assets/team_logos/${dataList[index]['hTeam']['nickName']}.png';
 
-
                             return Center(
                               child: Stack(
                                 alignment: Alignment.center,
@@ -105,7 +107,7 @@ class _ScorePageState extends State<ScorePage> {
                                         ),
                                       ],
                                     ),
-                                    height: 200,
+                                    height: boxHeight,
                                   ),
                                   Opacity(
                                     opacity: .5,
@@ -113,92 +115,43 @@ class _ScorePageState extends State<ScorePage> {
                                       mainAxisAlignment:
                                           MainAxisAlignment.center,
                                       children: <Widget>[
-                                        ShaderContainer(
-                                          width: screenSize(context).width*.45,height: 200,image: "assets/collages/${dataList[index]['vTeam']['shortName']}away.jpg",stop: .7,
+                                        ShaderMask(
+                                          shaderCallback: (Rect bounds) {
+                                            return LinearGradient(
+                                              tileMode: TileMode.mirror,
+                                              colors: [Colors.white.withOpacity(.7), Colors.grey[50],Colors.grey[50],Colors.white.withOpacity(.7)],
+                                              stops: [
+                                                0.0,
+                                                .4,
+                                                .6,
+                                                1,
+                                              ],
+                                            ).createShader(bounds);
+                                          },
+                                          blendMode: BlendMode.srcATop,
+                                          child: Row(
+                                            children: <Widget>[
+                                              containerImage( "assets/collages/${dataList[index]['vTeam']['shortName']}away.jpg"),
+                                        containerImage("assets/collages/${dataList[index]['hTeam']['shortName']}home.jpg"),
+                                            ],
+                                          ),
                                         ),
-                                        ShaderContainer(
-                                          width: screenSize(context).width*.45,height: 200,image: "assets/collages/${dataList[index]['hTeam']['shortName']}home.jpg",stop: .85,
-                                        ),
-
                                       ],
                                     ),
                                   ),
-                                  FlatButton(
-                                    onPressed: (){
-                            playerBloc.fetchPost3(dataList[index]['gameId']);
-                            },
-                                    onLongPress: () {
-                                     final Future<LiveGame1> future =
-                                     playerBloc.fetchPost2(dataList[index]['gameId']);
-                                     future.then((resp){
-                                       someList = resp.statistics.map((index1)=> PlayerInfo(
-                                           gameId: index1['gameId'],
-                                           min: index1['min'],
-                                           teamId: index1['teamId'],
-                                           points: "${index1['points']}".isNotEmpty ? int.parse(index1['points']) : 0,
-                                           pos: index1['pos'],
-                                           fgm: index1['fgm'],
-                                           fga: index1['fga'],
-                                           fta: index1['fta'],
-                                           fgp: index1['fgp'],
-                                           ftm: index1['ftm'],
-                                           ftp: index1['ftp'],
-                                           defReb: index1['defReb'],
-                                           offReb: index1['offReb'],
-                                           blocks: index1['blocks'],
-                                           totReb: "${index1['totReb']}".isNotEmpty ? int.parse(index1['totReb']) : 0,
-                                           playerId: index1['playerId'],
-                                           pFouls: index1['pFouls'],
-                                           plusMinus: "${index1['plusMinus']}".isNotEmpty ? int.parse(index1['plusMinus']) : 0,
-                                           tpa: index1['tpa'],
-                                           tpm: index1['tpm'],
-                                           tpp: index1['tpp'],
-                                           turnovers: index1['turnovers'],
-                                           assists: "${index1['assists']}".isNotEmpty ? int.parse(index1['assists']): 0,
-                                           steals: index1['steals']
-
-                                       )).toList();
-                                     });
-                                     future.then((resp2)
-                                         {
-                                           Navigator.push(
-                                             context,
-                                             MaterialPageRoute(
-                                               builder: (context) =>
-                                                   GameDetailScreen(
-                                                     gameId: dataList[index]['gameId'],
-                                                     homeId: dataList[index]['hTeam']
-                                                     ['teamId'],
-                                                     awayId: dataList[index]['vTeam']
-                                                     ['teamId'],
-                                                     playerDetailsList: someList,
-                                                     homeLogo: homeLogo,
-                                                     awayLogo: awayLogo,
-                                                     homeFullName: dataList[index]['hTeam']['fullName'],
-                                                     awayFullName: dataList[index]['vTeam']['fullName'],
-                                                     homeNickname: dataList[index]['hTeam']['nickName'],
-                                                     awayNickname: dataList[index]['vTeam']['nickName'],
-                                                     homeShort: dataList[index]['hTeam']['shortName'],
-                                                     awayShort: dataList[index]['vTeam']['shortName'],
-                                                   ),
-                                               // Pass the arguments as part of the RouteSettings. The
-                                               // DetailScreen reads the arguments from these settings.
-                                               settings: RouteSettings(),
-                                             ),
-                                           );
-                                           print(someList);
-                                         }
-                                     );
-
-                                    },
-                                    child: Container(
-                                      width: screenSize(context).width * .9,
-                                      height: 200,
-                                      decoration: BoxDecoration(
-                                        borderRadius: BorderRadius.all(
-                                          Radius.circular(8),
-                                        ),
+                                  Container(
+                                    width: screenSize(context).width,
+                                    height: boxHeight,
+                                    decoration: BoxDecoration(
+                                      borderRadius: BorderRadius.all(
+                                        Radius.circular(8),
                                       ),
+                                    ),
+                                    child: FlatButton(
+
+                                      onPressed: (){
+                                        onPressed(index);
+                                      },
                                       child: Column(
                                         children: <Widget>[
                                           Container(
@@ -242,12 +195,10 @@ class _ScorePageState extends State<ScorePage> {
                                                         ),
                                                       ),
                                                     ),
-                                                    StreamBuilder(
-                                                      stream:
-                                                          scoreBloc.dataScores,
+                                                    StreamBuilder(stream: scoreBloc.dataScores,
                                                       builder:
                                                           (context, snapshot2) {
-                                                          String record;
+                                                        String record;
                                                         if (snapshot2.hasData) {
                                                           record = snapshot2
                                                                       .data[
@@ -384,6 +335,86 @@ class _ScorePageState extends State<ScorePage> {
       ),
     );
   }
+  onPressed(int index){
+    String awayLogo =
+        'assets/team_logos/${scoreList[index]['vTeam']['nickName']}.png';
+
+    String homeLogo =
+        'assets/team_logos/${scoreList[index]['hTeam']['nickName']}.png';
+    final Future<LiveGame1> future = playerBloc.fetchPost2(scoreList[index]['gameId']);
+    future.then((resp) {
+      someList = resp.statistics
+          .map((index1) => PlayerInfo(
+          gameId: index1['gameId'],
+          min: index1['min'],
+          teamId: index1['teamId'],
+          points: "${index1['points']}".isNotEmpty ? int.parse(index1['points']) : 0,
+          pos: index1['pos'],
+          fgm: index1['fgm'],
+          fga: index1['fga'],
+          fta: index1['fta'],
+          fgp: index1['fgp'],
+          ftm: index1['ftm'],
+          ftp: index1['ftp'],
+          defReb: index1['defReb'],
+          offReb: index1['offReb'],
+          blocks: index1['blocks'],
+          totReb: "${index1['totReb']}".isNotEmpty ? int.parse(index1['totReb']): 0,
+          playerId: index1['playerId'],
+          pFouls: index1['pFouls'],
+          plusMinus: "${index1['plusMinus']}".isNotEmpty ? int.parse(index1['plusMinus']) : 0,
+          tpa: index1['tpa'],
+          tpm: index1['tpm'],
+          tpp: index1['tpp'],
+          turnovers: index1['turnovers'],
+          assists: "${index1['assists']}".isNotEmpty ? int.parse(index1['assists']): 0,
+          steals: index1['steals']))
+          .toList();
+    });
+    future.then((resp2) {
+      Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (context) => GameDetailScreen(
+            gameId: scoreList[index]['gameId'],
+            homeId: scoreList[index]['hTeam']['teamId'],
+            awayId: scoreList[index]['vTeam']['teamId'],
+            playerDetailsList: someList,
+            homeLogo: homeLogo,
+            awayLogo: awayLogo,
+            homeFullName: scoreList[index]['hTeam']['fullName'],
+            awayFullName: scoreList[index]['vTeam']['fullName'],
+            homeNickname: scoreList[index]['hTeam']['nickName'],
+            awayNickname: scoreList[index]['vTeam']['nickName'],
+            homeShort: scoreList[index]['hTeam']['shortName'],
+            awayShort: scoreList[index]['vTeam']['shortName'],
+          ),
+          // Pass the arguments as part of the RouteSettings. The
+          // DetailScreen reads the arguments from these settings.
+          settings: RouteSettings(),
+        ),
+      );
+    });
+
+  }
+
+  containerImage(String image){
+    return  Container(
+      width: screenSize(context).width *.45,
+      height: boxHeight,
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.all(
+          Radius.circular(8),
+        ),
+        image: DecorationImage(
+          fit: BoxFit.fill,
+          image: AssetImage(
+              image),
+        ),
+      ),
+    );
+  }
+
   Future<LiveGame1> fetchPost4(String uniqueID) async {
     String myPath = "statistics/players/gameId/$uniqueID";
 
@@ -398,9 +429,7 @@ class _ScorePageState extends State<ScorePage> {
 
       var info = json.decode(response.body);
 
-      print( info['api']);
-
-
+      print(info['api']);
 
       return LiveGame1.fromJson(info['api']);
     } else {
@@ -429,7 +458,7 @@ class _ScorePageState extends State<ScorePage> {
         ),
       ),
       width: screenSize(context).width * .45,
-      height: 200,
+      height: boxHeight,
       child: ClipRRect(
         borderRadius: BorderRadius.only(
           topLeft: Radius.circular(8),
@@ -492,7 +521,7 @@ class _ScorePageState extends State<ScorePage> {
               right: BorderSide(width: 1),
             ),
           ),
-          height: 200,
+          height: boxHeight,
           child: Column(
             children: <Widget>[
               gameTimeContainer(),

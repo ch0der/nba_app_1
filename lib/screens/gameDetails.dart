@@ -74,11 +74,6 @@ class _GameDetailScreenState extends State<GameDetailScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text('${widget.awayNickname} @ ${widget.homeNickname}',style: TextStyle(color: Colors.grey[50]),),
-
-        backgroundColor: colorBar,
-      ),
 
         body: body());
   }
@@ -96,42 +91,39 @@ class _GameDetailScreenState extends State<GameDetailScreen> {
     String asset = 'assets/collages/details/';
 
     return Center(
-      child: Stack(
+      child: Column(
         children: <Widget>[
-          Column(
-            children: <Widget>[
-              teamHeader(widget.awayLogo,widget.awayFullName,_teamColors.awayColor),
-              _columnHeaders(awayList1),
-              backgroundImage(Colors.red, '${asset}LALdet.jpg',
-                  tableBuilder(awayList1, _teamColors.awayColor)),
-              teamHeader(widget.homeLogo,widget.homeFullName,_teamColors.homeColor),
-              _columnHeaders(homeList1),
-              Container(
-                width: screenSize(context).width,
-                height: screenSize(context).height * (1*.3),
-                child: PageView(
+          Container(height: 50,),
+          teamHeader(widget.awayLogo,widget.awayFullName,_teamColors.awayColor),
+          _columnHeaders(awayList1),
+          backgroundImage(Colors.red, '${asset}LALdet.jpg',
+              tableBuilder(awayList1, _teamColors.awayColor)),
+          teamHeader(widget.homeLogo,widget.homeFullName,_teamColors.homeColor),
+          _columnHeaders(homeList1),
+          Container(
+            width: screenSize(context).width,
+            height: screenSize(context).height * (1*.3),
+            child: PageView(
+              children: <Widget>[
+                Column(
                   children: <Widget>[
-                    Column(
-                      children: <Widget>[
-                        Container(
-                          child: backgroundImage(Colors.green, '${asset}NOPdet.jpg',
-                              tableBuilder(homeList1, _teamColors.homeColor)),
-                        ),
-                      ],
+                    Container(
+                      child: backgroundImage(Colors.green, '${asset}NOPdet.jpg',
+                          tableBuilder(homeList1, _teamColors.homeColor)),
                     ),
-                    Column(
-                      children: <Widget>[
-                        Container(
-                          child: backgroundImage(Colors.green, '${asset}NOPdet.jpg',
-                              tableBuilder(homeList1, Colors.green)),
-                        ),
-                      ],
-                    ),
-
                   ],
                 ),
-              ),
-            ],
+                Column(
+                  children: <Widget>[
+                    Container(
+                      child: backgroundImage(Colors.green, '${asset}NOPdet.jpg',
+                          tableBuilder(homeList1, Colors.green)),
+                    ),
+                  ],
+                ),
+
+              ],
+            ),
           ),
         ],
       ),

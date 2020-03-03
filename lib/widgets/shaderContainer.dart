@@ -33,7 +33,7 @@ class ShaderContainer extends StatelessWidget {
           shaderCallback: (Rect bounds) {
             return LinearGradient(
               tileMode: TileMode.mirror,
-              colors: [Colors.white.withOpacity(.7), Colors.white],
+              colors: [Colors.white.withOpacity(.7), Colors.grey[50]],
               stops: [
                 0.0,
                 stop,
