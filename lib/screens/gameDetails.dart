@@ -50,6 +50,7 @@ class _GameDetailScreenState extends State<GameDetailScreen> {
   final colorBloc = ColorsBloc();
   TeamColors _teamColors;
   final Color textColor = Colors.black;
+  final TextStyle _style = TextStyle(fontWeight: FontWeight.bold,fontSize: 18,color: Colors.white);
 
   @override
   void initState() {
@@ -62,6 +63,7 @@ class _GameDetailScreenState extends State<GameDetailScreen> {
     _controllerScroll = ScrollController();
     _physics = ScrollPhysics();
     _teamColors = getColors();
+    print(_teamColors.awayColor2);
   }
 
   void dispose() {
@@ -83,7 +85,11 @@ class _GameDetailScreenState extends State<GameDetailScreen> {
   }
 
   getColors<PlayerInfo>(){
-    return colorBloc.fetchColors(widget.awayShort, widget.homeShort);
+    String home = widget.homeShort;
+    String away = widget.awayShort;
+    String two = '2';
+
+    return colorBloc.fetchColors(home,home+two,away,away+two);
   }
 
   body() {
@@ -95,11 +101,11 @@ class _GameDetailScreenState extends State<GameDetailScreen> {
         children: <Widget>[
           Container(height: 50,),
           teamHeader(widget.awayLogo,widget.awayFullName,_teamColors.awayColor),
-          _columnHeaders(awayList1),
+          _columnHeaders(awayList1,_teamColors.awayColor2),
           backgroundImage(Colors.red, '${asset}LALdet.jpg',
               tableBuilder(awayList1, _teamColors.awayColor)),
           teamHeader(widget.homeLogo,widget.homeFullName,_teamColors.homeColor),
-          _columnHeaders(homeList1),
+          _columnHeaders(homeList1,_teamColors.homeColor2),
           Container(
             width: screenSize(context).width,
             height: screenSize(context).height * (1*.3),
@@ -216,11 +222,12 @@ class _GameDetailScreenState extends State<GameDetailScreen> {
     );
   }
 
-  _columnHeaders(List _list) {
+  _columnHeaders(List _list,Color _color) {
+
     return Center(
       child: Container(
         decoration: BoxDecoration(
-          color: Colors.grey[200],
+          color: _color,
         ),
         width: screenSize(context).width,
         height: 30,
@@ -228,17 +235,17 @@ class _GameDetailScreenState extends State<GameDetailScreen> {
           children: <Widget>[
             Expanded(
               flex: 2,
-              child: sortName(_list, 'Player'),
+              child: sortName(_list, 'Player',_style),
             ),
             Expanded(
               flex: 1,
-              child: sortPoints(_list, 'Pts'),
+              child: sortPoints(_list, 'Pts',_style),
             ),
-            Expanded(child: sortAssists(_list, 'Ast')),
-            Expanded(child: sortRebounds(_list, 'Reb')),
-            Expanded(child: sortPlusMin(_list, '+/-')),
-            Expanded(child: sortAssists(_list, 'Min')),
-            Expanded(child: sortAssists(_list, 'Pos')),
+            Expanded(child: sortAssists(_list, 'Ast',_style)),
+            Expanded(child: sortRebounds(_list, 'Reb',_style)),
+            Expanded(child: sortPlusMin(_list, '+/-',_style)),
+            Expanded(child: sortAssists(_list, 'Min',_style)),
+            Expanded(child: sortAssists(_list, 'Pos',_style)),
           ],
         ),
       ),
@@ -250,22 +257,22 @@ class _GameDetailScreenState extends State<GameDetailScreen> {
       children: <Widget>[
         Expanded(
           flex: 2,
-          child: sortPoints(homeList1, 'Player'),
+          child: sortPoints(homeList1, 'Player',_style),
         ),
         Expanded(
           flex: 1,
-          child: sortPoints(homeList1, 'Pts'),
+          child: sortPoints(homeList1, 'Pts',_style),
         ),
-        Expanded(child: sortAssists(homeList1, 'Ast')),
-        Expanded(child: sortRebounds(homeList1, 'Reb')),
-        Expanded(child: sortPlusMin(homeList1, '+/-')),
-        Expanded(child: sortAssists(homeList1, 'Min')),
-        Expanded(child: sortAssists(homeList1, 'Pos')),
+        Expanded(child: sortAssists(homeList1, 'Ast',_style)),
+        Expanded(child: sortRebounds(homeList1, 'Reb',_style)),
+        Expanded(child: sortPlusMin(homeList1, '+/-',_style)),
+        Expanded(child: sortAssists(homeList1, 'Min',_style)),
+        Expanded(child: sortAssists(homeList1, 'Pos',_style)),
       ],
     );
   }
 
-  sortName(List<PlayerInfo> _list, String str) {
+  sortName(List<PlayerInfo> _list, String str,TextStyle _style) {
     return Container(
       child: GestureDetector(
         onTap: () {
@@ -281,12 +288,12 @@ class _GameDetailScreenState extends State<GameDetailScreen> {
             });
           }
         },
-        child: Text(str),
+        child: Text(str,style: _style,),
       ),
     );
   }
 
-  sortPoints(List<PlayerInfo> _list, String str) {
+  sortPoints(List<PlayerInfo> _list, String str,TextStyle _style) {
     return Container(
       child: GestureDetector(
         onTap: () {
@@ -302,12 +309,12 @@ class _GameDetailScreenState extends State<GameDetailScreen> {
             });
           }
         },
-        child: Center(child: Text(str)),
+        child: Center(child: Text(str,style: _style,)),
       ),
     );
   }
 
-  sortAssists(List<PlayerInfo> _list, String str) {
+  sortAssists(List<PlayerInfo> _list, String str,TextStyle _style) {
     return Container(
       child: GestureDetector(
         onTap: () {
@@ -323,12 +330,12 @@ class _GameDetailScreenState extends State<GameDetailScreen> {
             });
           }
         },
-        child: Center(child: Text(str)),
+        child: Center(child: Text(str,style: _style,)),
       ),
     );
   }
 
-  sortRebounds(List<PlayerInfo> _list, String str) {
+  sortRebounds(List<PlayerInfo> _list, String str,TextStyle _style) {
     return Container(
       child: GestureDetector(
         onTap: () {
@@ -344,12 +351,12 @@ class _GameDetailScreenState extends State<GameDetailScreen> {
             });
           }
         },
-        child: Center(child: Text(str)),
+        child: Center(child: Text(str,style: _style,)),
       ),
     );
   }
 
-  sortPlusMin(List<PlayerInfo> _list, String str) {
+  sortPlusMin(List<PlayerInfo> _list, String str,TextStyle _style) {
     return Container(
       child: GestureDetector(
         onTap: () {
@@ -365,7 +372,7 @@ class _GameDetailScreenState extends State<GameDetailScreen> {
             });
           }
         },
-        child: Center(child: Text(str)),
+        child: Center(child: Text(str,style: _style,)),
       ),
     );
   }
