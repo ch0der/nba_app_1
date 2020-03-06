@@ -158,15 +158,9 @@ class _GameDetailScreenState extends State<GameDetailScreen> {
         color: color
       ),
       child: Container(
-        child: Center(child: Text(name,style: TextStyle(fontSize: 30,fontFamily: 'Caladea',color: Colors.white),)),
+        child: Center(child: Text(name,style: TextStyle(fontSize: 28,fontFamily: 'Alata',color: Colors.white),)),
 
       ),
-    );
-  }
-  teamHeader2(String name){
-    return    Container(
-      child: Text(name,style: TextStyle(fontSize: 30,fontFamily: 'Caladea',color: Colors.white),),
-
     );
   }
   Container _logoContainer(double size, String logo) {
@@ -381,6 +375,9 @@ class _GameDetailScreenState extends State<GameDetailScreen> {
   }
 
   tableBuilder(List<PlayerInfo> _list, Color color1) {
+    TextStyle _style = TextStyle(color: textColor);
+
+
     int listSize = _list.length;
     return Container(
       width: screenSize(context).width,
@@ -396,18 +393,18 @@ class _GameDetailScreenState extends State<GameDetailScreen> {
                 color: test == true ? Colors.grey[50] : color1.withOpacity(.5),
                 child: Row(
                   children: <Widget>[
-                    Expanded(flex: 2, child: tableText("${_list[index].playerId}")),
+                    Expanded(flex: 2, child: tableText("${_list[index].playerId}",)),
                     Expanded(
-                        child: Center(child: Text("${_list[index].points}",style: TextStyle(color: textColor)))),
+                        child: Center(child: Text("${_list[index].points}",style:  _style))),
                     Expanded(
-                        child: Center(child: Text("${_list[index].assists}",style: TextStyle(color: textColor)))),
+                        child: Center(child: Text("${_list[index].assists}",style:  _style))),
                     Expanded(
-                        child: Center(child: Text("${_list[index].totReb}",style: TextStyle(color: textColor)))),
+                        child: Center(child: Text("${_list[index].totReb}",style:  _style))),
                     Expanded(
                         child:
-                            Center(child: Text("${_list[index].plusMinus}",style: TextStyle(color: textColor)))),
-                    Expanded(child: Center(child: Text("${_list[index].min}",style: TextStyle(color:textColor)))),
-                    Expanded(child: Center(child: Text("${_list[index].pos}",style: TextStyle(color: textColor)))),
+                            Center(child: Text("${_list[index].plusMinus}",style: _style))),
+                    Expanded(child: Center(child: Text("${_list[index].min}",style:  _style))),
+                    Expanded(child: Center(child: Text("${_list[index].pos}",style:  _style))),
                   ],
                 ),
               );

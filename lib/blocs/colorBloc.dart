@@ -52,7 +52,7 @@ class ColorsBloc{
       "MIA2" : Color.fromRGBO(6,25,34, 1),
       "ATL2" : Color.fromRGBO(38,40,42, 1),
       "BOS2" : Color.fromRGBO(150,56,33,1),
-      "BKN2" : Color.fromRGBO(255,255,255, 1),
+      "BKN2" : Colors.black,
       "PHI2" : Color.fromRGBO(237,23,76,1),
       "CHA2" : Color.fromRGBO(0,120,140,1),
       "CHI2" : Color.fromRGBO(6,25,34,1),

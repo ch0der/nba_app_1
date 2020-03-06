@@ -100,13 +100,14 @@ class _ScorePageState extends State<ScorePage> {
                             itemCount: dataList == null ? 0 : dataList.length,
                             itemBuilder: (BuildContext context, int index) {
                               String quarter = dataList[index]['currentPeriod'];
+                              String awy = 'assets/team_logos/${dataList[index]['vTeam']['nickName']}.png';
+                              String home =  'assets/team_logos/${dataList[index]['hTeam']['nickName']}.png';
 
                               String awayLogo =
-                                  'assets/team_logos/${dataList[index]['vTeam']['nickName']}.png';
+                               awy.contains(' ') ? 'assets/team_logos/TrailBlazers.png' : awy;
 
                               String homeLogo =
-                                  'assets/team_logos/${dataList[index]['hTeam']['nickName']}.png';
-
+                                 home.contains(' ') ? 'assets/team_logos/TrailBlazers.png' : home;
                               return Center(
                                 child: Stack(
                                   alignment: Alignment.center,
@@ -144,7 +145,7 @@ class _ScorePageState extends State<ScorePage> {
                                                     MainAxisAlignment.center,
                                                 children: <Widget>[
                                                   Text(
-                                                    "Q ${quarter.replaceAll('/4', '')}",
+                                                    "Q${quarter.replaceAll('/4', '')}".replaceAll('Q5', 'OT').replaceAll('Q6', '2OT'),
                                                     style: TextStyle(
                                                         fontFamily: 'Alatsi',
                                                         fontSize: 15),
@@ -195,7 +196,7 @@ class _ScorePageState extends State<ScorePage> {
                                                             ['halftime'],
                                                         dataList[index]['clock'],33),
                                                   ),
-                                                  ScoreAnimation(),
+                                                  dataList[index]['clock'].toString().isNotEmpty ? ScoreAnimation : Container(),
                                                 ],
                                               ),
                                             ),

@@ -28,7 +28,7 @@ class LiveScoreBloc{
   }
 
   Future<LiveGameData01> fetchPost2() async {
-    String myPath = "/games/date/2020-03-03";
+    String myPath = "/games/date/2020-03-04";
     String livePath = "/games/live/";
     final response = await http
         .get(Uri.https("api-nba-v1.p.rapidapi.com", myPath), headers: {

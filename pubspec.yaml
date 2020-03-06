@@ -66,7 +66,7 @@ flutter:
     - assets/team_logos/Bucks.png
     - assets/team_logos/76ers.png
     - assets/team_logos/Hornets.png
-    - assets/team_logos/Trail Blazers.png
+    - assets/team_logos/TrailBlazers.png
     - assets/team_logos/Raptors.png
     - assets/team_logos/Suns.png
     - assets/team_logos/Clippers.png
@@ -174,6 +174,9 @@ flutter:
     - family: Caladea
       fonts:
         - asset: assets/fonts/Caladea-Regular.ttf
+    - family: Alata
+      fonts:
+        - asset: assets/fonts/alata.ttf
   #   - family: Trajan Pro
   #     fonts:
   #       - asset: fonts/TrajanPro.ttf
