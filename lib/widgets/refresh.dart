@@ -11,7 +11,7 @@ class Refresh extends StatelessWidget{
     return RefreshIndicator(
       child: child,   // child #1 refers to child of RefreshIndicator, child #2 means we want to pass in the above child as the child
       onRefresh: () async {
-        await bloc.fetchPost2();
+
       },
     );
   }

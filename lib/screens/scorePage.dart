@@ -29,12 +29,16 @@ class _ScorePageState extends State<ScorePage> {
   List scoreList;
   DefaultTabController _defaultTabController;
   final DateTime now = DateTime.now();
+  String _time;
+  List gameDateList;
+
 
 
   @override
   void initState() {
     super.initState();
-    bloc.fetchPost2();
+    _time = "/games/live/";
+    bloc.fetchPost2("/games/live/");
   }
 
   @override
@@ -52,180 +56,204 @@ class _ScorePageState extends State<ScorePage> {
 
     TextStyle styleOne = TextStyle(fontSize:  textHeight,fontFamily: 'Alatsi');
 
-    return DefaultTabController(
-      initialIndex: 1,
-      length: 3,
-      child: Scaffold(
-        appBar: AppBar(
-          backgroundColor: Color.fromRGBO(73, 92, 117, 1),
-          title:  TabBar(
-            indicatorColor: Colors.orange,
-            tabs: <Widget>[
-              Tab(child: tabTab(now.subtract(Duration(days: 1))),),
-              Tab(child: tabTab(now)),
-              Tab(child: tabTab(now.add(Duration(days: 1))),),
-            ],
-          ),
+    return Scaffold(
+      appBar: AppBar(
+        backgroundColor: Color.fromRGBO(73, 92, 117, 1),
+        title:  testList(),
 
-        ),
-        drawer: (Container(
-          height: MediaQuery.of(context).size.height,
-          width: 200,
-          color: Colors.grey[50],
-          child: Text('sxfsdfsdfsdfsdfs'),
-        )),
-        body: Center(
-          child: StreamBuilder<LiveGameData01>(
-            stream: bloc.dataScores,
-            builder: (context, snapshot) {
-              List<dynamic> dataList;
-              if (snapshot.hasData) {
-                dataList = snapshot.data.games;
-                scoreList = dataList;
-                dateInfo();
-
-                return Container(
-                  child: (snapshot.data.games.length > 0
-                      ? RefreshIndicator(
-                          onRefresh: () async {
-                            await bloc.fetchPost2();
-                          },
-                          child: ListView.separated(
-                            physics: const AlwaysScrollableScrollPhysics(),
-                            padding: EdgeInsets.only(bottom: 15),
-                            separatorBuilder: (BuildContext context, int index) =>
-                                Container(
-                              height: 15,
-                            ),
-                            itemCount: dataList == null ? 0 : dataList.length,
-                            itemBuilder: (BuildContext context, int index) {
-                              String quarter = dataList[index]['currentPeriod'];
-                              String awy = 'assets/team_logos/${dataList[index]['vTeam']['nickName']}.png';
-                              String home =  'assets/team_logos/${dataList[index]['hTeam']['nickName']}.png';
-
-                              String awayLogo =
-                               awy.contains(' ') ? 'assets/team_logos/TrailBlazers.png' : awy;
-
-                              String homeLogo =
-                                 home.contains(' ') ? 'assets/team_logos/TrailBlazers.png' : home;
-                              return Center(
-                                child: Stack(
-                                  alignment: Alignment.center,
-                                  children: <Widget>[
-                                    filter1(),
-                                    Opacity(
-                                      opacity: .5,
-                                      child: Row(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.center,
-                                        children: <Widget>[
-                                          filter2(dataList,index),
-
-                                        ],
-                                      ),
-                                    ),
-                                    Container(
-                                      width: screenSize(context).width,
-                                      height: boxHeight,
-                                      decoration: BoxDecoration(
-                                        borderRadius: BorderRadius.all(
-                                          Radius.circular(8),
-                                        ),
-                                      ),
-                                      child: FlatButton(
-
-                                        onPressed: (){
-                                          onPressed(index,homeLogo,awayLogo);
-                                        },
-                                        child: Column(
-                                          children: <Widget>[
-                                            Container(
-                                              child: Row(
-                                                mainAxisAlignment:
-                                                    MainAxisAlignment.center,
-                                                children: <Widget>[
-                                                  Text(
-                                                    "Q${quarter.replaceAll('/4', '')}".replaceAll('Q5', 'OT').replaceAll('Q6', '2OT'),
-                                                    style: TextStyle(
-                                                        fontFamily: 'Alatsi',
-                                                        fontSize: 15),
-                                                  ),
-                                                ],
-                                              ),
-                                            ),
-                                            Container(
-                                              child: Row(
-                                                mainAxisAlignment:
-                                                MainAxisAlignment.center,
-                                                children: <Widget>[
-                                                  Container(
-                                                    width: 15,
-                                                  ), //spaces info to the right
-                                                  logoColumn(dataList, index, iconSize, awayLogo, 'vTeam'),
-                                                  Expanded(
-                                                      flex: 1,
-                                                      child: Container()), // SPACER
-                                                  scoreInfo(dataList, index, textHeight, 'vTeam',styleOne),
-                                                  Container(
-                                                    width: scoreSpacing,
-                                                  ),
-                                                  Text(
-                                                    '-',
-                                                    style: styleOne,
-                                                  ),
-                                                  Container(
-                                                    width: scoreSpacing,
-                                                  ),
-                                                  scoreInfo(dataList, index, textHeight, 'hTeam',styleOne),
-                                                  Expanded(
-                                                      flex: 1,
-                                                      child: Container()),
-                                                  logoColumn(dataList, index, iconSize, homeLogo, 'hTeam'),
-                                                  Container(
-                                                    width: 15,
-                                                  ),
-                                                ],
-                                              ),
-                                            ),
-                                            Center(
-                                              child: Column(
-                                                children: <Widget>[
-                                                  Container(
-                                                    child: _halfTime(
-                                                        dataList[index]
-                                                            ['halftime'],
-                                                        dataList[index]['clock'],33),
-                                                  ),
-                                                  dataList[index]['clock'].toString().isNotEmpty ? ScoreAnimation : Container(),
-                                                ],
-                                              ),
-                                            ),
-                                          ],
-                                        ),
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                              );
-                            },
-                          ),
-                        )
-                      : Container(
-                          child: Text('Endpoint Outage'),
-                        )),
-                );
-              } else if (snapshot.hasError) {
-                return Text("${snapshot.error}");
-              }
-
-              // By default, show a loading spinner.
-              return CircularProgressIndicator();
-            },
-          ),
-        ),
       ),
+      drawer: (Container(
+        height: MediaQuery.of(context).size.height,
+        width: 200,
+        color: Colors.grey[50],
+        child: Text('sxfsdfsdfsdfsdfs'),
+      )),
+      body: mainBody(),
+
     );
   }
+  tabs(){
+    return  TabBar(
+      indicatorColor: Colors.orange,
+      tabs: <Widget>[
+        Tab(child: tabTab(now.subtract(Duration(days: 1))),),
+        Tab(child: tabTab(now)),
+        Tab(child: tabTab(now.add(Duration(days: 1))),),
+      ],
+    );
+  }
+
+  getTime(int _days){
+    String str = DateFormat('y-MM-dd').format(DateTime.now().add(Duration(days: _days))).toString();
+
+    return "games/date/$str";
+  }
+  mainBody(){
+    double textHeight = 45;
+    double scoreSpacing = 15;
+    double iconSize = 60;
+
+    TextStyle styleOne = TextStyle(fontSize:  textHeight,fontFamily: 'Alatsi');
+    return Center(
+      child: StreamBuilder<LiveGameData01>(
+        stream: bloc.dataScores,
+        builder: (context, snapshot) {
+          List<dynamic> dataList;
+          if (snapshot.hasData) {
+            dataList = snapshot.data.games;
+            scoreList = dataList;
+            dateInfo();
+            print(dataList.length);
+
+            return Container(
+              child: (snapshot.data.games.length > 0
+                  ? refresh(
+                  ListView.separated(
+                  physics: const AlwaysScrollableScrollPhysics(),
+                  padding: EdgeInsets.only(bottom: 15),
+                  separatorBuilder: (BuildContext context, int index) =>
+                      Container(
+                        height: 15,
+                      ),
+                  itemCount: dataList == null ? 0 : dataList.length,
+                  itemBuilder: (BuildContext context, int index) {
+                    String quarter = dataList[index]['currentPeriod'];
+                    DateTime str = DateTime.parse(dataList[index]["startTimeUTC"]).toLocal();
+                    String _startTime = DateFormat("h:mm a").format(str);
+                    String awy = 'assets/team_logos/${dataList[index]['vTeam']['nickName']}.png';
+                    String home =  'assets/team_logos/${dataList[index]['hTeam']['nickName']}.png';
+
+                    String awayLogo =
+                    awy.contains(' ') ? 'assets/team_logos/TrailBlazers.png' : awy;
+
+                    String homeLogo =
+                    home.contains(' ') ? 'assets/team_logos/TrailBlazers.png' : home;
+                    return Center(
+                      child: Stack(
+                        alignment: Alignment.center,
+                        children: <Widget>[
+                          filter1(),
+                          Opacity(
+                            opacity: .5,
+                            child: Row(
+                              mainAxisAlignment:
+                              MainAxisAlignment.center,
+                              children: <Widget>[
+                                filter2(dataList,index),
+
+                              ],
+                            ),
+                          ),
+                          Container(
+                            width: screenSize(context).width,
+                            height: boxHeight,
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.all(
+                                Radius.circular(8),
+                              ),
+                            ),
+                            child: FlatButton(
+
+                              onPressed: (){
+                                onPressed(index,homeLogo,awayLogo);
+                              },
+                              child: Column(
+                                children: <Widget>[
+                                  Container(
+                                    child: Row(
+                                      mainAxisAlignment:
+                                      MainAxisAlignment.center,
+                                      children: <Widget>[
+                                        Text(
+                                          "Q${quarter.replaceAll('/4', '')}".replaceAll('Q5', 'OT').replaceAll('Q6', '2OT').replaceAll('Q0',_startTime ),
+                                          style: TextStyle(
+                                              fontFamily: 'Alatsi',
+                                              fontSize: 15),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                  Container(
+                                    child: Row(
+                                      mainAxisAlignment:
+                                      MainAxisAlignment.center,
+                                      children: <Widget>[
+                                        Container(
+                                          width: 15,
+                                        ), //spaces info to the right
+                                        logoColumn(dataList, index, iconSize, awayLogo, 'vTeam'),
+                                        Expanded(
+                                            flex: 1,
+                                            child: Container()), // SPACER
+                                        scoreInfo(dataList, index, textHeight, 'vTeam',styleOne),
+                                        Container(
+                                          width: scoreSpacing,
+                                        ),
+                                        Text(
+                                          '-',
+                                          style: styleOne,
+                                        ),
+                                        Container(
+                                          width: scoreSpacing,
+                                        ),
+                                        scoreInfo(dataList, index, textHeight, 'hTeam',styleOne),
+                                        Expanded(
+                                            flex: 1,
+                                            child: Container()),
+                                        logoColumn(dataList, index, iconSize, homeLogo, 'hTeam'),
+                                        Container(
+                                          width: 15,
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                  Center(
+                                    child: Column(
+                                      children: <Widget>[
+                                        Container(
+                                          child: _halfTime(
+                                              dataList[index]
+                                              ['halftime'],
+                                              dataList[index]['clock'],33),
+                                        ),
+                                        dataList[index]['clock'].toString().isNotEmpty ? ScoreAnimation() : Container(),
+                                      ],
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                    );
+                  },
+                ),
+              )
+                  : Container(
+                child: Text('Endpoint Outage'),
+              )),
+            );
+          } else if (snapshot.hasError) {
+            return Text("${snapshot.error}");
+          }
+
+          // By default, show a loading spinner.
+          return CircularProgressIndicator();
+        },
+      ),
+    );
+
+  }
+  refresh(Widget child){
+    return RefreshIndicator(
+      onRefresh: () async {
+        await bloc.fetchPost2(_time);
+      },
+      child: child,
+    );
+  }
+
   dateInfo(){
     DateTime now = DateTime.now();
     DateTime yest = now.subtract(Duration(days: 1));
@@ -245,9 +273,14 @@ class _ScorePageState extends State<ScorePage> {
 
   }
   tabTab(DateTime time){
-    return Center(
-      child: Text(
-        DateFormat('EEE,\nMMM d').format(time).toString()
+    return GestureDetector(
+      onTap: (){
+        print('test');
+      },
+      child: Center(
+        child: Text(
+          DateFormat('EEE,\nMMM d').format(time).toString()
+        ),
       ),
     );
   }
@@ -320,9 +353,8 @@ class _ScorePageState extends State<ScorePage> {
             String record;
             if (snapshot2.hasData) {
               record = snapshot2
-                  .data[
-              'standings'][
-              '${_list[index][awayOrHome]['shortName']}'];
+                  .data
+              ['standings']['${_list[index][awayOrHome]['shortName']}'] ?? 'error';
               return (Container(
                 child: Text(
                   '($record)',
@@ -340,6 +372,55 @@ class _ScorePageState extends State<ScorePage> {
       ],
     );
   }
+  String dateItem(String _format,int _int){
+    return DateFormat(_format).format(DateTime.now().add(Duration(days: _int))).toString();
+
+  }
+
+ testList(){
+String str = ' EEE,\nMMM d';
+
+   final List<String> _dateList =
+   [dateItem(str, -4),
+     dateItem(str, -3),
+     dateItem(str, -2),
+     dateItem(str, -1),
+     dateItem(str, 0),
+     dateItem(str, 1),
+     dateItem(str, 2),
+     dateItem(str, 3),
+     dateItem(str, 4),
+
+   ];
+
+    gameDateList = _dateList;
+
+
+    return Container(
+      height: 50,
+      child: ListView.builder(
+        scrollDirection: Axis.horizontal,
+        itemCount: gameDateList.length,
+          itemBuilder: (context, index){
+        return Container(
+          height: 50,width: 100,
+          child: FlatButton(onPressed: (){
+            if(index == 4){
+              bloc.fetchPost2("/games/live/");
+            } else {
+              bloc.fetchPost2(getTime(index-3));
+            }
+            print(getTime(index-3));
+            print(index);
+
+          },
+              child: Text("${gameDateList[index]}",style: TextStyle(color: Colors.grey[50]),)),
+        );
+      }
+      ),
+    );
+ }
+
   scoreInfo(List _list, int index,double _size,String homeOrAway,TextStyle _style){
    return Text(
     _list[index][homeOrAway]

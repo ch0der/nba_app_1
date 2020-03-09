@@ -27,7 +27,6 @@ class _TabsState extends State<Tabs>
   void initState() {
     super.initState();
     _tabController = TabController(length: appTabs.length, vsync: this);
-    bloc.fetchPost2();
   }
 
   @override
