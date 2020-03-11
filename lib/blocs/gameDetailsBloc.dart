@@ -7,6 +7,7 @@ import 'package:nba_app/models/live_game_details/liveGame1.dart';
 import 'package:rxdart/rxdart.dart';
 import 'package:flutter/material.dart';
 import 'package:nba_app/teamColors.dart';
+import 'package:nba_app/API_KEY.dart' show API_KEY;
 
 
 class GameDetailsBloc {
@@ -28,8 +29,8 @@ class GameDetailsBloc {
     String myPath = "statistics/players/gameId/$uniqueID";
 
     final response = await http
-        .get(Uri.https("api-nba-v1.p.rapidapi.com", myPath), headers: {
-      "x-rapidapi-host": "api-nba-v1.p.rapidapi.com",
+        .get(Uri.https(API_KEY, myPath), headers: {
+      "x-rapidapi-host": API_KEY,
       "x-rapidapi-key": "6e137c5c98mshcfe3870862cc847p12a327jsn818c1cb513dd"
     });
 
@@ -51,8 +52,8 @@ class GameDetailsBloc {
     String myPath = "statistics/players/gameId/$uniqueID";
 
     final response = await http
-        .get(Uri.https("api-nba-v1.p.rapidapi.com", myPath), headers: {
-      "x-rapidapi-host": "api-nba-v1.p.rapidapi.com",
+        .get(Uri.https(API_KEY, myPath), headers: {
+      "x-rapidapi-host": API_KEY,
       "x-rapidapi-key": "6e137c5c98mshcfe3870862cc847p12a327jsn818c1cb513dd"
     });
 
@@ -91,8 +92,8 @@ class AdditionalGameDetails {
     String myPath = "gameDetails/$uniqueID";
 
     final response = await http
-        .get(Uri.https("api-nba-v1.p.rapidapi.com", myPath), headers: {
-      "x-rapidapi-host": "api-nba-v1.p.rapidapi.com",
+        .get(Uri.https(API_KEY, myPath), headers: {
+      "x-rapidapi-host": API_KEY,
       "x-rapidapi-key": "6e137c5c98mshcfe3870862cc847p12a327jsn818c1cb513dd"
     });
 

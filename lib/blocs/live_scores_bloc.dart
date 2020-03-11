@@ -8,6 +8,7 @@ import 'package:nba_app/models/index.dart';
 import 'package:nba_app/models/liveScoreJsonData/liveGameData01.dart';
 import 'package:rxdart/rxdart.dart';
 import 'package:intl/intl.dart';
+import 'package:nba_app/API_KEY.dart' show API_KEY;
 
 class LiveScoreBloc{
 
@@ -26,19 +27,16 @@ class LiveScoreBloc{
   }
 
 
-  LiveScoreBloc(){
-  }
+  LiveScoreBloc();
 
   Future<LiveGameData01> fetchPost2(String str) async {
     String today = DateFormat('y-MM-dd').format(DateTime.now());
-    String games = "/games/$str";
 
 
     String path = "/games/date/2020-03-07/";
     String livePath = "/games/live/";
-    print(games);
     final response = await http
-        .get(Uri.https("api-nba-v1.p.rapidapi.com",str), headers: {
+        .get(Uri.https(API_KEY,str), headers: {
       "x-rapidapi-host": "api-nba-v1.p.rapidapi.com",
       "x-rapidapi-key": "6e137c5c98mshcfe3870862cc847p12a327jsn818c1cb513dd"
     });

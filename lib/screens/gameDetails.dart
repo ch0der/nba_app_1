@@ -50,7 +50,7 @@ class _GameDetailScreenState extends State<GameDetailScreen> {
   final colorBloc = ColorsBloc();
   TeamColors _teamColors;
   final Color textColor = Colors.black;
-  final TextStyle _style = TextStyle(fontWeight: FontWeight.bold,fontSize: 18,color: Colors.white);
+  final TextStyle _style = TextStyle(fontWeight: FontWeight.bold,fontSize: 18,color: Colors.white,shadows: [Shadow(color: Colors.black,offset: Offset(2, 2),blurRadius: 5)],fontFamily: 'Alata');
 
   @override
   void initState() {
@@ -63,7 +63,6 @@ class _GameDetailScreenState extends State<GameDetailScreen> {
     _controllerScroll = ScrollController();
     _physics = ScrollPhysics();
     _teamColors = getColors();
-    print(_teamColors.awayColor2);
   }
 
   void dispose() {
@@ -99,38 +98,17 @@ class _GameDetailScreenState extends State<GameDetailScreen> {
     return Center(
       child: Column(
         children: <Widget>[
-          Container(height: 50,),
+          Container(
+            height: 25,
+            color: _teamColors.awayColor,),
           teamHeader(widget.awayLogo,widget.awayFullName,_teamColors.awayColor),
           _columnHeaders(awayList1,_teamColors.awayColor2),
-          backgroundImage(Colors.red, '${asset}LALdet.jpg',
-              tableBuilder(awayList1, _teamColors.awayColor)),
+          Expanded(child: backgroundImage(Colors.red, '${asset}LALdet.jpg',
+              tableBuilder(awayList1, _teamColors.awayColor,screenSize(context).height * (1*.35))),),
           teamHeader(widget.homeLogo,widget.homeFullName,_teamColors.homeColor),
           _columnHeaders(homeList1,_teamColors.homeColor2),
-          Container(
-            width: screenSize(context).width,
-            height: screenSize(context).height * (1*.3),
-            child: PageView(
-              children: <Widget>[
-                Column(
-                  children: <Widget>[
-                    Container(
-                      child: backgroundImage(Colors.green, '${asset}NOPdet.jpg',
-                          tableBuilder(homeList1, _teamColors.homeColor)),
-                    ),
-                  ],
-                ),
-                Column(
-                  children: <Widget>[
-                    Container(
-                      child: backgroundImage(Colors.green, '${asset}NOPdet.jpg',
-                          tableBuilder(homeList1, Colors.green)),
-                    ),
-                  ],
-                ),
-
-              ],
-            ),
-          ),
+         Expanded(child:  backgroundImage(Colors.green, '${asset}NOPdet.jpg',
+             tableBuilder(homeList1, _teamColors.homeColor,screenSize(context).height * (1*.35))),),
         ],
       ),
     );
@@ -150,17 +128,16 @@ class _GameDetailScreenState extends State<GameDetailScreen> {
       children: <Widget>[],
     );
   }
-  teamHeader(String logo,String name,color){
+  Widget teamHeader(String logo,String name,color){
     return Container(
       width: screenSize(context).width,
 
       decoration: BoxDecoration(
         color: color
       ),
-      child: Container(
-        child: Center(child: Text(name,style: TextStyle(fontSize: 28,fontFamily: 'Alata',color: Colors.white),)),
-
-      ),
+      child: Align(
+        alignment: Alignment.topCenter,
+          child: Text(name,style: TextStyle(fontSize: 28,fontFamily: 'Alata',color: Colors.white,shadows: [Shadow(color: Colors.black,offset: Offset(2, 2),blurRadius: 5)]),)),
     );
   }
   Container _logoContainer(double size, String logo) {
@@ -371,17 +348,17 @@ class _GameDetailScreenState extends State<GameDetailScreen> {
     );
   }
   Text tableText(String str){
-    return Text(str,style: TextStyle(color: textColor),);
+    TextStyle _style = TextStyle(color: textColor,fontSize: 17);
+    return Text(str,style:_style,);
   }
 
-  tableBuilder(List<PlayerInfo> _list, Color color1) {
-    TextStyle _style = TextStyle(color: textColor);
+  tableBuilder(List<PlayerInfo> _list, Color color1,double height) {
+    TextStyle _style = TextStyle(color: textColor,fontSize: 17);
 
 
     int listSize = _list.length;
     return Container(
       width: screenSize(context).width,
-      height: screenSize(context).height * (1*.3),
       child: ListView.builder(
           padding: EdgeInsets.only(top: 0),
           itemCount: listSize,

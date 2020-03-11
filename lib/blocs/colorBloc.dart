@@ -52,7 +52,7 @@ class ColorsBloc{
       "MIA2" : Color.fromRGBO(6,25,34, 1),
       "ATL2" : Color.fromRGBO(38,40,42, 1),
       "BOS2" : Color.fromRGBO(150,56,33,1),
-      "BKN2" : Colors.black,
+      "BKN2" : Colors.grey[850],
       "PHI2" : Color.fromRGBO(237,23,76,1),
       "CHA2" : Color.fromRGBO(0,120,140,1),
       "CHI2" : Color.fromRGBO(6,25,34,1),
@@ -84,7 +84,6 @@ class ColorsBloc{
 
     colorData.sink.add(TeamColors(colors[home],colors[home2],colors[away],colors[away2]));
     TeamColors _colors = TeamColors(colors[home],colors[home2],colors[away],colors[away2]);
-    print(_colors.awayColor2);
     return _colors;
 
 

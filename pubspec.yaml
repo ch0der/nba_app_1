@@ -40,6 +40,7 @@ dev_dependencies:
   parallax_image: ^0.3.1+1
   intl: ^0.16.1
   shared_preferences: ^0.5.6+2
+  flutter_native_admob: ^1.0.1
 
 
 # For information on the generic Dart part of this file, see the
