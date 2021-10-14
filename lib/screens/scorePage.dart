@@ -265,9 +265,10 @@ class _ScorePageState extends State<ScorePage> {
                         },
                       ),
                     )
-                  : Container(
-                      child: Text('Endpoint Outage'),
-                    )),
+                  : Container(height: 300,
+                    width: 300,
+                   child: Image.asset("assets/nba_images/ball.png",color: Colors.grey.withOpacity(.2),),)
+              ),
             );
           } else if (snapshot.hasError) {
             return Text("${snapshot.error}");
