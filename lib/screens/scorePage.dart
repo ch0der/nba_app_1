@@ -10,6 +10,7 @@ import 'package:nba_app/blocs/live_scores_bloc.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'package:intl/intl.dart';
+import 'package:marquee/marquee.dart';
 
 import 'package:nba_app/widgets/shaderContainer.dart';
 
@@ -62,7 +63,7 @@ class _ScorePageState extends State<ScorePage> {
       drawer: Align(
         alignment: Alignment.topLeft,
         child: Container(
-          height: MediaQuery.of(context).size.height/2,
+          height: MediaQuery.of(context).size.height / 2,
           width: 250,
           color: Colors.grey[50],
           child: ListView(
@@ -71,7 +72,6 @@ class _ScorePageState extends State<ScorePage> {
                 height: 75,
                 child: DrawerHeader(
                   child: Text('Header'),
-
                   decoration: BoxDecoration(
                     color: Color.fromRGBO(73, 92, 117, .75),
                   ),
@@ -169,7 +169,7 @@ class _ScorePageState extends State<ScorePage> {
                                       Radius.circular(8),
                                     ),
                                   ),
-                                  child: FlatButton(
+                                  child: TextButton(
                                     onPressed: () {
                                       onPressed(index, homeLogo, awayLogo);
                                     },
@@ -265,10 +265,20 @@ class _ScorePageState extends State<ScorePage> {
                         },
                       ),
                     )
-                  : Container(height: 300,
-                    width: 300,
-                   child: Image.asset("assets/nba_images/ball.png",color: Colors.grey.withOpacity(.2),),)
-              ),
+                  : Column(
+                    children: [
+                      Container(height: 10,),
+                      Container(height: 45,child: _wrapMarquee(_buildMarqueeText()),),
+                      Container(height: screenSize(context).height*.2,),
+                      Container(
+                        width: screenSize(context).width * .75,
+                        child: Image.asset(
+                          "assets/nba_images/ball.png",
+                          color: Colors.grey.withOpacity(.2),
+                        ),
+                      ),
+                    ],
+                  )),
             );
           } else if (snapshot.hasError) {
             return Text("${snapshot.error}");
@@ -418,9 +428,6 @@ class _ScorePageState extends State<ScorePage> {
     String str = ' EEE,\nMMM d';
 
     final List<String> _dateList = [
-      dateItem(str, -4),
-      dateItem(str, -3),
-      dateItem(str, -2),
       dateItem(str, -1),
       dateItem(str, 0),
       dateItem(str, 1),
@@ -442,10 +449,10 @@ class _ScorePageState extends State<ScorePage> {
               width: 100,
               child: FlatButton(
                   onPressed: () {
-                    if (index == 4) {
+                    if (index == 2) {
                       bloc.fetchPost2("/games/live/");
                     } else {
-                      bloc.fetchPost2(getTime(index - 3));
+                      bloc.fetchPost2(getTime(index));
                     }
                   },
                   child: Text(
@@ -487,7 +494,7 @@ class _ScorePageState extends State<ScorePage> {
               totReb: "${index1['totReb']}".isNotEmpty
                   ? int.parse(index1['totReb'])
                   : 0,
-              playerId: "$index1['playerId']",
+              playerId: index1['playerId'],
               pFouls: index1['pFouls'],
               plusMinus: "${index1['plusMinus']}".isNotEmpty
                   ? int.parse(index1['plusMinus'])
@@ -557,7 +564,6 @@ class _ScorePageState extends State<ScorePage> {
       // If the call to the server was successful, parse the JSON.
 
       var info = json.decode(response.body);
-
 
       return LiveGame1.fromJson(info['api']);
     } else {
@@ -717,5 +723,32 @@ class _ScorePageState extends State<ScorePage> {
         ],
       ),
     );
+  }
+
+  Widget _marqueeText() {
+    return Marquee(text: 'No live games are currently being played');
+  }
+
+  Widget _buildMarqueeText() {
+    return Marquee(
+
+      text: 'No live games are currently being played.  Select today\'s date to see schedule games.',
+      style: TextStyle(fontSize: 20,color: Colors.white,fontFamily:"Alatsi" ),
+      scrollAxis: Axis.horizontal,
+      showFadingOnlyWhenScrolling: true,
+      fadingEdgeEndFraction: .1,
+      fadingEdgeStartFraction: .1,
+      startPadding: 20,
+      blankSpace: 50,
+      crossAxisAlignment: CrossAxisAlignment.center,
+      velocity: 50,
+      pauseAfterRound: Duration(seconds: 0),
+      numberOfRounds: 100,
+      accelerationCurve: Curves.linear,
+      decelerationCurve: Curves.linear,
+    );
+  }
+  Widget _wrapMarquee(Widget child){
+    return Container(color: Color.fromRGBO(73, 92, 117, 1),child: child);
   }
 }
