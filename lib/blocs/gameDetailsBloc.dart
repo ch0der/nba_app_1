@@ -110,3 +110,22 @@ class AdditionalGameDetails {
   }
 }
 
+class PlayerNames{
+
+  final playerData = BehaviorSubject<Map<String,dynamic>>();
+
+  Stream<Map<String,dynamic>> get playerNames => playerData.stream;
+  Function(Map<String,dynamic>)get addData => playerData.sink.add;
+
+  dispose(){
+    playerData.close();
+  }
+
+  PlayerNames(){
+    fetchNames();
+  }
+}
+
+Future fetchNames() {
+}
+

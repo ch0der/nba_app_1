@@ -487,7 +487,7 @@ class _ScorePageState extends State<ScorePage> {
               totReb: "${index1['totReb']}".isNotEmpty
                   ? int.parse(index1['totReb'])
                   : 0,
-              playerId: index1['playerId'],
+              playerId: "$index1['playerId']",
               pFouls: index1['pFouls'],
               plusMinus: "${index1['plusMinus']}".isNotEmpty
                   ? int.parse(index1['plusMinus'])

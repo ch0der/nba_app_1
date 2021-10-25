@@ -1,5 +1,6 @@
 class PlayerInfo {
   PlayerInfo({
+    this.name,
       this.gameId,
       this.teamId,
       this.points,
@@ -24,6 +25,7 @@ class PlayerInfo {
       this.blocks,
       this.plusMinus,
       this.playerId});
+  String name;
   String gameId;
   String teamId;
   int points;
