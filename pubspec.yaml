@@ -88,6 +88,10 @@ flutter:
     - assets/team_logos/Magic.png
     - assets/nba_images/bball.png
     - assets/nba_images/ball.png
+    - assets/nba_images/gif.gif
+    - assets/nba_images/gif2.gif
+    - assets/nba_images/gif3.gif
+    - assets/nba_images/gif4.gif
 
     - assets/collages/MILaway.jpg
     - assets/collages/CHAaway.jpg

@@ -265,20 +265,7 @@ class _ScorePageState extends State<ScorePage> {
                         },
                       ),
                     )
-                  : Column(
-                    children: [
-                      Container(height: 10,),
-                      Container(height: 45,child: _wrapMarquee(_buildMarqueeText()),),
-                      Container(height: screenSize(context).height*.2,),
-                      Container(
-                        width: screenSize(context).width * .75,
-                        child: Image.asset(
-                          "assets/nba_images/ball.png",
-                          color: Colors.grey.withOpacity(.2),
-                        ),
-                      ),
-                    ],
-                  )),
+                  : stack1()),
             );
           } else if (snapshot.hasError) {
             return Text("${snapshot.error}");
@@ -288,6 +275,57 @@ class _ScorePageState extends State<ScorePage> {
           return CircularProgressIndicator();
         },
       ),
+    );
+  }
+  ballImg(){
+    return  ClipRRect(
+      borderRadius: BorderRadius.circular(screenSize(context).width * 1),
+      child: Image.asset(
+        "assets/nba_images/ball.png",
+        color: Colors.grey.withOpacity(.2),
+        width: screenSize(context).width * .75,
+      ),
+    );
+  }
+  gifTest(){
+    return ClipRRect(
+      borderRadius: BorderRadius.circular(screenSize(context).width * 1),
+      child: ColorFiltered(
+        colorFilter: ColorFilter.mode(
+          Colors.red[200].withOpacity(.9),
+          BlendMode.modulate,
+        ),
+        child: Image.network(
+          "https://i.imgur.com/RPe0FY0.gif",
+          width: screenSize(context).width * .75,
+          height: screenSize(context).width * .75,
+        ),
+      ),
+    );
+  }
+  stack1(){
+    return Stack(
+      children: [
+        Container(
+         constraints: BoxConstraints(minWidth: 1500,minHeight: 800) ,
+          child: ColorFiltered(
+          colorFilter: ColorFilter.mode(
+            Colors.white54.withOpacity(.6),
+            BlendMode.modulate,
+          ),
+          child: Image.asset(
+            "assets/nba_images/gif2.gif",
+            fit: BoxFit.cover,
+          ),
+        ),),
+        Column(
+          children: [
+            Container(height: 15,),
+            Container(height: 45,child: _wrapMarquee(_buildMarqueeText()),),
+          ],
+        ),
+
+      ],
     );
   }
 
