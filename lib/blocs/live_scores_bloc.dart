@@ -1,18 +1,15 @@
 import 'dart:async';
 import 'dart:convert';
-import 'package:flutter/material.dart';
 
 import 'package:http/http.dart' as http;
 
 import 'package:nba_app/models/index.dart';
 import 'package:nba_app/models/liveScoreJsonData/liveGameData01.dart';
 import 'package:rxdart/rxdart.dart';
-import 'package:intl/intl.dart';
 import 'package:nba_app/API_KEY.dart' show API_KEY;
 
 class LiveScoreBloc{
 
-  DateTime _time = DateTime.now().add(new Duration(days: 1));
 
   final _data = BehaviorSubject<LiveGameData01>();
 
@@ -30,11 +27,8 @@ class LiveScoreBloc{
   LiveScoreBloc();
 
   Future<LiveGameData01> fetchPost2(String str) async {
-    String today = DateFormat('y-MM-dd').format(DateTime.now());
 
 
-    String path = "/games/date/2020-03-07/";
-    String livePath = "/games/live/";
     final response = await http
         .get(Uri.https(API_KEY,str), headers: {
       "x-rapidapi-host": "api-nba-v1.p.rapidapi.com",

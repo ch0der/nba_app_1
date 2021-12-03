@@ -11,7 +11,7 @@ import 'package:nba_app/models/posts.dart';
 
 
 class PlayerSearch extends StatefulWidget {
-  PlayerSearch({Key key}) : super(key: key);
+  PlayerSearch({required Key key}) : super(key: key);
 
   @override
   _PlayerSearchState createState() => _PlayerSearchState();
@@ -49,7 +49,7 @@ class _PlayerSearchState extends State<PlayerSearch> {
   }
 
 
-  Future<Posts> post2;
+  late Future<Posts> post2;
 
   @override
   void initState() {
@@ -80,7 +80,7 @@ class _PlayerSearchState extends State<PlayerSearch> {
             builder: (context, snapshot) {
               if (snapshot.hasData) {
 
-                List<dynamic> plzWork = snapshot.data.players;
+                List<dynamic> plzWork = snapshot.data!.players;
 
                 return ListView.builder(
                   itemCount: plzWork == null ? 0 : plzWork.length,

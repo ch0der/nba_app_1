@@ -12,7 +12,6 @@ import 'dart:convert';
 import 'package:intl/intl.dart';
 import 'package:marquee/marquee.dart';
 
-import 'package:nba_app/widgets/shaderContainer.dart';
 
 class ScorePage extends StatefulWidget {
   @override
@@ -24,14 +23,14 @@ class _ScorePageState extends State<ScorePage> {
   final scoreBloc = LiveStandingsBloc();
   final quarterBloc = AdditionalGameDetails();
   final playerBloc = GameDetailsBloc();
-  List<PlayerInfo> someList;
-  Future scoreFuture;
+  late List<PlayerInfo> someList;
+  late Future scoreFuture;
   final double boxHeight = 175;
-  List scoreList;
-  DefaultTabController _defaultTabController;
+  late List scoreList;
+  late DefaultTabController _defaultTabController;
   final DateTime now = DateTime.now();
-  String _time;
-  List gameDateList;
+  late String _time;
+  late List gameDateList;
 
   @override
   void initState() {
@@ -49,11 +48,6 @@ class _ScorePageState extends State<ScorePage> {
 
   @override
   Widget build(BuildContext context) {
-    double textHeight = 45;
-    double scoreSpacing = 15;
-    double iconSize = 60;
-
-    TextStyle styleOne = TextStyle(fontSize: textHeight, fontFamily: 'Alatsi');
 
     return Scaffold(
       appBar: AppBar(
@@ -104,7 +98,7 @@ class _ScorePageState extends State<ScorePage> {
 
   mainBody() {
     double textHeight = 45;
-    double scoreSpacing = 15;
+    double scoreSpacing = 10;
     double iconSize = 60;
 
     TextStyle styleOne = TextStyle(fontSize: textHeight, fontFamily: 'Alatsi');
@@ -114,12 +108,12 @@ class _ScorePageState extends State<ScorePage> {
         builder: (context, snapshot) {
           List<dynamic> dataList;
           if (snapshot.hasData) {
-            dataList = snapshot.data.games;
+            dataList = snapshot.data!.games;
             scoreList = dataList;
             dateInfo();
 
             return Container(
-              child: (snapshot.data.games.length > 0
+              child: (snapshot.data!.games.length > 0
                   ? refresh(
                       ListView.separated(
                         physics: const AlwaysScrollableScrollPhysics(),
@@ -245,7 +239,7 @@ class _ScorePageState extends State<ScorePage> {
                                                 child: _halfTime(
                                                     dataList[index]['halftime'],
                                                     dataList[index]['clock'],
-                                                    33),
+                                                    30),
                                               ),
                                               dataList[index]['clock']
                                                       .toString()
@@ -292,7 +286,7 @@ class _ScorePageState extends State<ScorePage> {
       borderRadius: BorderRadius.circular(screenSize(context).width * 1),
       child: ColorFiltered(
         colorFilter: ColorFilter.mode(
-          Colors.red[200].withOpacity(.9),
+          Colors.red[200]!.withOpacity(.9),
           BlendMode.modulate,
         ),
         child: Image.network(
@@ -392,8 +386,8 @@ class _ScorePageState extends State<ScorePage> {
           tileMode: TileMode.mirror,
           colors: [
             Colors.white.withOpacity(.7),
-            Colors.grey[50],
-            Colors.grey[50],
+            Colors.grey[50]!,
+            Colors.grey[50]!,
             Colors.white.withOpacity(.7)
           ],
           stops: [
@@ -433,13 +427,12 @@ class _ScorePageState extends State<ScorePage> {
             ),
           ),
         ),
-        StreamBuilder(
+        StreamBuilder<Map<String,dynamic>>(
           stream: scoreBloc.dataScores,
           builder: (context, snapshot2) {
             String record;
             if (snapshot2.hasData) {
-              record = snapshot2.data['standings']
-                      ['${_list[index][awayOrHome]['shortName']}'] ??
+              record = snapshot2.data!['standings']['${_list[index][awayOrHome]['shortName']}'] ??
                   'error';
               return (Container(
                 child: Text(
@@ -544,7 +537,7 @@ class _ScorePageState extends State<ScorePage> {
               assists: "${index1['assists']}".isNotEmpty
                   ? int.parse(index1['assists'])
                   : 0,
-              steals: index1['steals']))
+              steals: index1['steals'], name: ''))
           .toList();
     });
     future.then((resp2) {

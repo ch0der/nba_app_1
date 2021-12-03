@@ -6,7 +6,7 @@ part 'liveScore02.g.dart';
 class LiveScore02 {
     LiveScore02();
 
-    String points;
+    late String points;
     
     factory LiveScore02.fromJson(Map<String,dynamic> json) => _$LiveScore02FromJson(json);
     Map<String, dynamic> toJson() => _$LiveScore02ToJson(this);

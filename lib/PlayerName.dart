@@ -1,8 +1,8 @@
 class PlayerName {
   PlayerName({
-    this.firstName,
-    this.lastName,
-    this.playerId,
+    required this.firstName,
+    required this.lastName,
+    required this.playerId,
   });
   String firstName;
   String lastName;

@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 
 
 class ShaderContainer extends StatelessWidget {
-  ShaderContainer({this.width,this.height,this.image,this.stop});
+  ShaderContainer({required this.width,required this.height,required this.image,required this.stop});
 
   final double stop;
   final double width;
@@ -33,7 +33,7 @@ class ShaderContainer extends StatelessWidget {
           shaderCallback: (Rect bounds) {
             return LinearGradient(
               tileMode: TileMode.mirror,
-              colors: [Colors.white.withOpacity(.7), Colors.grey[50]],
+              colors: [Colors.white.withOpacity(.7), Colors.grey[50]!],
               stops: [
                 0.0,
                 stop,

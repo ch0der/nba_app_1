@@ -6,7 +6,7 @@ part 'quarters.g.dart';
 class Quarters {
     Quarters();
 
-    Quarters0 api;
+    late  Quarters0 api;
     
     factory Quarters.fromJson(Map<String,dynamic> json) => _$QuartersFromJson(json);
     Map<String, dynamic> toJson() => _$QuartersToJson(this);

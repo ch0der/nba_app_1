@@ -6,12 +6,11 @@ import 'package:nba_app/blocs/gameDetailsBloc.dart';
 import 'package:nba_app/models/index.dart';
 import 'package:nba_app/teamColors.dart';
 import 'dart:math' as math;
-import 'package:parallax_image/parallax_image.dart';
 import 'package:nba_app/blocs/colorBloc.dart';
 
 class GameDetailScreen extends StatefulWidget {
   GameDetailScreen(
-      {this.gameId, this.homeId, this.awayId, this.playerDetailsList,this.homeLogo,this.awayLogo,this.awayFullName,this.homeFullName,this.awayNickname,this.homeNickname,this.awayShort,this.homeShort});
+      {required this.gameId, required this.homeId, required this.awayId, required this.playerDetailsList,required this.homeLogo,required this.awayLogo,required this.awayFullName,required this.homeFullName,required this.awayNickname, required this.homeNickname, required this.homeShort, required this.awayShort});
 
   final String gameId;
   final String homeId;
@@ -33,29 +32,28 @@ class GameDetailScreen extends StatefulWidget {
 class _GameDetailScreenState extends State<GameDetailScreen> {
   final bloc2 = GameDetailsBloc();
   final bloc3 = AdditionalGameDetails();
-  SliverPersistentHeaderDelegate _test;
-  List testList;
+  late List testList;
   bool ascending = true;
   bool assistBool = true;
-  List<PlayerInfo> homeList1;
-  List<PlayerInfo> awayList1;
+  late List<PlayerInfo> homeList1;
+  late List<PlayerInfo> awayList1;
   bool pointsSort = true;
   bool assistsSort = true;
   bool rebSort = true;
   bool plusMinSort = true;
   double sortWidth = 50;
-  ScrollController _controllerScroll;
-  ScrollPhysics _physics;
+  late ScrollController _controllerScroll;
+  late ScrollPhysics _physics;
   final Color colorBar = Color.fromRGBO(150, 200, 10, 1);
   final colorBloc = ColorsBloc();
-  TeamColors _teamColors;
+  late TeamColors _teamColors;
   final Color textColor = Colors.black;
   final TextStyle _style = TextStyle(fontWeight: FontWeight.bold,fontSize: 18,color: Colors.white,shadows: [Shadow(color: Colors.black,offset: Offset(2, 2),blurRadius: 5)],fontFamily: 'Alata');
 
   @override
   void initState() {
     super.initState();
-    List<PlayerInfo> players = widget.playerDetailsList;
+    List<PlayerInfo>? players = widget.playerDetailsList.cast<PlayerInfo>();
     homeList1 =
         players.where((index) => index.teamId == widget.homeId).toList();
     awayList1 =
@@ -92,7 +90,6 @@ class _GameDetailScreenState extends State<GameDetailScreen> {
   }
 
   body() {
-    PlayerInfo player;
     String asset = 'assets/collages/details/';
 
     return Center(
@@ -123,7 +120,6 @@ class _GameDetailScreenState extends State<GameDetailScreen> {
   // -----------------------------------------------------------------------------------------------------------------------------------------------------------
   // -----------------------------------------------------------------------------------------------------------------------------------------------------------
   backgroundImages() {
-    String asset = 'assets/collages/details/';
     return Column(
       children: <Widget>[],
     );
@@ -174,7 +170,7 @@ class _GameDetailScreenState extends State<GameDetailScreen> {
         builder: (context, snapshot) {
           if (snapshot.hasData) {
             List<dynamic> dataList;
-            dataList = snapshot.data.game;
+            dataList = snapshot.data!.game;
             List<dynamic> vTeam = dataList[0]['vTeam']['score']['linescore'];
             return Container(
               child: Row(
@@ -193,7 +189,7 @@ class _GameDetailScreenState extends State<GameDetailScreen> {
     );
   }
 
-  _columnHeaders(List _list,Color _color) {
+  _columnHeaders(List<PlayerInfo> _list,Color _color) {
 
     return Center(
       child: Container(
@@ -399,9 +395,9 @@ List teamColorList = [Color];
 
 class _Delegate extends SliverPersistentHeaderDelegate {
   _Delegate(
-      {@required this.child,
-      @required this.maxHeight,
-      @required this.minHeight});
+      {required this.child,
+      required this.maxHeight,
+      required this.minHeight});
 
   double minHeight;
   double maxHeight;
@@ -455,10 +451,7 @@ class CustomScrollSimulation extends Simulation {
 }
 
 class CustomScrollPhysics2 extends ScrollPhysics {
-  @override
-  ScrollPhysics applyTo(ScrollPhysics ancestor) {
-    return CustomScrollPhysics2();
-  }
+
 
   @override
   Simulation createBallisticSimulation(

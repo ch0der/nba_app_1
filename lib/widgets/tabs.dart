@@ -22,7 +22,7 @@ class _TabsState extends State<Tabs>
     ),
   ];
 
-  TabController _tabController;
+  late TabController _tabController;
   @override
   void initState() {
     super.initState();

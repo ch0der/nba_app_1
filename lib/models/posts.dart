@@ -6,11 +6,11 @@ part 'posts.g.dart';
 class Posts {
     Posts();
 
-    num status;
-    String message;
-    num results;
-    List filters;
-    List players;
+    late num status;
+    late String message;
+    late num results;
+    late List filters;
+    late List players;
     
     factory Posts.fromJson(Map<String,dynamic> json) => _$PostsFromJson(json);
     Map<String, dynamic> toJson() => _$PostsToJson(this);

@@ -6,11 +6,11 @@ part 'liveGameData01.g.dart';
 class LiveGameData01 {
     LiveGameData01();
 
-    num status;
-    String message;
-    num results;
-    List filters;
-    List games;
+    late num status;
+    late String message;
+    late num results;
+    late List filters;
+    late List games;
     
     factory LiveGameData01.fromJson(Map<String,dynamic> json) => _$LiveGameData01FromJson(json);
     Map<String, dynamic> toJson() => _$LiveGameData01ToJson(this);

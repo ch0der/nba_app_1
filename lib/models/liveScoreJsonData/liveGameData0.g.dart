@@ -8,9 +8,9 @@ part of 'liveGameData0.dart';
 
 LiveGameData0 _$LiveGameData0FromJson(Map<String, dynamic> json) {
   return LiveGameData0()
-    ..api = json['api'] == null
+    ..api = (json['api'] == null
         ? null
-        : LiveGameData01.fromJson(json['api'] as Map<String, dynamic>);
+        : LiveGameData01.fromJson(json['api'] as Map<String, dynamic>))!;
 }
 
 Map<String, dynamic> _$LiveGameData0ToJson(LiveGameData0 instance) =>

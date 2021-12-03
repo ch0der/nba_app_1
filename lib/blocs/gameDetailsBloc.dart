@@ -126,6 +126,6 @@ class PlayerNames{
   }
 }
 
-Future fetchNames() {
+Future fetchNames() async {
 }
 

@@ -6,7 +6,7 @@ part 'post.g.dart';
 class Post {
     Post();
 
-    Posts api;
+    late Posts api;
     
     factory Post.fromJson(Map<String,dynamic> json) => _$PostFromJson(json);
     Map<String, dynamic> toJson() => _$PostToJson(this);

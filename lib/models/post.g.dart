@@ -8,9 +8,9 @@ part of 'post.dart';
 
 Post _$PostFromJson(Map<String, dynamic> json) {
   return Post()
-    ..api = json['api'] == null
+    ..api = (json['api'] == null
         ? null
-        : Posts.fromJson(json['api'] as Map<String, dynamic>);
+        : Posts.fromJson(json['api'] as Map<String, dynamic>))!;
 }
 
 Map<String, dynamic> _$PostToJson(Post instance) =>

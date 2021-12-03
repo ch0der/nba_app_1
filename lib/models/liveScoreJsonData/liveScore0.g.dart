@@ -26,12 +26,12 @@ LiveScore0 _$LiveScore0FromJson(Map<String, dynamic> json) {
     ..seasonStage = json['seasonStage'] as String
     ..statusShortGame = json['statusShortGame'] as String
     ..statusGame = json['statusGame'] as String
-    ..vTeam = json['vTeam'] == null
+    ..vTeam = (json['vTeam'] == null
         ? null
-        : LiveScore01.fromJson(json['vTeam'] as Map<String, dynamic>)
-    ..hTeam = json['hTeam'] == null
+        : LiveScore01.fromJson(json['vTeam'] as Map<String, dynamic>))!
+    ..hTeam = (json['hTeam'] == null
         ? null
-        : LiveScore01.fromJson(json['hTeam'] as Map<String, dynamic>);
+        : LiveScore01.fromJson(json['hTeam'] as Map<String, dynamic>))!;
 }
 
 Map<String, dynamic> _$LiveScore0ToJson(LiveScore0 instance) =>

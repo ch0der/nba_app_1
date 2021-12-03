@@ -7,8 +7,8 @@ class ScoreAnimation extends StatefulWidget {
 
 class _ScoreAnimationState extends State<ScoreAnimation>
     with TickerProviderStateMixin {
-  Animation<double> _animation;
-  AnimationController _animationController;
+  late Animation<double> _animation;
+  late AnimationController _animationController;
   double startValue = 0.0;
   double endValue = 1.0;
 
@@ -63,7 +63,7 @@ class _ScoreAnimationState extends State<ScoreAnimation>
           decoration: BoxDecoration(
             gradient: LinearGradient(
               begin: Alignment.centerLeft,
-              colors: [_color,_color,Colors.green[300],_color,_color],
+              colors: [_color,_color,Colors.green[300]!,_color,_color],
               stops: [0,_animation.value-.15,_animation.value,_animation.value+.15,1],
             ),
           ),

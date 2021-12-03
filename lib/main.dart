@@ -15,7 +15,7 @@ void main() {
         '/': (context) => MyApp(),
         '/home': (context) => Tabs(),
         '/second': (context) => ScorePage(),
-        '/player': (context) => GameDetailScreen(),
+        '/player': (context) => GameDetailScreen(awayLogo: '', awayNickname: '', homeShort: '', awayFullName: '', awayId: '', playerDetailsList: [], homeNickname: '', homeFullName: '', homeLogo: '', homeId: '', gameId: '', awayShort: '',),
       },
     ),
   );

@@ -5,5 +5,5 @@ class PlayerStats {
   String reb;
   String plusMin;
 
-  PlayerStats({this.id, this.pts, this.ast, this.reb, this.plusMin});
+  PlayerStats({required this.id, required this.pts, required this.ast, required this.reb, required this.plusMin});
 }

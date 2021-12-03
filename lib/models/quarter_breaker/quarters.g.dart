@@ -8,9 +8,9 @@ part of 'quarters.dart';
 
 Quarters _$QuartersFromJson(Map<String, dynamic> json) {
   return Quarters()
-    ..api = json['api'] == null
+    ..api = (json['api'] == null
         ? null
-        : Quarters0.fromJson(json['api'] as Map<String, dynamic>);
+        : Quarters0.fromJson(json['api'] as Map<String, dynamic>))!;
 }
 
 Map<String, dynamic> _$QuartersToJson(Quarters instance) =>

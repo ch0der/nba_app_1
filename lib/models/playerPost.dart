@@ -6,18 +6,18 @@ part 'playerPost.g.dart';
 class PlayerPost {
     PlayerPost();
 
-    String firstName;
-    String lastName;
-    String teamId;
-    String yearsPro;
-    String collegeName;
-    String country;
-    String playerId;
-    String dateOfBirth;
-    String affiliation;
-    String startNba;
-    String heightInMeters;
-    String weightInKilograms;
+    late String firstName;
+    late String lastName;
+    late String teamId;
+    late String yearsPro;
+    late String collegeName;
+    late String country;
+    late String playerId;
+    late String dateOfBirth;
+    late String affiliation;
+    late String startNba;
+    late String heightInMeters;
+    late String weightInKilograms;
     
     factory PlayerPost.fromJson(Map<String,dynamic> json) => _$PlayerPostFromJson(json);
     Map<String, dynamic> toJson() => _$PlayerPostToJson(this);

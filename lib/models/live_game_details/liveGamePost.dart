@@ -6,7 +6,7 @@ part 'liveGamePost.g.dart';
 class LiveGamePost {
     LiveGamePost();
 
-    LiveGame1 api;
+    late LiveGame1 api;
     
     factory LiveGamePost.fromJson(Map<String,dynamic> json) => _$LiveGamePostFromJson(json);
     Map<String, dynamic> toJson() => _$LiveGamePostToJson(this);

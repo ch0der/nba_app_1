@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 class Stats extends StatefulWidget {
-  Stats({this.list,this.bool2});
+  Stats({required this.list,required this.bool2});
 
   final List list;
   final bool bool2;
