@@ -1,6 +1,9 @@
 # nba_app
 
-Live NBA scores
+Easily check the live scores of today's NBA games and see which games are coming up or have recently ended.
+Pulls data from an NBA API and displays on screen for instant live game information.  
+
+See below for demonstration
 
 
 
