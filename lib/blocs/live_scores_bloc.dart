@@ -32,7 +32,7 @@ class LiveScoreBloc{
     final response = await http
         .get(Uri.https(API_KEY,str), headers: {
       "x-rapidapi-host": "api-nba-v1.p.rapidapi.com",
-      "x-rapidapi-key": "6e137c5c98mshcfe3870862cc847p12a327jsn818c1cb513dd"
+      "x-rapidapi-key": "REDACTED"
     });
 
     if (response.statusCode == 200) {
@@ -76,7 +76,7 @@ class LiveStandingsBloc {
     final response = await http
         .get(Uri.https("api-nba-v1.p.rapidapi.com", myPath), headers: {
       "x-rapidapi-host": "api-nba-v1.p.rapidapi.com",
-      "x-rapidapi-key": "6e137c5c98mshcfe3870862cc847p12a327jsn818c1cb513dd"
+      "x-rapidapi-key": "REDACTED"
     });
 
     if (response.statusCode == 200) {
