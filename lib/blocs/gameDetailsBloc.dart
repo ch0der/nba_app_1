@@ -29,7 +29,7 @@ class GameDetailsBloc {
     final response = await http
         .get(Uri.https(API_KEY, myPath), headers: {
       "x-rapidapi-host": API_KEY,
-      "x-rapidapi-key": "6e137c5c98mshcfe3870862cc847p12a327jsn818c1cb513dd"
+      "x-rapidapi-key": "REDACTED"
     });
 
     if (response.statusCode == 200) {
@@ -52,7 +52,7 @@ class GameDetailsBloc {
     final response = await http
         .get(Uri.https(API_KEY, myPath), headers: {
       "x-rapidapi-host": API_KEY,
-      "x-rapidapi-key": "6e137c5c98mshcfe3870862cc847p12a327jsn818c1cb513dd"
+      "x-rapidapi-key": "REDACTED"
     });
 
     if (response.statusCode == 200) {
@@ -92,7 +92,7 @@ class AdditionalGameDetails {
     final response = await http
         .get(Uri.https(API_KEY, myPath), headers: {
       "x-rapidapi-host": API_KEY,
-      "x-rapidapi-key": "6e137c5c98mshcfe3870862cc847p12a327jsn818c1cb513dd"
+      "x-rapidapi-key": "REDACTED"
     });
 
     if (response.statusCode == 200) {
