@@ -348,18 +348,18 @@ class _GameDetailScreenState extends State<GameDetailScreen> {
     return Text(str,style:_style,);
   }
 
-  tableBuilder(List<PlayerInfo> _list, Color color1,double height) {
+  tableBuilder(List<PlayerInfo> ?_list, Color color1,double height) {
     TextStyle _style = TextStyle(color: textColor,fontSize: 17);
 
 
-    int listSize = _list.length;
+    int? listSize = _list!.length;
     return Container(
       width: screenSize(context).width,
       child: ListView.builder(
           padding: EdgeInsets.only(top: 0),
           itemCount: listSize,
           itemBuilder: (BuildContext context, int index) {
-            if (listSize != null) {
+            if (listSize != 0) {
               bool test = index.isOdd;
               return Container(
                 height: 30,
