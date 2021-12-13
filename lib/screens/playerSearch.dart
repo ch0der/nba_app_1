@@ -5,6 +5,8 @@ import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:nba_app/models/posts.dart';
 
+String apiTest = "6e137c5c98mshcfe3870862cc847p12a327jsn818c1cb513dd";
+
 
 
 
@@ -30,7 +32,7 @@ class _PlayerSearchState extends State<PlayerSearch> {
     final response = await http
         .get(Uri.https("api-nba-v1.p.rapidapi.com", myPath, parms1), headers: {
       "x-rapidapi-host": "api-nba-v1.p.rapidapi.com",
-      "x-rapidapi-key": "6e137c5c98mshcfe3870862cc847p12a327jsn818c1cb513dd"
+      "x-rapidapi-key": apiTest
     });
 
     if (response.statusCode == 200) {
